@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
-
+import logo from '../../../public/logo.svg'
+import Image from "next/image";
 export default function Header() {
   const [search, setSearch] = useState("");
 
@@ -14,8 +15,8 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2">
-            <img
-              src="/logo.png"
+            <Image
+              src={logo}
               alt="Logo"
               className="h-12 w-12 rounded-full"
             />

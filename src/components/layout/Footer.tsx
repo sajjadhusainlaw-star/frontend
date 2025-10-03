@@ -1,21 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import logo from '../../../public/logo.svg'
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaTwitter, FaTelegramPlane, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import Image from "next/image";
 
 export default function Footer() {
   return (
     <footer className="bg-[#2F2F2F] text-white py-12">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-700 pb-10">
-          {/* Logo */}
-          <div className="mb-8 md:mb-0">
-            <img src="/logo.png" alt="MediaTech Logo" className="h-16 w-auto mx-auto md:mx-0" />
+        <div className="mb-8 md:mb-0 border-b border-b-amber-50">
+            <Image src={logo} alt="MediaTech Logo" className="h-16 w-auto mx-auto md:mx-0" />
             <p className="text-center md:text-left mt-2 text-sm tracking-widest uppercase">
               MediaTech
             </p>
           </div>
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-700 pb-10">
+          {/* Logo */}
+          
 
           {/* Socials */}
           <div className="mb-8 md:mb-0 text-center md:text-left">
