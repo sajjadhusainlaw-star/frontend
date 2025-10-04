@@ -40,9 +40,10 @@ export default function Header() {
 
         {/* Buttons */}
         <div className="flex gap-4">
+          <Link href="singnin">
           <button className="rounded-full bg-black px-6 py-2 text-white text-sm font-medium hover:opacity-80">
             SIGN IN
-          </button>
+          </button></Link>
           <button className="rounded-full border border-black px-6 py-2 text-sm font-medium hover:bg-black hover:text-white">
             SUBSCRIBE TO PREMIUM
           </button>

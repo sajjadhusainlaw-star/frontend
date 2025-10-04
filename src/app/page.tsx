@@ -1,5 +1,7 @@
+// app/page.tsx OR pages/index.tsx
 import Image from "next/image";
-import NewsCard from "@/components/ui/NewsCard"
+import NewsCard from "@/components/ui/NewsCard";
+import logo from "../../public/logo.svg";
 export default function Home() {
   return (
     <div className="container mx-auto px-4">
@@ -20,7 +22,7 @@ export default function Home() {
         <div className="bg-amber-100 rounded-lg p-4 flex flex-col overflow-hidden">
           <div className="relative w-full h-48 md:h-64 rounded-md overflow-hidden">
             <Image
-              src="/sample.jpg"
+              src={logo}
               alt="News Thumbnail"
               fill
               className="object-cover"
@@ -30,8 +32,8 @@ export default function Home() {
             Jobs, travel, national parks - what impact will US shutdown have?
           </h3>
           <p className="mt-2 text-sm md:text-base text-gray-700 line-clamp-3">
-            Washington's political gridlock could inflict wide-ranging miseries,
-            as anything deemed non-essential will be put on hold.
+            Washington&apos;s political gridlock could inflict wide-ranging
+            miseries, as anything deemed non-essential will be put on hold.
           </p>
         </div>
 
@@ -39,23 +41,21 @@ export default function Home() {
         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* First Column */}
           <div className="flex flex-col gap-4">
-            {[1, 2, 3].map((i) => (
-             <NewsCard
-      key={i}
-      src="/sample.jpg"
-      title="Supreme Court Half Yearly Digest 2025: Family Law"
-    />
+            {[1, 2, 3].map((i: number) => (
+              <NewsCard
+                key={i}
+                title="Supreme Court Half Yearly Digest 2025: Family Law"
+              />
             ))}
           </div>
 
           {/* Second Column */}
           <div className="flex flex-col gap-4">
-            {[4, 5].map((i) => (
-               <NewsCard
-      key={i}
-      src="/sample.jpg"
-      title="Supreme Court Half Yearly Digest 2025: Family Law"
-    />
+            {[4, 5].map((i: number) => (
+              <NewsCard
+                key={i}
+                title="Supreme Court Half Yearly Digest 2025: Family Law"
+              />
             ))}
           </div>
         </div>
