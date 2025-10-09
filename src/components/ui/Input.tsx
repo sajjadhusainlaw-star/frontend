@@ -1,6 +1,4 @@
-// components/common/Input.tsx
 import React from "react";
-
 type InputTypes = 
   | "text"
   | "email"
@@ -9,25 +7,22 @@ type InputTypes =
   | "file"
   | "textarea"
   | "select";
-
 interface Option {
   label: string;
   value: string | number;
 }
-
 interface InputProps {
   label?: string;
   name: string;
   type?: InputTypes;
   value?: string | number;
   placeholder?: string;
-  options?: Option[]; // For select
+  options?: Option[];
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   className?: string;
   required?: boolean;
   disabled?: boolean;
 }
-
 const Input: React.FC<InputProps> = ({
   label,
   name,
@@ -43,7 +38,6 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="flex flex-col gap-1 w-full">
       {label && <label htmlFor={name} className="font-medium">{label}</label>}
-
       {type === "textarea" ? (
         <textarea
           id={name}

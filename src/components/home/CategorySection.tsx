@@ -54,28 +54,27 @@ const cardsData: CardData[] = [
     date: "2025-10-09",
   },
 ];
-
 export default function CategorySection() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredCards = cardsData.filter(
-    (card) => selectedCategory === "All" || card.categoryName === selectedCategory
+    (card) =>
+      selectedCategory === "All" || card.categoryName === selectedCategory
   );
-
   return (
     <div className="container mx-auto px-4 sm:px-8 py-6">
       <h1 className="text-2xl justify-center flex sm:text-3xl font-bold mb-4 text-center sm:text-left">
         Legal News Categories
       </h1>
-      <p className="flex justify-center">Stay informed with the most important legal developments and breaking news from courts across the nation.</p>
+      <p className="flex justify-center">
+        Stay informed with the most important legal developments and breaking
+        news from courts across the nation.
+      </p>
       <CategoryTabs onSelect={setSelectedCategory} />
 
       <div className="flex flex-wrap -mx-2 mt-6">
         {filteredCards.map((card) => (
-          <div
-            key={card.id}
-            className="w-1/2 sm:w-1/4 px-2 mb-4"
-          >
+          <div key={card.id} className="w-1/2 sm:w-1/4 px-2 mb-4">
             <CategoryCard {...card} />
           </div>
         ))}

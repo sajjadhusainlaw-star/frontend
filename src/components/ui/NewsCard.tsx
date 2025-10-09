@@ -1,6 +1,5 @@
 import Image, { StaticImageData } from "next/image";
 import logo from "../../../public/logo.svg";
-
 interface NewsCardProps {
   src?: StaticImageData;
   title: string;
@@ -10,7 +9,6 @@ interface NewsCardProps {
   likes?: string;
   height?: string;
 }
-
 export default function NewsCard({
   src = logo,
   title,
@@ -18,13 +16,11 @@ export default function NewsCard({
   time,
   veiws,
   likes,
- 
 }: NewsCardProps) {
   return (
     <div
       className={`flex flex-col sm:flex-row w-full max-w-[600px]  nsm:max-w-full overflow-hidden bg-[#D9D9D9] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300`}
     >
-      {/* 🖼️ Image wrapper */}
       <div className="relative w-full sm:w-[180px] h-[200px] sm:h-auto rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none overflow-hidden">
         <Image
           src={src}
@@ -33,8 +29,6 @@ export default function NewsCard({
           sizes="(max-width: 640px) 100vw, 180px"
         />
       </div>
-
-   
       <div className=" pt-3">
         <div className="sm:text-left flex-wrap items-center  justify-around border-t sm:border-t-0 sm:border-l border-gray-300">
           {court && (
@@ -48,8 +42,6 @@ export default function NewsCard({
             </span>
           )}
         </div>
-
-        {/*  News Title */}
         <div className="px-3 sm:px-4  py-3">
           <p className=" sm:text-sm  font-semibold text-gray-900 leading-snug text-center sm:text-left">
             {title}

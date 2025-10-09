@@ -24,7 +24,6 @@ export default function CategoryCard({
   return (
    <div className=" ">
      <div className="flex flex-col w-full max-w-[300px] overflow-hidden bg-[#f8f5f5] rounded-xl shadow-sm hover:shadow-md hover:scale-95 transform transition-all duration-300">
-      {/* Image Section */}
       <div className="relative w-full h-48 sm:h-56">
         <Image
           src={src}
@@ -34,10 +33,7 @@ export default function CategoryCard({
           sizes="(max-width: 768px) 100vw, 300px"
         />
       </div>
-
-      {/* Content Section */}
       <div className="flex flex-wrap p-4 space-y-3">
-        {/* Category Info */}
         <div className="flex items-center gap-2.5 text-gray-700 text-xs sm:text-sm">
           <span className="bg-gray-300 text-gray-900 px-3 py-1 rounded-sm font-medium">
             {categoryName}
@@ -47,21 +43,17 @@ export default function CategoryCard({
           )}
         </div>
 
-        {/* Description */}
         {description && (
           <p className="text-xs sm:text-sm text-gray-800 line-clamp-3">
             {description}
           </p>
         )}
 
-        {/* Date */}
         {date && (
           <p className="text-xs text-gray-500">
             Updated on <span className="font-medium">{date}</span>
           </p>
         )}
-
-        {/* Button */}
         <div className="pt-2 w-full">
           <Button
             lable="Explore Category"

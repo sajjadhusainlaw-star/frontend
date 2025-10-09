@@ -7,12 +7,11 @@ import Stores from "@/components/home/Stores";
 import CategorySection from "@/components/home/CategorySection";
 
 export default function Home() {
-  return (<>
-   <Hero/>
-   <Stores/>
-  <CategorySection/>
-  </>
-    
-   
+  return (
+    <>
+      <Hero />
+      <Stores />
+      <CategorySection />
+    </>
   );
 }

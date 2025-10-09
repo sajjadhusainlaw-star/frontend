@@ -1,21 +1,15 @@
 "use client";
-
 import { useState } from "react";
-
 const categories = ["All", "Supreme Court", "High Court", "Law Schools", "Law Firms"];
-
 interface CategoryTabsProps {
   onSelect?: (category: string) => void;
 }
-
 export default function CategoryTabs({ onSelect }: CategoryTabsProps) {
   const [active, setActive] = useState("All");
-
   const handleSelect = (category: string) => {
     setActive(category);
     if (onSelect) onSelect(category);
   };
-
   return (
     <div className="flex flex-wrap gap-3 sm:gap-4 justify-center py-4">
       {categories.map((category) => (

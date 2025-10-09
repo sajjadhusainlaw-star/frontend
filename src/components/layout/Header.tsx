@@ -1,4 +1,4 @@
-// components/layout/Header.tsx
+
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -10,9 +10,9 @@ export default function Header() {
 
   return (
     <header className="w-full border-b border-gray-200">
-      {/* Top Bar */}
+     
       <div className="flex items-center justify-between px-6 py-4">
-        {/* Logo */}
+      
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2">
             <Image
@@ -23,8 +23,6 @@ export default function Header() {
             <span className="text-xs tracking-widest">MEDIATECH</span>
           </Link>
         </div>
-
-        {/* Search */}
         <div className="flex-1 max-w-2xl px-6">
           <div className="relative w-full">
             <input
@@ -37,8 +35,6 @@ export default function Header() {
             <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-500" />
           </div>
         </div>
-
-        {/* Buttons */}
         <div className="flex gap-4">
           <Link href="singnin">
           <button className="rounded-full bg-black px-6 py-2 text-white text-sm font-medium hover:opacity-80">
@@ -49,8 +45,6 @@ export default function Header() {
           </button>
         </div>
       </div>
-
-      {/* Navigation Bar */}
       <nav className="bg-[#2F2F2F] text-white">
         <div className="container mx-auto flex flex-wrap items-center justify-center gap-6 px-6 py-3 text-sm font-medium">
           <Link href="#">MediaTech Hindi</Link>
