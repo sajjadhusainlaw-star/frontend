@@ -1,32 +1,73 @@
-
-import Image, { StaticImageData } from "next/image"; 
+import Image, { StaticImageData } from "next/image";
 import logo from "../../../public/logo.svg";
 
 interface NewsCardProps {
   src?: StaticImageData;
   title: string;
+  court?: string;
+  time?: number;
+  veiws?: string;
+  likes?: string;
   height?: string;
 }
 
 export default function NewsCard({
   src = logo,
   title,
-  height = "h-[103px]",
+  court,
+  time,
+  veiws,
+  likes,
+ 
 }: NewsCardProps) {
   return (
-    <div className={`flex ${height} w-[403px] overflow-hidden bg-[#D9D9D9]`}>
-      {/* Image wrapper must be relative with fixed height & width */}
-      <div className="relative w-[170px] h-[103px] rounded-lg overflow-hidden bg-amber-300">
+    <div
+      className={`flex flex-col sm:flex-row w-full max-w-[600px]  nsm:max-w-full overflow-hidden bg-[#D9D9D9] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300`}
+    >
+      {/* 🖼️ Image wrapper */}
+      <div className="relative w-full sm:w-[180px] h-[200px] sm:h-auto rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none overflow-hidden">
         <Image
           src={src}
           alt={title}
-          fill
           className="object-cover"
+          sizes="(max-width: 640px) 100vw, 180px"
         />
       </div>
 
-      <div className="flex-1 p-3 flex items-center">
-        <p className="text-sm font-medium text-gray-800">{title}</p>
+   
+      <div className=" pt-3">
+        <div className="sm:text-left flex-wrap items-center  justify-around border-t sm:border-t-0 sm:border-l border-gray-300">
+          {court && (
+            <span className="text-xs  sm:text-sm text-gray-900 bg-gray-300 px-3 py-1 rounded-full font-medium">
+              {court}
+            </span>
+          )}
+          {time && (
+            <span className="text-xs sm:text-sm text-gray-600">
+              {time} mins ago
+            </span>
+          )}
+        </div>
+
+        {/*  News Title */}
+        <div className="px-3 sm:px-4  py-3">
+          <p className=" sm:text-sm  font-semibold text-gray-900 leading-snug text-center sm:text-left">
+            {title}
+          </p>
+        </div>
+        <div className=" ">
+          {veiws && (
+            <span className="text-xs sm:text-sm text-gray-900 px-3 py- rounded-full font-medium">
+              {veiws}
+            </span>
+          )}
+          {likes && (
+            <span className="text-xs sm:text-sm text-gray-600">
+              {likes}
+              Likes
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
