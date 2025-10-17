@@ -21,7 +21,7 @@ const cardsData: CardData[] = [
     src: image1,
     categoryName: "Supreme Court",
     postCount: 10,
-    description: "Latest Supreme Court judgments and updates.",
+    description: "Latest Supreme Court judgments .",
     date: "2025-10-01",
   },
   {
@@ -46,13 +46,7 @@ const cardsData: CardData[] = [
     description: "Top law firms and services.",
     date: "2025-10-08",
   },
-  {
-    id: 5,
-    categoryName: "Supreme Court",
-    postCount: 7,
-    description: "More Supreme Court news.",
-    date: "2025-10-09",
-  },
+  
 ];
 export default function CategorySection() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -62,7 +56,8 @@ export default function CategorySection() {
       selectedCategory === "All" || card.categoryName === selectedCategory
   );
   return (
-    <div className="container mx-auto px-4 sm:px-8 py-6">
+  
+<div className="container mx-auto px-4 sm:px-8 py-6">
       <h1 className="text-2xl justify-center flex sm:text-3xl font-bold mb-4 text-center sm:text-left">
         Legal News Categories
       </h1>
@@ -80,5 +75,7 @@ export default function CategorySection() {
         ))}
       </div>
     </div>
+   
+    
   );
 }

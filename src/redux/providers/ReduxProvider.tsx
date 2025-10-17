@@ -1,10 +1,8 @@
 "use client";
- 
-import React from "react";
-import {Provide} from "react-icons";
-import {store} from "@/redux/store";
 
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
-interface ReduxProviderProps{
-    children:React.
+export default function ReduxProvider({ children }: { children: React.ReactNode }) {
+  return <Provider store={store}>{children}</Provider>;
 }

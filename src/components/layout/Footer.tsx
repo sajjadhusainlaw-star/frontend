@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import logo from "../../../public/logo.svg";
+import apple from "../../../public/apple-button.svg";
+import google from "../../../public/playbutton.svg";
 import {
   FaFacebookF,
   FaInstagram,
@@ -15,17 +17,14 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2F2F2F] text-white py-12">
-      <div className="container mx-auto px-6 lg:px-12">
+    <footer className="bg-[#2F2F2F] text-white py-8">
+      <div className="container mx-auto px-6 ">
         <div className="mb-8 md:mb-0 border-b border-b-amber-50">
           <Image
             src={logo}
             alt="MediaTech Logo"
-            className="h-16 w-auto mx-auto md:mx-0"
+            className="h-24 w-auto mx-auto md:mx-0"
           />
-          <p className="text-center md:text-left mt-2 text-sm tracking-widest uppercase">
-            MediaTech
-          </p>
         </div>
         <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-700 pb-10">
           <div className="mb-8 md:mb-0 text-center md:text-left">
@@ -40,8 +39,8 @@ export default function Footer() {
               <FaYoutube className="h-5 w-5 hover:text-red-600 cursor-pointer" />
             </div>
             <div className="flex justify-center md:justify-start gap-4 mt-4">
-              <img src="/google-play.png" alt="Google Play" className="h-10" />
-              <img src="/app-store.png" alt="App Store" className="h-10" />
+              <Image src={google}alt="Google Play" className="h-24 w-36" />
+              <Image src={apple} alt="App Store" className="h-24 w-36" />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center md:text-left">
@@ -69,7 +68,7 @@ export default function Footer() {
                 <li>
                   <Link href="#">Environment</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="#">Digests</Link>
                 </li>
                 <li>
@@ -89,7 +88,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="#">Podcasts</Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -117,7 +116,7 @@ export default function Footer() {
                 <li>
                   <Link href="#">School Admission</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="#">Events</Link>
                 </li>
                 <li>
@@ -125,7 +124,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="#">Law Firm Articles</Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 

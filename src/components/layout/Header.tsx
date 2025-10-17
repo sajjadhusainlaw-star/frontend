@@ -1,66 +1,112 @@
-
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
-import logo from '../../../public/logo.svg'
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import logo from "../../../public/logo.svg";
+
 export default function Header() {
-  const [search, setSearch] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [menuOpen]);
+
+  const handleLinkClick = () => {
+    setMenuOpen(false);
+  };
+
+  const navLinks = [
+    "Home",
+    "Latest News",
+    "Judgments",
+    "Interviews",
+    "Explainers",
+    "Business",
+    "Innovation",
+    "More ▾",
+  ];
 
   return (
-    <header className="w-full border-b border-gray-200">
-     
-      <div className="flex items-center justify-between px-6 py-4">
-      
-        <div className="flex items-center">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src={logo}
-              alt="Logo"
-              className="h-12 w-12 rounded-full"
-            />
-            <span className="text-xs tracking-widest">MEDIATECH</span>
+    <header className="w-full border-b border-gray-200 bg-white z-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+        {/* Logo */}
+        <Link href="/" className="flex items-center" onClick={handleLinkClick}>
+          <Image
+            src={logo}
+            alt="Logo"
+            className="object-contain"
+            width={140}
+            height={40}
+            priority
+          />
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 text-base font-medium">
+          {navLinks.map((label, i) => (
+            <Link href="#" key={i} className="hover:text-black/70">
+              {label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Desktop Auth Buttons */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link href="/auth/signin">
+            <button className="rounded-full bg-black text-white px-5 py-2 hover:opacity-80 text-sm font-medium">
+              Sign in
+            </button>
+          </Link>
+          <Link href="/auth/signup">
+            <button className="rounded-full border border-black text-black px-5 py-2 hover:bg-black hover:text-white text-sm font-medium">
+              Sign up
+            </button>
           </Link>
         </div>
-        <div className="flex-1 max-w-2xl px-6">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-sm border border-gray-300 py-2 pl-4 pr-10 text-sm focus:border-black focus:outline-none"
-            />
-            <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-500" />
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <Link href="singnin">
-          <button className="rounded-full bg-black px-6 py-2 text-white text-sm font-medium hover:opacity-80">
-            SIGN IN
-          </button></Link>
-          <button className="rounded-full border border-black px-6 py-2 text-sm font-medium hover:bg-black hover:text-white">
-            SUBSCRIBE TO PREMIUM
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden">
+          <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+            {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
-      <nav className="bg-[#2F2F2F] text-white">
-        <div className="container mx-auto flex flex-wrap items-center justify-center gap-6 px-6 py-3 text-sm font-medium">
-          <Link href="#">MediaTech Hindi</Link>
-          <Link href="#">Top Stories</Link>
-          <Link href="#">Supreme Court ▾</Link>
-          <Link href="#">High Court ▾</Link>
-          <Link href="#">News Updates</Link>
-          <Link href="#">Articles</Link>
-          <Link href="#">Law Schools ▾</Link>
-          <Link href="#">Videos</Link>
-          <Link href="#">Know The Law</Link>
-          <Link href="#">Digests</Link>
-          <Link href="#">Law Firms</Link>
-          <Link href="#">More</Link>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`md:hidden fixed top-0 left-0 w-full h-full bg-white transform transition-transform duration-300 ease-in-out z-40 ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="px-6 pt-20 pb-6 flex flex-col justify-between h-full overflow-y-auto">
+          <nav className="flex flex-col gap-6 text-lg font-medium">
+            {navLinks.map((label, i) => (
+              <Link href="#" key={i} onClick={handleLinkClick} className="hover:text-black/70">
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile Auth Buttons */}
+          <div className="flex flex-col gap-4 mt-8">
+            <Link href="/auth/signin" onClick={handleLinkClick}>
+              <button className="w-full rounded-full bg-black px-6 py-3 text-white font-medium hover:opacity-80">
+                Sign in
+              </button>
+            </Link>
+            <Link href="/auth/signup" onClick={handleLinkClick}>
+              <button className="w-full rounded-full border border-black px-6 py-3 font-medium hover:bg-black hover:text-white">
+                Sign up
+              </button>
+            </Link>
+          </div>
         </div>
-      </nav>
+      </div>
     </header>
   );
 }

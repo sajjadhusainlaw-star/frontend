@@ -19,7 +19,7 @@ export default function NewsCard({
 }: NewsCardProps) {
   return (
     <div
-      className={`flex flex-col sm:flex-row w-full max-w-[600px]  nsm:max-w-full overflow-hidden bg-[#D9D9D9] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300`}
+      className={`flex border-1  border-gray-500 flex-col sm:flex-row w-full max-w-[600px]  nsm:max-w-full overflow-hidden bg-[#ffffff] rounded-xl transition-shadow duration-300`}
     >
       <div className="relative w-full sm:w-[180px] h-[200px] sm:h-auto rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none overflow-hidden">
         <Image
@@ -30,9 +30,9 @@ export default function NewsCard({
         />
       </div>
       <div className=" pt-3">
-        <div className="sm:text-left flex-wrap items-center  justify-around border-t sm:border-t-0 sm:border-l border-gray-300">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6 justify-start">
           {court && (
-            <span className="text-xs  sm:text-sm text-gray-900 bg-gray-300 px-3 py-1 rounded-full font-medium">
+            <span className="text-xs sm:text-sm text-gray-900 bg-gray-300 px-3 py-1 rounded-full font-medium">
               {court}
             </span>
           )}
@@ -42,6 +42,7 @@ export default function NewsCard({
             </span>
           )}
         </div>
+
         <div className="px-3 sm:px-4  py-3">
           <p className=" sm:text-sm  font-semibold text-gray-900 leading-snug text-center sm:text-left">
             {title}
