@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import Input from "@/components/ui/Input";
+
 export default function Page() {
   const [formData, setFormData] = useState({
     fullname: "",
@@ -17,10 +17,10 @@ export default function Page() {
 
   const dispatch = useAppDispatch();
   const { loading, error, token } = useAppSelector((state) => state.auth);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLinputElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({ ...prev, [name]: value }));
+  // };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // dispatch(login(formData));
@@ -46,13 +46,13 @@ export default function Page() {
               >
                 Full Name
               </label>
-              <Input
+              <input
                 id="fullname"
                 type="text"
                 name="fullname"
                 placeholder="Enter your Full name"
                 value={formData.fullname}
-                onChange={handleChange}
+                // onChange={handleChange}
                 required
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
@@ -66,13 +66,13 @@ export default function Page() {
               >
                 Phone No.
               </label>
-              <Input
+              <input
                 id="number"
                 type="tel"
                 name="number"
                 placeholder="9012-XXX-XX"
                 value={formData.number}
-                onChange={handleChange}
+                // onChange={handleChange}
                 required
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
@@ -86,13 +86,13 @@ export default function Page() {
               >
                 Email
               </label>
-              <Input
+              <input
                 id="email"
                 type="email"
                 name="email"
                 placeholder="example@example.com"
                 value={formData.email}
-                onChange={handleChange}
+                // onChange={handleChange}
                 required
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
@@ -106,13 +106,13 @@ export default function Page() {
               >
                 State
               </label>
-              <Input
+              <input
                 id="state"
                 type="text"
                 name="state"
                 placeholder="Delhi, Uttar Pradesh, etc."
                 value={formData.state}
-                onChange={handleChange}
+                // onChange={handleChange}
                 required
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
