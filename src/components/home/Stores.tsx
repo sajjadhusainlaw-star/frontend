@@ -3,7 +3,6 @@ import NewsCard from "../ui/NewsCard";
 import Image from "next/image";
 import img from "../../../public/stories.jpeg";
 import Button from "../ui/Button";
-import NewsScroller from "../ui/NewsScroller";
 
 interface StoresProps {
   leftWidth?: string;
@@ -79,7 +78,7 @@ export default function Stores({
         <div className="flex justify-between gap-4 ">
           <div className={` ${leftWidth}`}>
             {" "}
-            <NewsScroller items={items}  />
+            {/* <NewsScroller items={items}  /> */}
           </div>
 
           <div
