@@ -14,15 +14,15 @@ import { logoutUser } from "./authSlice";
 import { RootState } from "@/data/redux/store";
 
 
-export const selectAuthLoading = (state: RootState) => state.auth.loading;
-export const selectAuthError = (state: RootState) => state.auth.error;
-export const selectAuthUser = (state: RootState) => state.auth.user;
-export const selectIsAuthenticated = (state: RootState) => !!state.auth.token;
-export const selectIsToken = (state: RootState) => state.auth.token;
-export const selectAuthMessage = (state: RootState) => state.auth.message;
+ const selectAuthLoading = (state: RootState) => state.auth.loading;
+ const selectAuthError = (state: RootState) => state.auth.error;
+ const selectAuthUser = (state: RootState) => state.auth.user;
+ const selectIsAuthenticated = (state: RootState) => !!state.auth.token;
+ const selectIsToken = (state: RootState) => state.auth.token;
+ const selectAuthMessage = (state: RootState) => state.auth.message;
 
 
-export const useAuth = () => {
+const useAuth = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectAuthUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -30,9 +30,7 @@ export const useAuth = () => {
   const error = useAppSelector(selectAuthError);
   const message = useAppSelector(selectAuthMessage);
   const token = useAppSelector(selectIsToken);
-
   const logout = () => dispatch(logoutUser());
-
   return { user, isAuthenticated, loading, error, logout, message, token };
 };
 
@@ -43,13 +41,11 @@ export const useRegisterActions = () => {
   const router = useRouter();
   const { loading, error, message } = useAuth();
 
-  const [formData, setFormData] = useState({
-    fullname: "",
-    number: "",
-    email: "",
-    state: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState<RegisterRequest>({
+  name: "",
+  email: "",
+  password: "",
+});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -59,13 +55,13 @@ export const useRegisterActions = () => {
   };
 
   const handleRegister = () => {
-    if (!formData.fullname || !formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password) {
       alert("Please fill in all required fields");
       return;
     }
 
     const payload: RegisterRequest = {
-      name: formData.fullname.trim(),
+      name: formData.name.trim(),
       email: formData.email.trim(),
       password: formData.password,
     };

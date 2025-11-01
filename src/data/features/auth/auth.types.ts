@@ -9,6 +9,8 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
+  number?:string;
+  state?:string;
 }
 
 export interface VerifyOtpRequest {

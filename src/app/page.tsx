@@ -17,6 +17,7 @@ export default function Home() {
       <CategorySection />
       <LiveCourtUpdates />
       <ContentSlider/>
+      <ContentSlider/>
       </div>
     </>
   );

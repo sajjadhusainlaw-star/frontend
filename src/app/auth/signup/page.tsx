@@ -7,6 +7,7 @@ import CustomInput from "@/components/ui/Input";
 import { useRegisterActions } from "@/data/features/auth/useAuthActions";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const {
@@ -32,8 +33,8 @@ useEffect(() => {
           <form onSubmit={(e) => { e.preventDefault(); handleRegister(); }} className="space-y-4 px-6 sm:px-14">
             <CustomInput
               label="Full Name"
-              name="fullname"
-              value={formData.fullname}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -77,8 +78,10 @@ useEffect(() => {
             </button>
           </form>
 
-          {error && <p className="text-red-500 text-sm mt-3 text-center">{error}</p>}
-          {message && <p className="text-green-600 text-sm mt-3 text-center">{message}</p>}
+          {/* {error && <p className="text-red-500 text-sm mt-3 text-center">{error}</p>}
+          {message && <p className="text-green-600 text-sm mt-3 text-center">{message}</p>} */}
+
+
                  <div className="mt-6 space-y-3 px-6 sm:px-14">
             <div className="flex justify-center items-center">
               <span className="inline-block w-48 border border-gray-400"></span>
@@ -104,9 +107,9 @@ useEffect(() => {
           </div>
           <div className="text-left text-xs text-gray-500 mt-10 px-6 sm:px-14">
             Already have an account?
-            <a href="/auth/singin" className="hover:underline text-blue-400 ml-1">
+            <Link href="/auth/signin" className="hover:underline text-blue-400 ml-1">
               Login
-            </a>
+            </Link>
           </div>
         </div>
 

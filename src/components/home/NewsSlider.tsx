@@ -3,25 +3,28 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import img1 from '../../assets/slider/image.svg'
+import img2 from '../../assets/slider/mask.svg'
+import img3 from '../../assets/slider/maskgroup.svg'
 
 export default function NewsSlider() {
   const slides = [
     {
-      image: "/images/slide1.jpg",
+      image: img1,
       title: "Breaking News: AI Revolutionizing Industries",
       description:
         "Artificial Intelligence is transforming how businesses operate across healthcare, finance, and education.",
       link: "#",
     },
     {
-      image: "/images/slide2.jpg",
+      image:img2,
       title: "Tech Giants Invest in Clean Energy",
       description:
         "Major technology companies are committing billions toward sustainable energy solutions.",
       link: "#",
     },
     {
-      image: "/images/slide3.jpg",
+      image: img3,
       title: "Startups Driving Innovation in 2025",
       description:
         "New startups are redefining traditional industries with cutting-edge solutions and AI-powered tools.",

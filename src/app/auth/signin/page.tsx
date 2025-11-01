@@ -7,6 +7,7 @@ import { FaFacebook } from "react-icons/fa";
 import { useLoginActions } from "@/data/features/auth/useAuthActions";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function LoginPage() {
   const {
@@ -22,11 +23,12 @@ useEffect(() => {
     if (error) toast.error(error);
     if (message) toast.success(message);
   }, [error, message]);
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-md p-6 sm:p-8">
         <div className="flex justify-center mb-6">
-          <Image src={logo} alt="Logo" width={80} height={80} />
+          <Image src={logo} alt="Logo" width={220} height={220} />
         </div>
 
         <h2 className="text-2xl font-bold text-center mb-2">Welcome Back!</h2>
@@ -89,8 +91,8 @@ useEffect(() => {
           </button>
         </form>
 
-        {error && <p className="text-red-500 text-sm mt-3 text-center">{error}</p>}
-        {message && <p className="text-green-600 text-sm mt-3 text-center">{message}</p>}
+        {/* {error && <p className="text-red-500 text-sm mt-3 text-center">{error}</p>}
+        {message && <p className="text-green-600 text-sm mt-3 text-center">{message}</p>} */}
 
         <div className="mt-6 space-y-3">
           <button
@@ -110,14 +112,14 @@ useEffect(() => {
           </button>
         </div>
 
-        <div className="text-center text-sm text-gray-600 mt-8">
-          <p>
-            Don’t have an account?{" "}
-            <a href="/auth/register" className="text-blue-600 hover:underline">
-              Register
-            </a>
-          </p>
-        </div>
+          <div className="text-center text-sm text-gray-600 mt-8">
+            <p>
+              Don’t have an account?{" "}
+              <Link href="/auth/signup" className="text-blue-600 hover:underline">
+                Register
+              </Link>
+            </p>
+          </div>
       </div>
     </div>
   );

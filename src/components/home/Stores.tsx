@@ -54,8 +54,8 @@ export default function Stores({
     <div className="bg-[#f6f6f7]">
 
       <div className="w-full">
-      <div className="border-2 border-dotted border-[#000000] h-14 my-4 flex">
-        <div className=" w-40 h-full flex justify-center items-center   bg-[#0A2342]  text-white text-2xl">
+      <div className="border-2 border-dotted border-[#000000] h-14 m-4 flex">
+        <div className=" w-40 h-full flex justify-center items-center   bg-[#0A2342]  text-white text-xl">
           Live News
         </div>
         <div className="flex justify-center items-center px-10">
