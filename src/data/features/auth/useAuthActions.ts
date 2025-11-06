@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
 import { LoginRequest, RegisterRequest, VerifyOtpRequest } from "./auth.types";
-import { loginUser, registerUser, verifyOtp } from "./authThunks";
+import { forgotPassword, loginUser, registerUser, verifyOtp } from "./authThunks";
 import { MESSAGES } from "@/lib/constants/messageConstants";
-import { resetAuthState } from "./authSlice";
-import { logoutUser } from "./authSlice";
+import { resetAuthState,logoutUser } from "./authSlice";
 
 
 import { RootState } from "@/data/redux/store";
@@ -94,7 +93,6 @@ export const useRegisterActions = () => {
 
 export const useLoginActions = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const { loading, error, token, message } = useAuth();
 
   const [formData, setFormData] = useState<LoginRequest>({
@@ -102,6 +100,7 @@ export const useLoginActions = () => {
     password: "",
     
   });
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -117,6 +116,8 @@ export const useLoginActions = () => {
     dispatch(loginUser(formData));
   };
 
+ 
+
   useEffect(() => {
     if (token) {
       router.push("/dashboard");
@@ -128,6 +129,7 @@ export const useLoginActions = () => {
     formData,
     handleChange,
     handleLogin,
+    
     loading,
     error,
     message,
@@ -180,25 +182,90 @@ export const useVerifyActions = () => {
   };
 };
 
-export const useForgotPasswordAction = () => {
-  const [email, setEmail] = useState("");
+export const useVerifyForgotActions = (initialEmail = "") => {  
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  
+  const { loading, error, message } = useAppSelector((state) => state.auth);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const email = e.target.value;
-    setEmail(email);
-    console.log(email);
+  const [formData, setFormData] = useState({
+    email: "",
+    otp: "",
+  });
+
+  useEffect(() => {
+    if (initialEmail) {
+      setFormData((prev) => ({ ...prev, email: initialEmail }));
+    }
+  }, [initialEmail]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleGenOtp = () => {
-    
-  }
+  const handleVerify = async () => {
+    if (!formData.otp) {
+      alert("Please enter OTP");
+      return;
+    }
+
+    await dispatch(verifyOtp(formData));
+  };
+
+  useEffect(() => {
+    if (message === MESSAGES.VERIFY_SUCCESS) {
+      alert("Verification successful");
+      router.push("/auth/signin");
+      dispatch(resetAuthState());
+    }
+  }, [message]);
+
+  return {
+    formData,
+    handleChange,
+    handleVerify,
+    loading,
+    error,
+    message,
+  };
+};
+
+
+export const useForgotPasswordAction = () => {
+  const dispatch = useAppDispatch();
+  const [email, setEmail] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+
+  const { loading, error, message } = useAppSelector((state) => state.auth);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert("Please enter email");
+      return;
+    }
+
+    try {
+      await dispatch(forgotPassword({ email })).unwrap();
+      // alert("OTP sent successfully");
+      setOtpSent(true);
+    } catch (err) {
+      console.error(err);
+      // alert("Failed to send OTP");
+    }
+  };
 
   return {
     email,
+    otpSent,
     handleChange,
+    handleForgotPassword,
+    loading,
+    error,
+    message,
   };
 };

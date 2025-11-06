@@ -1,5 +1,8 @@
 
 import {
+ 
+  forgotPasswordRequest,
+  ForgotPasswordResponse,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
@@ -23,6 +26,13 @@ export const authApi = {
       data
     );
     console.log("Register API Response:", response.data);
+    return response;
+  },
+  
+  forgotPassword: async (data: forgotPasswordRequest) => {
+    console.log("Gen OTP API hit:", data);
+    const response = await apiClient.post<ForgotPasswordResponse>(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, data);
+    console.log(response);
     return response;
   },
 

@@ -1,5 +1,5 @@
 
-export interface genOtpRequest{
+export interface forgotPasswordRequest{
   email:string;
 }
 export interface LoginRequest {
@@ -43,6 +43,11 @@ export interface LoginResponse {
 export interface RegisterResponse {
   message: string;
   user?: AuthUser;
+}
+
+export interface ForgotPasswordResponse{
+  //may change while api test
+  email:"string";
 }
 
 export interface VerifyOtpResponse {

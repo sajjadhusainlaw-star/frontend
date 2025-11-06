@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {  LoginRequest,
+import {  forgotPasswordRequest, ForgotPasswordResponse, LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
@@ -58,5 +58,20 @@ export const verifyOtp = createAsyncThunk<VerifyOtpResponse, VerifyOtpRequest>(
     }
   }
 );
+
+export const forgotPassword = createAsyncThunk<ForgotPasswordResponse,forgotPasswordRequest>(
+  "auth/forgotPassword",
+  async(data,thunkAPI)=>{
+    try{
+      console.log("otp generating")
+      console.log(data)
+      const res = await authApi.forgotPassword(data);
+      return res.data;
+    }catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || MESSAGES.FORGOT_FAIL);
+    }
+
+  }
+)
 
 

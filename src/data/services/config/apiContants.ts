@@ -4,6 +4,7 @@ export const API_BASE_URL =
 export const API_ENDPOINTS = {
   AUTH: {
     REGISTER: "/auth/register",
+    FORGOT_PASSWORD: "/auth/forgot-password",
     VERIFY_OTP: "/auth/verify",
     LOGIN: "/auth/login",
     PROFILE: "/auth/profile",
