@@ -40,10 +40,11 @@ useEffect(() => {
             />
             <CustomInput
               label="Phone Number"
-              name="number"
-              value={formData.number}
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               required
+              
             />
             <CustomInput
               label="Email"
@@ -53,13 +54,13 @@ useEffect(() => {
               onChange={handleChange}
               required
             />
-            <CustomInput
+            {/* <CustomInput
               label="State"
               name="state"
               value={formData.state}
               onChange={handleChange}
               required
-            />
+            /> */}
             <CustomInput
               label="Password"
               name="password"
@@ -107,7 +108,7 @@ useEffect(() => {
           </div>
           <div className="text-left text-xs text-gray-500 mt-10 px-6 sm:px-14 ">
             Already have an account?
-            <Link href="/auth/signin" className="hover:underline text-blue-400 ml-1">
+            <Link href="/auth/login" className="hover:underline text-blue-400 ml-1">
               Login
             </Link>
           </div>

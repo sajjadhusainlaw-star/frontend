@@ -80,9 +80,7 @@ export const resetPassword = createAsyncThunk<ResetPasswordResponse,ResetPasswor
   "auth/resetPassword",
   async(formData,thunkAPI)=>{
     try{
-      const {conformPassword , ...newData}=formData
-      const res = await authApi.resetPassword(newData);
-      // const res = await authApi.resetPassword(formData);
+      const res = await authApi.resetPassword(formData);
       return res.data;
     }catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.message || MESSAGES.RESET_FAIL);

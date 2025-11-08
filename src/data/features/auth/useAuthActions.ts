@@ -1,5 +1,5 @@
 // src/hooks/useAuthActions.ts
-
+"use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
@@ -10,9 +10,7 @@ import { resetAuthState,logoutUser } from "./authSlice";
 
 
 import { RootState } from "@/data/redux/store";
-import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { log } from "node:console";
 
 
  const selectAuthLoading = (state: RootState) => state.auth.loading;
@@ -46,8 +44,7 @@ export const useRegisterActions = () => {
   name: "",
   email: "",
   password: "",
-  number:"",
-  state:""
+  phone:"",
 });
 
   const handleChange = (
@@ -67,8 +64,7 @@ export const useRegisterActions = () => {
       name: formData.name.trim(),
       email: formData.email.trim(),
       password: formData.password,
-      number:formData.number,
-      state:formData.state,
+      phone:formData.phone,
     };
 
     dispatch(registerUser(payload));
@@ -76,7 +72,7 @@ export const useRegisterActions = () => {
 
   useEffect(() => {
     if (message === MESSAGES.REGISTER_SUCCESS) {
-      localStorage.setItem("registeredEmail", formData.email);
+      sessionStorage.setItem("registeredEmail", formData.email);
       router.push("/auth/verify");
       dispatch(resetAuthState());
     }
@@ -152,6 +148,19 @@ export const useVerifyActions = () => {
     otp: "",
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedEmail = sessionStorage.getItem("registeredEmail") || "";
+      console.log(storedEmail);
+      
+
+      setFormData((prev) => ({
+        ...prev,
+        email: storedEmail,
+      }));
+    }
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -170,6 +179,9 @@ export const useVerifyActions = () => {
 
   useEffect(() => {
     if (message === MESSAGES.VERIFY_SUCCESS) {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("resetEmail");
+      }
       router.push("/dashboard");
       dispatch(resetAuthState());
     }
@@ -219,10 +231,10 @@ export const useVerifyForgotActions = (initialEmail = "") => {
   useEffect(() => {
     if (message === MESSAGES.VERIFY_SUCCESS) {
       // alert("Verification successful");
-      localStorage.setItem("otpVerified", "true");
+      sessionStorage.setItem("otpVerified", "verified_2138");
       sessionStorage.setItem("resetEmail", formData.email);
       sessionStorage.setItem("resetOtp", formData.otp);
-      router.push(`/auth/resetPassword`);
+      router.push("/auth/resetPassword");
       dispatch(resetAuthState());
     }
   }, [message]);
@@ -281,48 +293,59 @@ export const useResetPasswordAction=()=>{
   const router = useRouter();
   const { loading, error, message } = useAppSelector((state) => state.auth);
   const [formData,setFormData]=useState<ResetPasswordRequest>({
-    email: sessionStorage.getItem("resetEmail") || "",
-    otp: sessionStorage.getItem("resetOtp") || "",
+    email:"",
+    otp:"", 
     newPassword:"",
     conformPassword:""
   })
-  
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedEmail = sessionStorage.getItem("resetEmail") || "";
+      const storedOtp = sessionStorage.getItem("resetOtp") || "";
+
+      setFormData((prev) => ({
+        ...prev,
+        email: storedEmail,
+        otp: storedOtp,
+      }));
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-
   const handleResetPassword = async () => {
-    console.log(formData.email)
-    console.log(formData.newPassword)
+    console.log("Email:", formData.email);
+    console.log("OTP:", formData.otp);
 
-    if(formData.newPassword !== formData.conformPassword){
-      
-      toast.error("Conform password must be same as New Password")
+    if (formData.newPassword !== formData.conformPassword) {
+      toast.error("Confirm password must match the New Password");
+      return;
     }
+
     dispatch(resetPassword(formData));
-    
-  }
+  };
 
   useEffect(() => {
     if (message === MESSAGES.RESET_SUCCESS) {
-      sessionStorage.removeItem("resetEmail");
-      sessionStorage.removeItem("resetOtp");
-      router.push("/auth/signin");
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("resetEmail");
+        sessionStorage.removeItem("resetOtp");
+      }
+      router.push("/auth/login");
       dispatch(resetAuthState());
     }
-  }, [message]);
-  return{
+  }, [message, router, dispatch]);
+
+  return {
     formData,
     handleChange,
     handleResetPassword,
     loading,
     error,
     message,
-  }
-
-}
+  };
+};

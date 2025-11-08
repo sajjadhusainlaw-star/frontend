@@ -31,11 +31,12 @@ export default function VerifyPage() {
              <CustomInput
               label="Email"
               name="email"
-              type="email"
+              type="text"
               placeholder="example@example.com"
               value={formData.email}
+              disabled
               onChange={handleChange}
-              required
+              
             />
             
             <CustomInput

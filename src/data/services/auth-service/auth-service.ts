@@ -1,13 +1,11 @@
 
 import {
- 
   forgotPasswordRequest,
   ForgotPasswordResponse,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
-  ResetPasswordNewRequest,
   ResetPasswordRequest,
   ResetPasswordResponse,
   VerifyOtpRequest,
@@ -15,7 +13,6 @@ import {
 } from "@/data/features/auth/auth.types";
 import apiClient from "../config/apiClient";
 import { API_BASE_URL, API_ENDPOINTS } from "../config/apiContants";
-import { resetPassword } from "@/data/features/auth/authThunks";
 
 export const authApi = {
   register: async (data: RegisterRequest) => {
@@ -33,15 +30,17 @@ export const authApi = {
     return response;
   },
 
-  resetPassword: async(data:ResetPasswordNewRequest)=>{
-    const response= await apiClient.post<ResetPasswordResponse>(API_ENDPOINTS.AUTH.RESET_PASSWORD,data);
+  resetPassword: async(data:ResetPasswordRequest)=>{
+    console.log("Send data to server:" , data);
+    const response= await apiClient.post<ResetPasswordResponse>(API_ENDPOINTS.AUTH.RESET_PASSWORD, data);
+    console.log(response)
     return response;
   },
 
   forgotPassword: async (data: forgotPasswordRequest) => {
     console.log("Gen OTP API hit:", data);
     const response = await apiClient.post<ForgotPasswordResponse>(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, data);
-    console.log(response);
+    console.log("response :", response);
     return response;
   },
 

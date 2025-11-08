@@ -89,7 +89,7 @@ useEffect(() => {
             disabled={loading}
             className="w-full bg-[#C9A227] text-white py-3 rounded-md font-medium hover:bg-gray-800 transition disabled:opacity-50"
           >
-            {loading ? "Signing In..." : "Sign In"}
+            {loading ? "Processing..." : "Login"}
           </button>
         </form>
 

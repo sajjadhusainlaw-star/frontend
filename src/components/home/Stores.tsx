@@ -240,7 +240,7 @@ const [CourtData, setCourtData] = useState<Court>({
 
               <div className="flex gap-20 mt-10">
                 <CustomInput name="City" value={CityData.City} onChange={handleChange} placeholder="Search by City" className="bg-[#f6f6f7]"/>
-                <CustomInput name="Court" value={CourtData.Court} onChange={handleChange} placeholder="Search by Court" className="bg-[#f6f6f7]"/>
+                <CustomInput name="Court" value={CourtData.Court} onChange={handleChange1} placeholder="Search by Court" className="bg-[#f6f6f7]"/>
                 
 
                 <Button lable="Search" className="bg-[#C9A227] border-1 hover:border-blue-300 transition-all duration-300 rounded-md px-20 py-2" />

@@ -11,8 +11,7 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  number?:string;
-  state?:string;
+  phone?:string;
 }
 
 export interface VerifyOtpRequest {
@@ -30,16 +29,6 @@ export interface ResetPasswordRequest{
   newPassword:string;
   conformPassword:string;
 }
-export interface ResetPasswordNewRequest{
-  email:string;
-  // otp:string;
-  newPassword:string;
-  
-}
-
-
-
-
 export interface AuthUser {
   id: string;
   name: string;
@@ -62,7 +51,7 @@ export interface RegisterResponse {
 }
 
 export interface ForgotPasswordResponse{
- success:boolean;
+ success:string;
  message:string;
 }
 
@@ -71,8 +60,9 @@ export interface VerifyOtpResponse {
   user?: AuthUser;
   message?: string;
 }
+
 export interface ResetPasswordResponse{
-  success:boolean;
+  success:string;
   message:string;
 }
 
@@ -84,3 +74,4 @@ export interface AuthState {
   user: AuthUser | null;
   message: string | null;
 }
+
