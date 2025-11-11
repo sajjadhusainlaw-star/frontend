@@ -7,18 +7,35 @@ import { forgotPassword, resetPassword, verifyOtp } from "@/data/features/auth/a
 import { MESSAGES } from "@/lib/constants/messageConstants";
 import toast from "react-hot-toast";
 import logo from "../../../../public/logo.svg";
-
+import { resetAuthState } from "@/data/features/auth/authSlice";
+import { useRouter, useSearchParams } from "next/navigation"; 
 type Step = "forgot" | "verify" | "reset";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
+  const searchParams=useSearchParams();
+
   const dispatch = useAppDispatch();
   const { loading, error, message } = useAppSelector((s) => s.auth);
+   
 
   const [step, setStep] = useState<Step>("forgot");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [conformPassword, setConformPassword] = useState("");
+
+  useEffect(() => {
+    const stepParam = searchParams.get("Step");
+    if (stepParam) {
+      setStep("reset")
+    }
+     const emailParam = searchParams.get("email");
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+   
+  }, [searchParams]);
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -46,13 +63,13 @@ export default function ForgotPasswordPage() {
       setStep("reset");
     } catch {}
   };
-
+  
   const handleReset = async () => {
-    if (!newPassword || !confirmPassword) {
+    if (!newPassword || !conformPassword) {
       toast.error("Please enter both password fields");
       return;
     }
-    if (newPassword !== confirmPassword) {
+    if (newPassword !== conformPassword) {
       toast.error("Passwords do not match");
       return;
     }
@@ -62,10 +79,27 @@ export default function ForgotPasswordPage() {
           email,
           otp,
           newPassword,
-          conformPassword: confirmPassword,
+          conformPassword,
         })
       ).unwrap();
     } catch {}
+    if (message === MESSAGES.RESET_SUCCESS) {
+      const emailParam = searchParams.get("email") || "";
+      if(emailParam !=="") router.push("/profile")
+      else router.push("/auth/login");
+
+      dispatch(resetAuthState());
+    }
+  //   useEffect(() => {
+  //   if (message === MESSAGES.RESET_SUCCESS) {
+  //     if (typeof window !== "undefined") {
+  //       localStorage.removeItem("resetEmail");
+  //       localStorage.removeItem("resetOtp");
+  //     }
+  //     router.push("/auth/login");
+  //     dispatch(resetAuthState());
+  //   }
+  // }, [message, router, dispatch]);
   };
 
   return (
@@ -116,7 +150,7 @@ export default function ForgotPasswordPage() {
               </div>
 
               <div className="grid grid-cols-6 gap-3 mb-4">
-                {[0, 1, 2, 3,4,5].map((i) => (
+                {[0, 1, 2, 3, 4,5].map((i) => (
                   <input
                     key={i}
                     maxLength={1}
@@ -133,7 +167,7 @@ export default function ForgotPasswordPage() {
 
               <button
                 onClick={handleVerifyOtp}
-                disabled={loading || otp.length < 4}
+                disabled={loading || otp.length < 6}
                 className="w-full bg-[#C9A227] text-white py-3 rounded-md font-medium hover:bg-[#b39022] transition disabled:opacity-50"
               >
                 {loading ? "Verifying..." : "Next"}
@@ -166,8 +200,8 @@ export default function ForgotPasswordPage() {
                   <input
                     type="password"
                     placeholder="RE- Enter your new password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={conformPassword}
+                    onChange={(e) => setConformPassword(e.target.value)}
                     className="w-full focus:outline-none"
                   />
                 </div>
@@ -197,4 +231,4 @@ export default function ForgotPasswordPage() {
       </div>
     </div>
   );
-}
+  }

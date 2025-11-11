@@ -4,12 +4,13 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
-
+import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
+import { useRouter } from "next/navigation";
 export default function Header() {
+  
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
   useEffect(() => {
     try {
       if (typeof window === "undefined") return;
@@ -31,11 +32,16 @@ export default function Header() {
       // noop
     }
   }, []);
+  const router  = useRouter();
 
+  
+  
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    //  const router  = useRouter();
+    localStorage.clear();
     setUser(null);
+    router.push('/auth/login')
+
   };
 
   const navLinks = [

@@ -77,7 +77,7 @@ export const useRegisterActions = () => {
       if (debugOtp) {
         toast.success(`${MESSAGES.REGISTER_SUCCESS} (OTP: ${debugOtp})`);
       }
-      sessionStorage.setItem("registeredEmail", formData.email);
+      localStorage.setItem("registeredEmail", formData.email);
       router.push("/auth/verify");
       dispatch(resetAuthState());
     }
@@ -123,8 +123,10 @@ export const useLoginActions = () => {
 
  
 
-  useEffect(() => {
-    if (token) {
+  useEffect(() =>  {
+    if (localStorage.getItem("token")) {
+      console.log("user logout");
+      console.log(token);
       router.push("/");
       dispatch(resetAuthState());
     }
@@ -156,7 +158,7 @@ export const useVerifyActions = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedEmail = sessionStorage.getItem("registeredEmail") || "";
+      const storedEmail = localStorage.getItem("registeredEmail") || "";
       console.log(storedEmail);
       
 
@@ -186,7 +188,7 @@ export const useVerifyActions = () => {
   useEffect(() => {
     if (message === MESSAGES.VERIFY_SUCCESS) {
       if (typeof window !== "undefined") {
-        sessionStorage.removeItem("resetEmail");
+        localStorage.removeItem("resetEmail");
       }
       router.push("/");
       dispatch(resetAuthState());
@@ -203,158 +205,161 @@ export const useVerifyActions = () => {
   };
 };
 
-export const useVerifyForgotActions = (initialEmail = "") => {  
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const { loading, error, message } = useAppSelector((state) => state.auth);
-
-  const [formData, setFormData] = useState({
-    email: "",
-    otp: "",
-  });
-
-  useEffect(() => {
-    if (initialEmail) {
-      setFormData((prev) => ({ ...prev, email: initialEmail }));
-    }
-  }, [initialEmail]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleVerify = async () => {
-    if (!formData.otp) {
-      toast.error("Please enter OTP");
-      return;
-    }
-
-    await dispatch(verifyOtp(formData));
-  };
-
-  useEffect(() => {
-    if (message === MESSAGES.VERIFY_SUCCESS) {
-      // alert("Verification successful");
-      sessionStorage.setItem("otpVerified", "verified_2138");
-      sessionStorage.setItem("resetEmail", formData.email);
-      sessionStorage.setItem("resetOtp", formData.otp);
-      router.push("/auth/resetPassword");
-      dispatch(resetAuthState());
-    }
-  }, [message]);
-
-  return {
-    formData,
-    handleChange,
-    handleVerify,
-    loading,
-    error,
-    message,
-  };
-};
 
 
-export const useForgotPasswordAction = () => {
-  const router = useRouter();
 
-  const dispatch = useAppDispatch();
-  const [email, setEmail] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+// export const useVerifyForgotActions = (initialEmail = "") => {  
+//   const dispatch = useAppDispatch();
+//   const router = useRouter();
 
-  const { loading, error, message, debugOtp } = useAppSelector((state) => state.auth);
+//   const { loading, error, message } = useAppSelector((state) => state.auth);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+//   const [formData, setFormData] = useState({
+//     email: "",
+//     otp: "",
+//   });
 
-  const handleForgotPassword = async () => {
-    if (!email) {
-      toast.error("Please enter email");
-      return;
-    }
+//   useEffect(() => {
+//     if (initialEmail) {
+//       setFormData((prev) => ({ ...prev, email: initialEmail }));
+//     }
+//   }, [initialEmail]);
 
-    try {
-      await dispatch(forgotPassword({ email })).unwrap();
-      // alert("OTP sent successfully");
-      setOtpSent(true);
-    } catch (err) {
-      console.error(err);
-      // alert("Failed to send OTP");
-    }
-  };
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
 
-  return {
-    email,
-    otpSent,
-    handleChange,
-    handleForgotPassword,
-    loading,
-    error,
-    message,
-    debugOtp,
-  };
-};
+//   const handleVerify = async () => {
+//     if (!formData.otp) {
+//       toast.error("Please enter OTP");
+//       return;
+//     }
 
-export const useResetPasswordAction=()=>{
-  const dispatch=useAppDispatch();
-  const router = useRouter();
-  const { loading, error, message } = useAppSelector((state) => state.auth);
-  const [formData,setFormData]=useState<ResetPasswordRequest>({
-    email:"",
-    otp:"", 
-    newPassword:"",
-    conformPassword:""
-  })
+//     await dispatch(verifyOtp(formData));
+//   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedEmail = sessionStorage.getItem("resetEmail") || "";
-      const storedOtp = sessionStorage.getItem("resetOtp") || "";
+//   useEffect(() => {
+//     if (message === MESSAGES.VERIFY_SUCCESS) {
+//       // alert("Verification successful");
+//       sessionStorage.setItem("otpVerified", "verified_2138");
+//       sessionStorage.setItem("resetEmail", formData.email);
+//       sessionStorage.setItem("resetOtp", formData.otp);
+//       router.push("/auth/resetPassword");
+//       dispatch(resetAuthState());
+//     }
+//   }, [message]);
 
-      setFormData((prev) => ({
-        ...prev,
-        email: storedEmail,
-        otp: storedOtp,
-      }));
-    }
-  }, []);
+//   return {
+//     formData,
+//     handleChange,
+//     handleVerify,
+//     loading,
+//     error,
+//     message,
+//   };
+// };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
-  const handleResetPassword = async () => {
-    console.log("Email:", formData.email);
-    console.log("OTP:", formData.otp);
+// export const useForgotPasswordAction = () => {
+//   const router = useRouter();
 
-    if (formData.newPassword !== formData.conformPassword) {
-      toast.error("Confirm password must match the New Password");
-      return;
-    }
+//   const dispatch = useAppDispatch();
+//   const [email, setEmail] = useState("");
+//   const [otpSent, setOtpSent] = useState(false);
 
-    dispatch(resetPassword(formData));
-  };
+//   const { loading, error, message, debugOtp } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (message === MESSAGES.RESET_SUCCESS) {
-      if (typeof window !== "undefined") {
-        sessionStorage.removeItem("resetEmail");
-        sessionStorage.removeItem("resetOtp");
-      }
-      router.push("/auth/login");
-      dispatch(resetAuthState());
-    }
-  }, [message, router, dispatch]);
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setEmail(e.target.value);
+//   };
 
-  return {
-    formData,
-    handleChange,
-    handleResetPassword,
-    loading,
-    error,
-    message,
-  };
-};
+//   const handleForgotPassword = async () => {
+//     if (!email) {
+//       toast.error("Please enter email");
+//       return;
+//     }
+
+//     try {
+//       await dispatch(forgotPassword({ email })).unwrap();
+//       // alert("OTP sent successfully");
+//       setOtpSent(true);
+//     } catch (err) {
+//       console.error(err);
+//       // alert("Failed to send OTP");
+//     }
+//   };
+
+//   return {
+//     email,
+//     otpSent,
+//     handleChange,
+//     handleForgotPassword,
+//     loading,
+//     error,
+//     message,
+//     debugOtp,
+//   };
+// };
+
+// export const useResetPasswordAction=()=>{
+//   const dispatch=useAppDispatch();
+//   const router = useRouter();
+//   const { loading, error, message } = useAppSelector((state) => state.auth);
+//   const [formData,setFormData]=useState<ResetPasswordRequest>({
+//     email:"",
+//     otp:"", 
+//     newPassword:"",
+//     conformPassword:""
+//   })
+
+//   useEffect(() => {
+//     if (typeof window !== "undefined") {
+//       const storedEmail = sessionStorage.getItem("resetEmail") || "";
+//       const storedOtp = sessionStorage.getItem("resetOtp") || "";
+
+//       setFormData((prev) => ({
+//         ...prev,
+//         email: storedEmail,
+//         otp: storedOtp,
+//       }));
+//     }
+//   }, []);
+
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleResetPassword = async () => {
+//     console.log("Email:", formData.email);
+//     console.log("OTP:", formData.otp);
+
+//     if (formData.newPassword !== formData.conformPassword) {
+//       toast.error("Confirm password must match the New Password");
+//       return;
+//     }
+
+//     dispatch(resetPassword(formData));
+//   };
+
+//   useEffect(() => {
+//     if (message === MESSAGES.RESET_SUCCESS) {
+//       if (typeof window !== "undefined") {
+//         sessionStorage.removeItem("resetEmail");
+//         sessionStorage.removeItem("resetOtp");
+//       }
+//       router.push("/auth/login");
+//       dispatch(resetAuthState());
+//     }
+//   }, [message, router, dispatch]);
+
+//   return {
+//     formData,
+//     handleChange,
+//     handleResetPassword,
+//     loading,
+//     error,
+//     message,
+//   };
+// };

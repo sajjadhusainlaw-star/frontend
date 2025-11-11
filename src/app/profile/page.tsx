@@ -4,10 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/data/redux/hooks";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
+
+  const router=useRouter();
+  useEffect(() => {
+      if (!(localStorage.getItem("token"))){ 
+         router.replace("/auth/login");
+      }  
+  }, []);
   const reduxUser = useAppSelector((s) => s.auth.user);
   const [localUser, setLocalUser] = useState<any>(null);
+
+  
+    const resetProfilePassword=()=>{
+
+      router.push(`/auth/forgotPassword?Step="reset"&email=${email}`)
+      
+   }
 
   useEffect(() => {
     try {
@@ -21,6 +36,7 @@ export default function ProfilePage() {
           }
         } catch {
           localStorage.removeItem("user");
+
           setLocalUser(null);
         }
       }
@@ -34,10 +50,11 @@ export default function ProfilePage() {
   const phone = user?.phone || ""; // not in type; backend may return; fallback blank
   const dob = user?.dob || ""; // not in type; fallback blank
   const avatar = user?.avatar || "";
-
+ 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Personal Details */}
           <div className="col-span-2 bg-white rounded-lg border p-6">
@@ -103,12 +120,13 @@ export default function ProfilePage() {
           {/* Right: Quick Actions */}
           <div className="bg-white rounded-lg border p-6">
             <h3 className="text-lg font-semibold mb-4">Quick Action</h3>
-            <Link
+            <button className="block w-full text-center border rounded-md py-2 mb-3 hover:bg-gray-50 text-sm" onClick={resetProfilePassword}>Reset Password</button>
+            {/* <Link
               href="/auth/forgotPassword"
               className="block w-full text-center border rounded-md py-2 mb-3 hover:bg-gray-50 text-sm"
             >
               Reset Password
-            </Link>
+            </Link> */}
             <button className="w-full bg-red-500 text-white rounded-md py-2 text-sm">Delete Account</button>
           </div>
         </div>
