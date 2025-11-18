@@ -48,7 +48,7 @@ export default function NewsSlider() {
   }, [current]);
 
   return (
-    <div className="relative bg-[#0A2342] text-white py-10 px-4 md:px-8 flex flex-col items-center">
+    <div className="relative bg-[#0A2342] text-white sm:py-10  ms:px-4 md:px-8 flex flex-col items-center  sm:mt-20">
       <div className="container w-full flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-500">
         {/* Left arrow */}
         <button
@@ -59,7 +59,7 @@ export default function NewsSlider() {
         </button>
 
         {/* Image */}
-        <div className="relative w-full md:w-1/2 h-[250px] sm:h-[350px] md:h-[400px] lg:h-[420px] overflow-hidden">
+        <div className="relative w-full md:w-1/2 h-[250px] sm:h-[350px] md:h-[400px] lg:h-[420px] overflow-hidden ">
           <Image
             src={slides[current].image}
             alt={slides[current].title}

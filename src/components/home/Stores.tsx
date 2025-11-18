@@ -51,15 +51,16 @@ export default function Stores() {
     <div className="bg-[#f6f6f7]">
       <div className="w-full">
 
-        <div className="border-2 border-dotted border-[#000000] h-14 my-5 flex ">
-          <div className=" w-40 h-full flex justify-center items-center   bg-[#0A2342]  text-white text-xl">
+        <div className="border-2 border-dotted border-[#000000] h-14  my-5 flex ">
+          <div className=" w-40 h-full flex justify-center items-center   bg-[#0A2342]  text-white text-md ">
             Live News
           </div>
-          <div className="flex justify-center items-center px-10 ">
-            <p className="line-clamp-1">
+          <div className="flex justify-center items-center px-5 ">
+            <p className="line-clamp-1 sm:text-md text-xs ">
               JP Morgan's Jamie Dimon said he was "far more worried than others"
               about the potential for a stock market correction.
             </p>
+
           </div>
         </div>
         <div className="container justify-center  mx-auto flex mb-5 ">
@@ -91,8 +92,8 @@ export default function Stores() {
         </div>
 
 
-        <div className="bg-white w-full py-10 flex justify-center mb-10">
-          <div className="mx-30 my-10">
+        <div className="bg-white w-full  flex justify-center mb-10">
+          <div className="sm:mx-30 sm:my-10 py-4">
 
             {/* Search Bar Centered */}
             <div className="w-full flex justify-center items-center px-4">
@@ -103,16 +104,23 @@ export default function Stores() {
                   value={SearchData.Search}
                   onChange={handleSearchChange}
                   placeholder="Search any Legal question or track a case..."
-                  className="bg-[#f6f6f7] w-full pl-12 pr-5 py-3 rounded-xl text-base sm:text-lg"
+                  className="
+                            bg-[#f6f6f7] 
+                            w-full 
+                            pl-12 pr-5 
+                            py-2 sm:py-3 
+                            text-sm sm:text-base md:text-lg
+                            rounded-xl
+                          "
                 />
 
                 <button
                   type="button"
-                  onClick={() => console.log("Search clicked")}
+                  onClick={() => console.log('Search clicked')}
                   className="absolute right-4 top-1/2 -translate-y-1/2"
                 >
                   <svg
-                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
+                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#f6f6f7] text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -131,17 +139,25 @@ export default function Stores() {
 
 
 
-            {/* State Items */}
-            <div className="flex gap-10 mt-10 ">
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-            </div>
+<div className="
+  mt-10 
+  grid
+  grid-cols-4      
+  sm:grid-cols-4   
+  md:grid-cols-4   
+  lg:grid-cols-8   
+  gap-6    
+  
+">
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+  <StateJudgement img={img1} state="Lucknow" />
+</div>
 
           </div>
         </div>

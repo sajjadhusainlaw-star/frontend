@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface UniversalSelectProps {
   name: string;
-  options: string[];    
+  options: string[];
   className?: string;
 }
 
@@ -11,15 +11,31 @@ const UniversalSelect: React.FC<UniversalSelectProps> = ({
   options,
   className = "",
 }) => {
-  const [selected, setSelected] = useState<string>(""); 
+  const [selected, setSelected] = useState<string>("");
+
   return (
     <div className={`flex flex-col ${className}`}>
-
-      <div className="h-[50px] w-[200px] border border-[#b5b9c0] rounded-2xl flex items-center px-5">
+      <div
+        className="
+          h-[35px] md:h-[40px]
+          w-full sm:w-[150px] md:w-[160px] lg:w-[190px]
+          border border-[#b5b9c0]
+          rounded-xl
+          flex items-center
+          px-2   /* reduce padding so arrow is visible */
+        "
+      >
         <select
           value={selected}
           onChange={(e) => setSelected(e.target.value)}
-          className="w-full bg-transparent text-md font-medium focus:outline-none cursor-pointer"
+          className="
+            w-full 
+            bg-transparent 
+            text-sm md:text-base 
+            focus:outline-none 
+            cursor-pointer
+            appearance-auto   /* ensures default arrow shows */
+          "
         >
           <option value="">{name}</option>
 

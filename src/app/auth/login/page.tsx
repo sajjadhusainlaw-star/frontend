@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../../../public/logo.png";
+import logo from "../../../../public/LightGray.png";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { useLoginActions } from "@/data/features/auth/useAuthActions";

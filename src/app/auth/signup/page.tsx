@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import logo from "../../../../public/logo.png";
+import logo from "../../../../public/LightGray.png";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import CustomInput from "@/components/ui/CustomInput";
@@ -125,7 +125,7 @@ useEffect(() => {
               alt="Logo"
               width={300}
               height={300}
-              className="rounded-full w-48 h-48 object-contain sm:w-60 sm:h-60 bg-white"
+              className="w-full h-48 object-contain sm:w-full sm:h-60"
               priority
             />
           </div>

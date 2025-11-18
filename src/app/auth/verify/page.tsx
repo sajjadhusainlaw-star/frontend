@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../../../public/logo.png";
+import logo from "../../../../public/LightGray.png";
 import CustomInput from "@/components/ui/CustomInput";
 import { useResendOtp, useVerifyActions } from "@/data/features/auth/useAuthActions";
 import { useEffect } from "react";
