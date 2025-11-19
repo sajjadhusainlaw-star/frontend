@@ -34,6 +34,11 @@ export const articleApi = {
   const response = await apiClient.get<ArticleListResponse>(
 
     API_ENDPOINTS.ARTICLE.FETCH_ALL,
+    {
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+      },
+    }
     
   );
   console.log("Fetch Articles API Response:", response.data);
