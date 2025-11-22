@@ -6,12 +6,14 @@ const nextConfig = {
     domains: [
       "encrypted-tbn0.gstatic.com",
       "www.kexp.org",
-      "drownedinsound.com"
+      "drownedinsound.com",
+      "st.depositphotos.com" 
     ],
   },
 };
 
 module.exports = nextConfig;
+
 
 // import type { NextConfig } from "next";
 

@@ -23,21 +23,13 @@ import icon4 from '../../assets/icon4.png';
 import img1 from '../../assets/img1.png';
 import newsImage1 from '../../assets/newsImage1.png';
 import { useLoginActions } from "@/data/features/auth/useAuthActions";
-
-interface City {
-  City: string,
-}
-interface Court {
-  Court: string,
-}
+import { Article } from "@/data/features/article/article.types";
+import { useArticleListActions } from "@/data/features/article/useArticleActions";
 
 
 
 
-// interface StoresProps {
-//   leftWidth?: string;
-//   rightWidth?: string;
-// }
+
 export default function Stores() {
   const [SearchData, setSearchData] = useState({ Search: "" });
 
@@ -45,11 +37,19 @@ export default function Stores() {
     setSearchData({ ...SearchData, [e.target.name]: e.target.value });
   };
 
+  //fetching data from backend
+  const { articles } = useArticleListActions();
+
+  //for latest news
+  const filteredLatestNews = articles
+  .filter((item:any) => item.category?.name === "LatestNews") // filter by category
+  .sort((a:any, b:any) =>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
 
 
   return (
     <div className="bg-[#f6f6f7]">
-      <div className="w-full">
+      <div className="w-[100vw] ">
 
         <div className="border-2 border-dotted border-[#000000] h-14  my-5 flex ">
           <div className=" w-40 h-full flex justify-center items-center   bg-[#0A2342]  text-white text-md ">
@@ -139,25 +139,16 @@ export default function Stores() {
 
 
 
-<div className="
-  mt-10 
-  grid
-  grid-cols-4      
-  sm:grid-cols-4   
-  md:grid-cols-4   
-  lg:grid-cols-8   
-  gap-6    
-  
-">
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-  <StateJudgement img={img1} state="Lucknow" />
-</div>
+            <div className="mt-10 grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-6">
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+              <StateJudgement img={img1} state="Lucknow" />
+            </div>
 
           </div>
         </div>
@@ -273,7 +264,16 @@ export default function Stores() {
 
           <div className="flex justify-center ">
             <div className="container sm:flex-row flex-col flex gap-6" >
-              <LatestNews
+              {filteredLatestNews.slice(0, 3).map((data:any) => (
+                <LatestNews
+                  key={data.id}
+                  img={data.thumbnail}
+                  title={data.title}
+                  button1Text="Read Full Case"
+                  button2Text="AI Summary"
+                />
+              ))}
+              {/* <LatestNews
                 img={newsImage1}
                 title="Karnataka Becomes First State to Introduce Menstrual Leave Policy for Women in Govt & Private Sectors"
                 button1Text="Read Full Case"
@@ -290,11 +290,13 @@ export default function Stores() {
                 title="Karnataka Becomes First State to Introduce Menstrual Leave Policy for Women in Govt & Private Sectors"
                 button1Text="Read Full Case"
                 button2Text="AI Summary"
-              />
+              /> */}
             </div>
           </div>
 
         </div>
+
+
         <div className="flex justify-center">
 
           <div className="container flex   items-center mx-auto  py-12 gap-6 sm:flex-row flex-col">

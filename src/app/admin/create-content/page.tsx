@@ -196,6 +196,12 @@ const CreateUpdatePage: React.FC = () => {
                 {formData.thumbnail && (
                   <p className="text-xs text-blue-500 mt-2">{formData.thumbnail.name}</p>
                 )}
+
+                {/* After cloudanary setup */}
+                {/* {formData.thumbnailUrl && (
+                  <p className="text-xs text-blue-500 mt-2">{formData.thumbnailUrl}</p>
+                )} */}
+                
               </label>
             </div>
 

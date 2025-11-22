@@ -48,7 +48,7 @@ export default function NewsSlider() {
   }, [current]);
 
   return (
-    <div className="relative bg-[#0A2342] text-white sm:py-10  ms:px-4 md:px-8 flex flex-col items-center  sm:mt-20">
+    <div className="relative bg-[#0A2342] text-white sm:py-10  ms:px-4 md:px-8 flex flex-col items-center  sm:mt-20 ">
       <div className="container w-full flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-500">
         {/* Left arrow */}
         <button
@@ -94,7 +94,7 @@ export default function NewsSlider() {
       </div>
 
       {/* Dots */}
-      <div className="flex gap-2 mt-6">
+      <div className="flex gap-2 mt-6 mb-6 md:mb-0">
         {slides.map((_, index) => (
           <button
             key={index}

@@ -20,8 +20,9 @@ export const articleApi = {
         "language": data.language,
         "location": data.location,
         "authors": data.author,
-        "thumbnail": "https://logo.com/abc.jpeg",  //img to the pass url
+        "thumbnail":data.thumbnail,
         "advocateName": data.advocateName,
+        "categoryId":"3c44e7f6-b947-4071-aad6-db05711b89c4"
       }
     );
     console.log("Create Article API Response:", response.data);
@@ -41,8 +42,8 @@ export const articleApi = {
     }
     
   );
-  console.log("Fetch Articles API Response:", response.data);
-  return response;
+        console.log("Fetch Articles API Response:", response.data);
+        return response;
 },
 
 };

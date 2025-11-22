@@ -17,22 +17,46 @@
 export interface Article {
   id: string;
   title: string;
-  subHeadline: string;
+  subHeadline: string | null;
   slug: string;
   content: string;
   authorId: string;
-  advocateName: string;
-  location: string;
-  authors: string;
+  authorRole?: string | null;
+  advocateName: string | null;
+  location: string | null;
+  authors: string | null;
   thumbnail: string | null;
   status: "pending" | "published" | "draft" | "rejected";
   rejectionReason: string | null;
   isPaywalled: boolean;
   createdAt: string;
   updatedAt: string;
-  category: string | null;
+
+  category: Category | null ;
+  subcategory: Subcategory | null;
+
   tags: string[];
 }
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  parentId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Subcategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  parentId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 
 export interface ArticleListResponse {
@@ -48,8 +72,6 @@ export interface CreateArticleResponse {
 }
 
 
-
-
 export interface CreateArticleRequest {
   title:string;
   location:string;
@@ -61,7 +83,7 @@ export interface CreateArticleRequest {
   author: string;  
   content: string;
   advocateName:string;
-  thumbnail: File | null; //need to convert into string or url
+  thumbnail: File | null;
 }
 
 export interface ArticleState {

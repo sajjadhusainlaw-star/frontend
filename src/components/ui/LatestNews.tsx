@@ -17,7 +17,8 @@ const LatestNews: React.FC<LatestNewsProps> = ({
 }) => {
   return (
     <div className="bg-white  rounded-md shadow-lg overflow-hidden hover:border-blue-300 transition-all duration-300 flex flex-col justify-between border border-gray-200 p-6">
-      <Image src={img} alt={title}  className="object-cover rounded-md" />
+      <Image src={img} alt={title} width={1000} height={1000} className="object-cover rounded-md" />
+      {/* width={10} height={20} */}
       <div className="pt-4 flex flex-col justify-between h-full">
         <h2 className="text-gray-900  font-merriweather font-semibold md:text-base text-[13px] mb-4 leading-snug">
           {title}

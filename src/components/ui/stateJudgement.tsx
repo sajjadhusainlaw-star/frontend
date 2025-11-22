@@ -19,7 +19,7 @@ const StateJudgement: React.FC<State> = ({ img, state }) => {
         <Image
           src={img}
           alt="Image"
-          className="rounded-full object-cover"
+          className="rounded-[50%] object-cover"
           width={100}
           height={100}
         />

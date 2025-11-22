@@ -18,7 +18,7 @@ import { Router } from "next/router";
 import Link from "next/link";
 
 const data = [
-  { label: "Total News Articles", value: "12,450", icon: <TrendingUp className="w-8 h-8 text-blue-500" /> },
+  { label: "Total Articles", value: "12,450", icon: <TrendingUp className="w-8 h-8 text-blue-500" /> },
   { label: "AI Summaries", value: "6,320", icon: <Star className="w-8 h-8 text-yellow-500" /> },
   { label: "Active Users", value: "8,911", icon: <UserCheck className="w-8 h-8 text-green-500" /> },
   { label: "Total Users", value: "1,51,254", icon: <Users className="w-8 h-8 text-indigo-500" /> },
@@ -59,7 +59,7 @@ export default function Page() {
         <RevenueChart />
       </div>
 
-      {/* Tables */}
+
       <div className="mt-8 space-y-6">
         <ContentTable />
         <ContentApprovalPanel />

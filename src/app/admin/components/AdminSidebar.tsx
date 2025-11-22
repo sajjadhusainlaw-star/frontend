@@ -1,13 +1,14 @@
 "use client";
 
-import { Home, FolderOpen, Users, FileText, Settings,Pen,Brain, Crown, BarChart3 } from "lucide-react";
+import { Home, FolderOpen, Users, FileText, Settings,Pen,Brain, Crown, BarChart3,GitPullRequestArrow } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
   const navItems = [
     { name: "Dashboard", icon: <Home size={18} />, href: "/admin" },
-    { name: "News Management", icon: <FolderOpen size={18} />, href: "/admin/news" },
+    { name: "Content Management", icon: <FolderOpen size={18} />, href: "/admin/content-management" },
+    { name: "Content Approval", icon: <GitPullRequestArrow size={18} />, href: "/admin/content-approval" },
     { name: "AI Summaries", icon: <Brain size={18} />, href: "/admin/ai-summaries" },
     { name: "Team Management", icon: <Users size={18} />, href: "/admin/teams" },
     { name: "Premium", icon: <Crown size={18} />, href: "/admin/plans" },
