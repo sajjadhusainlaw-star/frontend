@@ -20,9 +20,10 @@ export const articleApi = {
         "language": data.language,
         "location": data.location,
         "authors": data.author,
-        "thumbnail":data.thumbnail,
+        "file": data.thumbnail,
         "advocateName": data.advocateName,
-        "categoryId":"3c44e7f6-b947-4071-aad6-db05711b89c4"
+        "categoryId": "5668ff08-894f-432a-a224-c3b79839b47c"
+        // "categoryId": data.category
       }
     );
     console.log("Create Article API Response:", response.data);
@@ -30,20 +31,21 @@ export const articleApi = {
   },
 
 
-  fetchArticles: async () => {
-  console.log("Fetch Articles Request URL:",` ${API_ENDPOINTS.ARTICLE.FETCH_ALL}`);
-  const response = await apiClient.get<ArticleListResponse>(
+  fetchArticles: async (params?: any) => {
+    console.log("Fetch Articles Request URL:", ` ${API_ENDPOINTS.ARTICLE.FETCH_ALL}`);
+    const response = await apiClient.get<ArticleListResponse>(
 
-    API_ENDPOINTS.ARTICLE.FETCH_ALL,
-    {
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-      },
-    }
-    
-  );
-        console.log("Fetch Articles API Response:", response.data);
-        return response;
-},
+      API_ENDPOINTS.ARTICLE.FETCH_ALL,
+      {
+        params,
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
+      }
+
+    );
+    console.log("Fetch Articles API Response:", response.data);
+    return response;
+  },
 
 };
