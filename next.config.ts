@@ -8,7 +8,8 @@ const nextConfig = {
       "www.kexp.org",
       "drownedinsound.com",
       "st.depositphotos.com",
-      "sajjad-thumbnails.s3.eu-north-1.amazonaws.com"
+      "sajjad-thumbnails.s3.eu-north-1.amazonaws.com",
+      "images.unsplash.com"
     ],
   },
 };

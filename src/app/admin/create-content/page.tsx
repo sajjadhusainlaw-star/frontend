@@ -5,11 +5,13 @@ import { useCreateArticleActions } from "@/data/features/article/useArticleActio
 import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
 import { fetchCategories } from "@/data/features/category/categoryThunks";
 import { Category } from "@/data/features/category/category.types";
+import RichTextEditor from "@/components/ui/RichTextEditor";
 
 const CreateUpdatePage: React.FC = () => {
   const {
     formData,
     handleChange,
+    handleContentChange,
     handleFileUpload,
     handleCreateArticle,
     loading,
@@ -235,14 +237,10 @@ const CreateUpdatePage: React.FC = () => {
             {/* Content */}
             <div>
               <label className="block text-sm font-medium mb-2">Main Content Editor</label>
-              <textarea
-                name="content"
-                placeholder="Write your content here..."
+              <RichTextEditor
                 value={formData.content}
-                onChange={handleChange}
-                rows={8}
-                className="w-full border rounded-lg px-3 py-2 bg-gray-50"
-                required
+                onChange={handleContentChange}
+                placeholder="Write your content here..."
               />
             </div>
 

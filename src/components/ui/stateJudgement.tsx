@@ -3,7 +3,7 @@ import React from "react";
 import Image, { StaticImageData } from "next/image";
 
 interface State {
-  img: StaticImageData;
+  img: StaticImageData | string;
   state: string;
 }
 

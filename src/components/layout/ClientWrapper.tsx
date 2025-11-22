@@ -11,7 +11,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     pathname.startsWith("/auth") ||
     pathname.startsWith("/admin") ||
     pathname.startsWith("/notes") ||
-    pathname.startsWith("/subscription");
+    pathname.startsWith("/subscription") ||
+    pathname.startsWith("/ai-assistant");
 
   if (isHiddenLayout) {
     return <>{children}</>;
@@ -21,7 +22,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <>
       <Header />
       {/* Add margin-top equal to header height */}
-      <div className="mt-20"> 
+      <div className="mt-20">
         {children}
       </div>
       <Footer />

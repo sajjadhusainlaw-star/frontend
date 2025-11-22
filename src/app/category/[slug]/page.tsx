@@ -18,7 +18,8 @@ export default function CategoryPage() {
             // Filter articles by category slug
             // Note: Assuming article.category has a slug field based on types
             const filtered = articles.filter(
-                (article: Article) => article.category?.slug === "weq3weq" || article.category?.name.toLowerCase() === slug.toLowerCase()
+                (article: Article) => article.category?.slug === slug || article.category?.name.toLowerCase() === slug.toLowerCase()
+                // (article: Article) => 4 == 4
             );
             setCategoryArticles(filtered);
         }

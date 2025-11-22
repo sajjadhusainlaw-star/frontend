@@ -13,27 +13,33 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 /* Custom horizontal scrollbar */
 .custom-scroll::-webkit-scrollbar {
-  height: 12px; /* Make scrollbar visible like screenshot */
+  height: 12px;
+  /* Make scrollbar visible like screenshot */
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background: #d1d5db; /* light grey (#d1d5db matches screenshot) */
+  background: #d1d5db;
+  /* light grey (#d1d5db matches screenshot) */
   border-radius: 9999px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background: #eab308; /* Tailwind yellow-500 */
+  background: #eab308;
+  /* Tailwind yellow-500 */
   border-radius: 9999px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: #ca8a04; /* darker yellow on hover */
+  background: #ca8a04;
+  /* darker yellow on hover */
 }
 
 /* Firefox support */
@@ -156,7 +162,7 @@ body {
 
 }
 
-@layer utilities {
+/* @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
@@ -166,17 +172,19 @@ body {
     -ms-user-select: none;
     user-select: none;
   }
-}
+} */
 
 /* Apply no-copy globally but allow inputs */
-body {
+/* body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
+} */
 
-input, textarea, [contenteditable="true"] {
+input,
+textarea,
+[contenteditable="true"] {
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;

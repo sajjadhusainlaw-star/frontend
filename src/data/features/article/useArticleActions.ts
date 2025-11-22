@@ -88,6 +88,13 @@ const updateTags = (newTags: string[]) => {
 
  
 
+  const handleContentChange = (content: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      content,
+    }));
+  };
+
   const handleCreateArticle = () => {
   if (!formData.title || !formData.content) {
     toast.error("Please fill in the Title and Main Content.");
@@ -126,6 +133,7 @@ useEffect(() => {
 return {
   formData,
   handleChange,
+  handleContentChange,
   handleFileUpload,
   handleCreateArticle,
   loading,

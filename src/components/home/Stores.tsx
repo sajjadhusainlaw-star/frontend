@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import NewsCard from "../ui/NewsCard";
 import Image from "next/image";
 import img from "../../../public/stories.jpeg";
@@ -15,6 +16,7 @@ import LiveCourt from "../ui/LiveCourt"
 import HindiNews from "../ui/HindiNews";
 import CustomInput from "../ui/CustomInput"
 import StateJudgement from "../ui/stateJudgement";
+import HighCourtsModal from "../ui/HighCourtsModal";
 import { items, LLS } from "@/lib/dummy";
 import icon1 from '../../assets/icon1.png';
 import icon2 from '../../assets/icon2.png';
@@ -25,16 +27,22 @@ import newsImage1 from '../../assets/newsImage1.png';
 import { useLoginActions } from "@/data/features/auth/useAuthActions";
 import { Article } from "@/data/features/article/article.types";
 import { useArticleListActions } from "@/data/features/article/useArticleActions";
-
+import { highCourts } from "@/data/highCourts";
 
 
 
 
 export default function Stores() {
+  const router = useRouter();
   const [SearchData, setSearchData] = useState({ Search: "" });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearchChange = (e: any) => {
     setSearchData({ ...SearchData, [e.target.name]: e.target.value });
+  };
+
+  const handleSearchClick = () => {
+    router.push('/ai-assistant');
   };
 
   //fetching data from backend
@@ -116,8 +124,8 @@ export default function Stores() {
 
                 <button
                   type="button"
-                  onClick={() => console.log('Search clicked')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2"
+                  onClick={handleSearchClick}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-transform"
                 >
                   <svg
                     className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#f6f6f7] text-gray-600"
@@ -139,19 +147,28 @@ export default function Stores() {
 
 
 
+
             <div className="mt-10 grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-6">
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
-              <StateJudgement img={img1} state="Lucknow" />
+              {highCourts.slice(0, 8).map((court) => (
+                <StateJudgement key={court.id} img={court.image} state={court.name} />
+              ))}
+            </div>
+
+            {/* Show More Button */}
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-6 py-3 bg-[#0A2342] text-white rounded-lg hover:bg-[#1a3a75] transition-all duration-300 font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+              >
+                Show All High Courts
+              </button>
             </div>
 
           </div>
         </div>
+
+        {/* High Courts Modal */}
+        <HighCourtsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
 
         {/* ########################## */}

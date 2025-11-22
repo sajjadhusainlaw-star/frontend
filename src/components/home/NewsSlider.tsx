@@ -17,7 +17,7 @@ export default function NewsSlider() {
       link: "#",
     },
     {
-      image:img2,
+      image: img2,
       title: "Tech Giants Invest in Clean Energy",
       description:
         "Major technology companies are committing billions toward sustainable energy solutions.",
@@ -48,62 +48,105 @@ export default function NewsSlider() {
   }, [current]);
 
   return (
-    <div className="relative bg-[#0A2342] text-white sm:py-10  ms:px-4 md:px-8 flex flex-col items-center  sm:mt-20 ">
-      <div className="container w-full flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-500">
-        {/* Left arrow */}
-        <button
-          onClick={prevSlide}
-          className="hidden md:flex p-3 rounded-full bg-white/10 hover:bg-white/20 transition"
-        >
-          <ChevronLeft size={30} />
-        </button>
+    <div className="relative w-full bg-[#0A2342] sm:mt-20 border-y border-gray-700">
+      <div className="container mx-auto px-4 py-16 md:py-20">
+        <div className="max-w-6xl mx-auto">
+          {/* Main Content */}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Image Section */}
+            <div className="relative order-2 md:order-1">
+              <div className="relative h-[350px] md:h-[450px] rounded-lg overflow-hidden shadow-2xl group">
+                <Image
+                  src={slides[current].image}
+                  alt={slides[current].title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  priority
+                />
+              </div>
+            </div>
 
-        {/* Image */}
-        <div className="relative w-full md:w-1/2 h-[250px] sm:h-[350px] md:h-[400px] lg:h-[420px] overflow-hidden ">
-          <Image
-            src={slides[current].image}
-            alt={slides[current].title}
-            fill
-            className="object-cover transition-all duration-700"
-          />
+            {/* Text Section */}
+            <div className="order-1 md:order-2 space-y-6">
+              <div className="space-y-4">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+                  {slides[current].title}
+                </h2>
+                <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+                  {slides[current].description}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <a
+                  href={slides[current].link}
+                  className="inline-flex items-center text-sm font-semibold text-white hover:text-gray-300 transition-colors group"
+                >
+                  Read Article
+                  <svg
+                    className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </a>
+              </div>
+
+              {/* Navigation Controls */}
+              <div className="flex items-center gap-6 pt-4">
+                <div className="flex gap-3">
+                  <button
+                    onClick={prevSlide}
+                    className="p-2 rounded-full border border-gray-600 hover:border-white hover:bg-white/10 transition-all"
+                    aria-label="Previous slide"
+                  >
+                    <ChevronLeft size={20} className="text-white" />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="p-2 rounded-full border border-gray-600 hover:border-white hover:bg-white/10 transition-all"
+                    aria-label="Next slide"
+                  >
+                    <ChevronRight size={20} className="text-white" />
+                  </button>
+                </div>
+
+                {/* Slide Indicators */}
+                <div className="flex gap-2">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrent(index)}
+                      className="group"
+                      aria-label={`Go to slide ${index + 1}`}
+                    >
+                      <div
+                        className={`h-1 rounded-full transition-all duration-300 ${current === index
+                          ? "w-8 bg-white"
+                          : "w-6 bg-gray-600 group-hover:bg-gray-400"
+                          }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Counter */}
+                <div className="text-sm text-gray-400 font-medium">
+                  <span className="text-white">{String(current + 1).padStart(2, '0')}</span>
+                  <span className="mx-1">/</span>
+                  <span>{String(slides.length).padStart(2, '0')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Text */}
-        <div className="w-full md:w-1/2 space-y-4 text-center md:text-left px-4">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-snug">
-            {slides[current].title}
-          </h2>
-          <p className="text-gray-300 text-sm sm:text-base">
-            {slides[current].description}
-          </p>
-          <a
-            href={slides[current].link}
-            className="text-blue-400 hover:underline font-medium"
-          >
-            Read more →
-          </a>
-        </div>
-
-        {/* Right arrow */}
-        <button
-          onClick={nextSlide}
-          className="hidden md:flex p-3 rounded-full bg-white/10 hover:bg-white/20 transition"
-        >
-          <ChevronRight size={30} />
-        </button>
-      </div>
-
-      {/* Dots */}
-      <div className="flex gap-2 mt-6 mb-6 md:mb-0">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrent(index)}
-            className={`w-3 h-3 rounded-full transition-all ${
-              current === index ? "bg-white scale-110" : "bg-gray-500"
-            }`}
-          />
-        ))}
       </div>
     </div>
   );

@@ -8,13 +8,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#1d4ed8",  
-        secondary: "#f59e0b", 
+        primary: "#1d4ed8",
+        secondary: "#f59e0b",
         gold: "#caa438",
         lightgray: "#d4d4d4",
       },
     },
   },
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };
 
 export default config;
