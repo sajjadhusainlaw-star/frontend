@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+
 
 type Plan = {
   id: number;
@@ -11,6 +14,12 @@ type Plan = {
 };
 
 export default function PlanTable() {
+  const router = useRouter();
+const handleAddNewPlan = () => {
+  router.push("/admin/plans/add-new-plan");
+};
+
+
   const [plans, setPlans] = useState<Plan[]>([
     { id: 1, name: "Free Plan", discount: "0%", price: "00", status: "Active" },
     { id: 2, name: "JURIST PRO", discount: "20% /on yearly plan", price: "199", status: "Active" },
@@ -44,6 +53,11 @@ export default function PlanTable() {
             className="px-4 py-2 rounded-md border bg-white border-gray-300 text-sm"
           />
         </div>
+       <div className="flex">
+  <button className="bg-yellow-500 p-2 px-6 rounded-xl ml-auto mr-10" onClick={handleAddNewPlan}>
+    Add New Plan
+  </button>
+</div>
         <div className="bg-lightgray p-4 rounded-2xl">
           <table className="w-full  text-sm text-left  overflow-hidden">
             <thead className="">

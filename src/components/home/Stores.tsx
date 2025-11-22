@@ -49,7 +49,7 @@ export default function Stores() {
 
   return (
     <div className="bg-[#f6f6f7]">
-      <div className="w-[100vw] ">
+      <div className="w-full ">
 
         <div className="border-2 border-dotted border-[#000000] h-14  my-5 flex ">
           <div className=" w-40 h-full flex justify-center items-center   bg-[#0A2342]  text-white text-md ">
@@ -104,15 +104,7 @@ export default function Stores() {
                   value={SearchData.Search}
                   onChange={handleSearchChange}
                   placeholder="Search any Legal question or track a case..."
-                  className="
-                            bg-[#f6f6f7] 
-                            w-full 
-                            pl-12 pr-5 
-                            py-2 sm:py-3 
-                            text-sm sm:text-base md:text-lg
-                            rounded-xl
-                          "
-                />
+                  className="bg-[#f6f6f7] w-full pl-12  py-2 sm:py-3 text-sm sm:text-base md:text-lg  rounded-xl"/>
 
                 <button
                   type="button"
