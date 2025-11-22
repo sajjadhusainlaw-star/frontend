@@ -5,12 +5,11 @@ import { handleApiError } from "@/lib/utils/errorHandler";
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    // "Content-Type": "application/json",
   },
   timeout: 30000, // 30 seconds timeout
 });
 
-// Request interceptor - Add auth token
 apiClient.interceptors.request.use(
   (config) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -31,12 +30,12 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     // Handle all errors centrally
     const apiError = handleApiError(error);
-    
+
     // You can add additional error handling here, such as:
     // - Logging errors to a monitoring service
     // - Redirecting to login on 401 errors
     // - Showing toast notifications (optional)
-    
+
     // For 401 errors, optionally clear token and redirect
     if (apiError.statusCode === 401) {
       if (typeof window !== "undefined") {

@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
-import { createArticle, fetchArticles } from "./articleThunks";
+// import { createArticle, fetchArticles } from ".";
 import { MESSAGES } from "@/lib/constants/messageConstants";
 import toast from "react-hot-toast";
 import { CreateArticleRequest } from "./article.types";
 import { resetArticleState } from "./articleSlice";
+import { fetchArticles, createArticle } from "./articleThunks";
 
 const selectArticleLoading = (state: any) => state.article.loading;
 const selectArticleError = (state: any) => state.article.error;
@@ -142,7 +143,7 @@ export const useArticleListActions = () => {
 
   useEffect(() => {
     console.log("data fetching ");
-    dispatch(fetchArticles());
+    dispatch(fetchArticles({}));
     
   },[dispatch]);
 

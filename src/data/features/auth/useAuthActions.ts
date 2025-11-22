@@ -6,20 +6,20 @@ import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
 import { LoginRequest, RegisterRequest, ResendOtpRequest, ResetPasswordRequest, VerifyOtpRequest } from "./auth.types";
 import { forgotPassword, loginUser, registerUser, ResendOtp, resetPassword, verifyOtp } from "./authThunks";
 import { MESSAGES } from "@/lib/constants/messageConstants";
-import { resetAuthState,logoutUser } from "./authSlice";
+import { resetAuthState, logoutUser } from "./authSlice";
 
 
 import { RootState } from "@/data/redux/store";
 import toast from "react-hot-toast";
 
 
- const selectAuthLoading = (state: RootState) => state.auth.loading;
- const selectAuthError = (state: RootState) => state.auth.error;
- const selectAuthUser = (state: RootState) => state.auth.user;
- const selectIsAuthenticated = (state: RootState) => !!state.auth.token;
- const selectIsToken = (state: RootState) => state.auth.token;
- const selectAuthMessage = (state: RootState) => state.auth.message;
- const selectDebugOtp = (state: RootState) => state.auth.debugOtp;
+const selectAuthLoading = (state: RootState) => state.auth.loading;
+const selectAuthError = (state: RootState) => state.auth.error;
+const selectAuthUser = (state: RootState) => state.auth.user;
+const selectIsAuthenticated = (state: RootState) => !!state.auth.token;
+const selectIsToken = (state: RootState) => state.auth.token;
+const selectAuthMessage = (state: RootState) => state.auth.message;
+const selectDebugOtp = (state: RootState) => state.auth.debugOtp;
 
 
 const useAuth = () => {
@@ -43,11 +43,11 @@ export const useRegisterActions = () => {
   const { loading, error, message, debugOtp } = useAuth();
 
   const [formData, setFormData] = useState<RegisterRequest>({
-  name: "",
-  email: "",
-  password: "",
-  phone:"",
-});
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -66,7 +66,7 @@ export const useRegisterActions = () => {
       name: formData.name.trim(),
       email: formData.email.trim(),
       password: formData.password,
-      phone:formData.phone,
+      phone: formData.phone,
     };
 
     dispatch(registerUser(payload));
@@ -77,7 +77,7 @@ export const useRegisterActions = () => {
       if (debugOtp) {
         toast.success(`${MESSAGES.REGISTER_SUCCESS} (OTP: ${debugOtp})`);
       }
-      localStorage.setItem("email",formData.email)
+      localStorage.setItem("email", formData.email)
       router.push("/auth/verify");
       dispatch(resetAuthState());
     }
@@ -103,7 +103,7 @@ export const useLoginActions = () => {
   const [formData, setFormData] = useState<LoginRequest>({
     email: "",
     password: "",
-    
+
   });
   const router = useRouter();
 
@@ -118,17 +118,20 @@ export const useLoginActions = () => {
       return;
     }
 
-    dispatch(loginUser(formData));
+    dispatch(loginUser({
+      ...formData,
+      email: formData.email.trim(),
+    }));
   };
 
- 
 
-  useEffect(() =>  {
+
+  useEffect(() => {
     if (localStorage.getItem("token")) {
       console.log("user logout");
       console.log(token);
       router.push("/");
-      localStorage.setItem("email",formData.email);
+      localStorage.setItem("email", formData.email);
       dispatch(resetAuthState());
     }
   }, [token]);
@@ -137,7 +140,7 @@ export const useLoginActions = () => {
     formData,
     handleChange,
     handleLogin,
-    
+
     loading,
     error,
     message,

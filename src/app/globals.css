@@ -156,6 +156,33 @@ body {
 
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-copy {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Apply no-copy globally but allow inputs */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import logo from "../../../public/logo.png";
 interface NewsCardProps {
-  src?: StaticImageData;
+  src?: StaticImageData | string;
   title: string;
   court?: string;
   time?: number;
@@ -23,7 +23,13 @@ export default function NewsCard({
     >
       <div className="relative w-full sm:w-[180px] h-[200px] sm:h-auto rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none overflow-hidden">
         <Image
-          src={src}
+          width={300}
+          height={200}
+          src={
+            (typeof src === 'string' && (src.startsWith('http') || src.startsWith('/')))
+              ? src
+              : (typeof src === 'object' ? src : logo)
+          }
           alt={title}
           className="object-cover"
           sizes="(max-width: 640px) 100vw, 180px"

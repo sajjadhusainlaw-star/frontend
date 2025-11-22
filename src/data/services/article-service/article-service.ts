@@ -8,21 +8,26 @@ export const articleApi = {
 
     console.log("Create Article Request URLgjgfghfhgghf:", `${API_ENDPOINTS.ARTICLE.CREATE}`);
     console.log("During sending to endpoijnt", data);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("slug", data.slug);
+    formData.append("content", data.content);
+    formData.append("subHeadline", data.subHeadline);
+    formData.append("isPaywalled", "false");
+    formData.append("language", data.language);
+    if (data.location) formData.append("location", data.location);
+    formData.append("authors", data.author);
+    if (data.thumbnail) formData.append("file", data.thumbnail);
+    formData.append("advocateName", data.advocateName);
+    formData.append("categoryId", data.category);
+
     const response = await apiClient.post<CreateArticleResponse>(
       API_ENDPOINTS.ARTICLE.CREATE,
-      // data
+      formData,
       {
-        "title": data.title,
-        "slug": data.slug,
-        "content": data.content,
-        "subHeadline": data.subHeadline,
-        "isPaywalled": false,
-        "language": data.language,
-        "location": data.location,
-        "authors": data.author,
-        "thumbnail":data.thumbnail,
-        "advocateName": data.advocateName,
-        "categoryId":"3c44e7f6-b947-4071-aad6-db05711b89c4"
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
     );
     console.log("Create Article API Response:", response.data);
@@ -30,20 +35,21 @@ export const articleApi = {
   },
 
 
-  fetchArticles: async () => {
-  console.log("Fetch Articles Request URL:",` ${API_ENDPOINTS.ARTICLE.FETCH_ALL}`);
-  const response = await apiClient.get<ArticleListResponse>(
+  fetchArticles: async (params?: any) => {
+    console.log("Fetch Articles Request URL:", ` ${API_ENDPOINTS.ARTICLE.FETCH_ALL}`);
+    const response = await apiClient.get<ArticleListResponse>(
 
-    API_ENDPOINTS.ARTICLE.FETCH_ALL,
-    {
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-      },
-    }
-    
-  );
-        console.log("Fetch Articles API Response:", response.data);
-        return response;
-},
+      API_ENDPOINTS.ARTICLE.FETCH_ALL,
+      {
+        params,
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
+      }
+
+    );
+    console.log("Fetch Articles API Response:", response.data);
+    return response;
+  },
 
 };
