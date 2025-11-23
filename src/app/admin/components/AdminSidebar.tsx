@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, FolderOpen, Users, FileText, Settings,Pen,Brain, Crown, BarChart3,GitPullRequestArrow } from "lucide-react";
+import { Home, FolderOpen, Users, FileText, Settings, Pen, Brain, Crown, BarChart3, GitPullRequestArrow } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,9 +13,7 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
     { name: "Team Management", icon: <Users size={18} />, href: "/admin/teams" },
     { name: "Premium", icon: <Crown size={18} />, href: "/admin/plans" },
     { name: "Analytics", icon: <BarChart3 size={18} />, href: "/admin/analytics" },
-    { name: "Settings", icon: <Settings size={18} />, href: "/admin/settings" },
-    { name: "Roles & Permissions", icon: <Pen size={18} />, href: "/admin/roles-and-permissions" },
-  ];
+    { name: "Settings", icon: <Settings size={18} />, href: "/admin/settings" },];
 
 
   return (
@@ -31,7 +29,7 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
     >
       {/* Sidebar main content */}
       <div className="p-6">
-      
+
 
         <nav className="space-y-2">
           {navItems.map((item) => (

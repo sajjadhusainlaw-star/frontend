@@ -9,7 +9,11 @@ const nextConfig = {
       "drownedinsound.com",
       "st.depositphotos.com",
       "sajjad-thumbnails.s3.eu-north-1.amazonaws.com",
-      "images.unsplash.com"
+      "images.unsplash.com",
+      "etimg.etb2bimg.com",
+      "media.gettyimages.com",
+      "www.livelaw.in",
+      "bsmedia.business-standard.com"
     ],
   },
 };
