@@ -16,6 +16,17 @@ export const API_ENDPOINTS = {
     CREATE: "/articles",
     FETCH_ALL: "/articles",
   },
+  CATEGORIE:{
+    CREATE:"/categories",
+    FETCH_ALL_CATEGORY:"/categories",  //get request
+  },
+  SUBSCRIPTION:{
+    CREATE:"/plans",
+    GET_ALL_PLAN:"/plans",
+    
+
+  },
+
   CATEGORIE: {
     CREATE: "/categories",
     FETCH_ALL_CATEGORY: "/categories",  //get request

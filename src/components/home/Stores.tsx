@@ -93,6 +93,7 @@ export default function Stores() {
 
   return (
     <div className="bg-[#f6f6f7]">
+      <div className="w-full ">
       <div className="w-full">
 
         {/* Live News Banner */}
@@ -133,6 +134,7 @@ export default function Stores() {
                   value={SearchData.Search}
                   onChange={handleSearchChange}
                   placeholder="Search any Legal question or track a case..."
+                  className="bg-[#f6f6f7] w-full pl-12  py-2 sm:py-3 text-sm sm:text-base md:text-lg  rounded-xl"/>
                   className="
                     bg-[#f6f6f7] 
                     w-full 
