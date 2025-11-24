@@ -303,29 +303,29 @@ export default function ProfilePage() {
               Delete Account
             </button>
 
-            
+
           </div>
-          
+
         </div>
         <div className="flex items-center justify-end gap-3 mt-4 ">
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 rounded-md border text-sm bg-white hover:bg-gray-50"
-                disabled={!dirty}
-              >
-                Cancel
-              </button>
+          <button
+            onClick={handleCancel}
+            className="px-4 py-2 rounded-md border text-sm bg-white hover:bg-gray-50"
+            disabled={!dirty}
+          >
+            Cancel
+          </button>
 
-              <button
-                onClick={handleSave}
-                className="px-4 py-2 rounded-md text-sm bg-[#C9A227] text-white disabled:opacity-60"
-                disabled={!dirty || saving}
-              >
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
+          <button
+            onClick={handleSave}
+            className="px-4 py-2 rounded-md text-sm bg-[#C9A227] text-white disabled:opacity-60"
+            disabled={!dirty || saving}
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
       </div>
-      
+
 
       {showLogoutConfirm && (
         <LogoutModal
@@ -367,14 +367,12 @@ function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: (v: b
     <button
       onClick={() => onChange(!checked)}
       aria-pressed={checked}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-        checked ? "bg-[#C9A227]" : "bg-gray-300"
-      }`}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${checked ? "bg-[#C9A227]" : "bg-gray-300"
+        }`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-          checked ? "translate-x-5" : "translate-x-1"
-        }`}
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? "translate-x-5" : "translate-x-1"
+          }`}
       />
     </button>
   );

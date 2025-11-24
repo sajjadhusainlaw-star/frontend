@@ -1,16 +1,16 @@
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "./apiContants";
 import { handleApiError } from "@/lib/utils/errorHandler";
+import toast from "react-hot-toast";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    // "Content-Type": "application/json",
   },
   timeout: 30000, // 30 seconds timeout
 });
 
-// Request interceptor - Add auth token
 apiClient.interceptors.request.use(
   (config) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -31,12 +31,16 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     // Handle all errors centrally
     const apiError = handleApiError(error);
-    
-    // You can add additional error handling here, such as:
-    // - Logging errors to a monitoring service
-    // - Redirecting to login on 401 errors
-    // - Showing toast notifications (optional)
-    
+
+    // Handle Server Errors (5xx)
+    if (apiError.statusCode && apiError.statusCode >= 500) {
+      toast.error("Server Error: Something went wrong on our end. Please try again later.");
+    }
+    // Handle Network Errors (no status code usually means network error)
+    else if (!apiError.statusCode && error.message === "Network Error") {
+      toast.error("Network Error: Unable to connect to the server. Please check your internet connection.");
+    }
+
     // For 401 errors, optionally clear token and redirect
     if (apiError.statusCode === 401) {
       if (typeof window !== "undefined") {

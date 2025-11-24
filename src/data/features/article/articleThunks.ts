@@ -9,9 +9,9 @@ export const createArticle = createAsyncThunk<CreateArticleResponse, CreateArtic
   async (formData, thunkAPI) => {
     try {
       let res = await articleApi.createArticle(formData);
-      console.log("at articlthunk",formData);
+      console.log("at articlthunk", formData);
       console.log("hiiiiiiiiiiii")
-      console.log("res.data",res.data)
+      console.log("res.data", res.data)
       return res.data;
     } catch (err: unknown) {
       const apiError = err as ApiError;
@@ -20,11 +20,11 @@ export const createArticle = createAsyncThunk<CreateArticleResponse, CreateArtic
   }
 );
 
-export const fetchArticles = createAsyncThunk<ArticleListResponse, void>(
+export const fetchArticles = createAsyncThunk<ArticleListResponse, any | void>(
   "article/fetchArticles",
-  async (_, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
-      const res = await articleApi.fetchArticles();
+      const res = await articleApi.fetchArticles(params);
       console.log("Article Thunk Success - Raw Data received:", res.data);
       return res.data;
     } catch (err: unknown) {

@@ -1,20 +1,23 @@
 "use client";
 
-import apiClient from "@/data/services/config/apiClient";
-import { API_ENDPOINTS } from "@/data/services/config/apiContants";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useAppDispatch } from "@/data/redux/hooks";
+import { createCategory } from "@/data/features/category/categoryThunks";
 
 export default function AddCategory({
   onClose,
   onSave,
+  parentId,
 }: {
   onClose: () => void;
-  onSave?: (data: { category: string; slug: string }) => void;
+  onSave?: (success: boolean) => void;
+  parentId?: string | null;
 }) {
   const [category, setCategory] = useState("");
   const [slug, setSlug] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleSave = async () => {
     if (!category || !slug) {
@@ -25,18 +28,26 @@ export default function AddCategory({
     setLoading(true);
 
     try {
-      console.log(API_ENDPOINTS.CATEGORIE.CREATE)
-      const response = await apiClient.post(API_ENDPOINTS.CATEGORIE.CREATE,
-        { "name":category, slug }
-      );
-      if(response.data.success){
-         toast.success("Successfully added");
-      }
-      if (onSave) {
-        onSave(response.data.success);
+      const payload: any = { name: category, slug };
+      if (parentId) {
+        payload.parentId = parentId;
       }
 
-      onClose();
+      const resultAction = await dispatch(createCategory(payload));
+
+      if (createCategory.fulfilled.match(resultAction)) {
+        toast.success("Successfully added");
+        if (onSave) {
+          onSave(true);
+        }
+        onClose();
+      } else {
+        if (resultAction.payload) {
+          toast.error(resultAction.payload as string);
+        } else {
+          toast.error("Failed to add category");
+        }
+      }
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Error saving category");
@@ -47,7 +58,9 @@ export default function AddCategory({
 
   return (
     <div className="bg-white p-8 rounded-xl w-150 shadow-xl space-y-4">
-      <h2 className="text-2xl font-semibold mb-4">Add New Category</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        {parentId ? "Add Sub Category" : "Add New Category"}
+      </h2>
 
       <div className="space-y-3">
         <label className="font-medium">Category</label>

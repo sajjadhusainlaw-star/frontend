@@ -8,6 +8,17 @@ export const store = configureStore({
     auth: authReducer,
     article:articleReducer,
     subscription:subscriptionReducer,
+import categoryReducer from "../features/category/categorySlice";
+import rolesReducer from "../features/roles/rolesSlice";
+import permissionsReducer from "../features/permissions/permissionsSlice";
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    article: articleReducer,
+    category: categoryReducer,
+    roles: rolesReducer,
+    permissions: permissionsReducer,
   },
 });
 

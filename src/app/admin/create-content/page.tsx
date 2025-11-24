@@ -2,17 +2,29 @@
 import React, { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 import { useCreateArticleActions } from "@/data/features/article/useArticleActions";
+import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
+import { fetchCategories } from "@/data/features/category/categoryThunks";
+import { Category } from "@/data/features/category/category.types";
+import RichTextEditor from "@/components/ui/RichTextEditor";
 
 const CreateUpdatePage: React.FC = () => {
   const {
     formData,
     handleChange,
+    handleContentChange,
     handleFileUpload,
     handleCreateArticle,
     loading,
     error,
     message,
   } = useCreateArticleActions();
+
+  const dispatch = useAppDispatch();
+  const { categories } = useAppSelector((state) => state.category);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -26,6 +38,22 @@ const CreateUpdatePage: React.FC = () => {
   const previewUrl = useMemo(() => {
     return formData.thumbnail ? URL.createObjectURL(formData.thumbnail) : null;
   }, [formData.thumbnail]);
+
+  const flattenCategories = (cats: Category[], prefix = ""): { id: string; name: string }[] => {
+    let options: { id: string; name: string }[] = [];
+    cats.forEach((cat) => {
+      if (cat.children && cat.children.length > 0) {
+        options = options.concat(flattenCategories(cat.children, prefix + cat.name + " > "));
+      } else {
+        options.push({ id: cat.id, name: prefix + cat.name });
+      }
+    });
+    return options;
+  };
+
+  const categoryOptions = useMemo(() => {
+    return flattenCategories(categories || []);
+  }, [categories]);
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
@@ -46,10 +74,11 @@ const CreateUpdatePage: React.FC = () => {
                   required
                 >
                   <option value="">Select Category</option>
-                  <option value="Latest News & Judgments">Latest News & Judgments</option>
-                  <option value="Criminal Law">Criminal Law</option>
-                  <option value="Business">Business</option>
-                  <option value="Consumer Law">Consumer Law</option>
+                  {categoryOptions.map((opt) => (
+                    <option key={opt.name} value={opt.id}>
+                      {opt.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -67,7 +96,7 @@ const CreateUpdatePage: React.FC = () => {
                   <option value="Medium">Medium</option>
                   <option value="Low">Low</option>
                 </select> */}
-                 <input type="text"
+                <input type="text"
                   name="advocateName"
                   placeholder="Enter Advocate Name"
                   value={formData.advocateName}
@@ -201,21 +230,17 @@ const CreateUpdatePage: React.FC = () => {
                 {/* {formData.thumbnailUrl && (
                   <p className="text-xs text-blue-500 mt-2">{formData.thumbnailUrl}</p>
                 )} */}
-                
+
               </label>
             </div>
 
             {/* Content */}
             <div>
               <label className="block text-sm font-medium mb-2">Main Content Editor</label>
-              <textarea
-                name="content"
-                placeholder="Write your content here..."
+              <RichTextEditor
                 value={formData.content}
-                onChange={handleChange}
-                rows={8}
-                className="w-full border rounded-lg px-3 py-2 bg-gray-50"
-                required
+                onChange={handleContentChange}
+                placeholder="Write your content here..."
               />
             </div>
 
