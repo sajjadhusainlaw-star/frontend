@@ -180,6 +180,9 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
           >
             <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user?.name || "User"}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+            <p className="text-xs font-medium text-blue-600 dark:text-blue-400 truncate mt-0.5 capitalize">
+              {user?.roles?.map((r) => r.name).join(" & ") || "User"}
+            </p>
           </div>
 
           {/* Logout Button */}
