@@ -1,11 +1,11 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import NewsCard from "../ui/NewsCard";
 import Image from "next/image";
-import img from "../../../public/stories.jpeg";
+// import img from "../../../public/stories.jpeg"; 
 import Button from "../ui/Button";
-import NewsScroller from "../ui/NewsScroller";
+// import NewsScroller from "../ui/NewsScroller"; 
 import AiPoweredFeatures from "../ui/AiPoweredFeatures";
 import ContentSlider from "@/components/home/ContentSlider";
 import LatestNews from "../ui/LatestNews";
@@ -17,34 +17,34 @@ import HindiNews from "../ui/HindiNews";
 import CustomInput from "../ui/CustomInput"
 import StateJudgement from "../ui/stateJudgement";
 import HighCourtsModal from "../ui/HighCourtsModal";
+import Loader from "../ui/Loader"; // ✅ IMPORTED LOADER
 import icon1 from '../../assets/icon1.png';
 import icon2 from '../../assets/icon2.png';
 import icon3 from '../../assets/icon3.png';
 import icon4 from '../../assets/icon4.png';
-import img1 from '../../assets/img1.png';
+// import img1 from '../../assets/img1.png'; 
 import { useArticleListActions } from "@/data/features/article/useArticleActions";
 import { highCourts } from "@/data/highCourts";
-import { Article } from "@/data/features/article/article.types";
-
-// --- NEW IMPORT FOR SKELETON LOADING ---
-import ArticleSkeleton from "../ui/ArticleSkeleton"; // You need to create this file!
+import { Article, Category } from "@/data/features/article/article.types";
+import ArticleSkeleton from "../ui/ArticleSkeleton";
 import Link from "next/link";
 
 
-// Filter article function
-export function getArticlesBySlugs(articles:Article[], slugs:string[]) {
+export function getArticlesBySlugs(articles: Article[], slugs: string[]) {
   const matchSlugs = slugs.map(s => s.toLowerCase());
 
   return articles.filter(article => {
-    const collectSlugs = (cat: any): string[] => {
+    // Helper to collect current slug and all parent slugs
+    const collectSlugs = (cat: Category | null | undefined): string[] => {
       if (!cat) return [];
-      const arr = [];
+      const arr: string[] = [];
+      
+      // 1. Add current slug
       if (cat.slug) arr.push(cat.slug.toLowerCase());
-      if (cat.parent) arr.push(...collectSlugs(cat.parent));
-      if (Array.isArray(cat.children)) {
-        cat.children.forEach((child: any) => {
-          arr.push(...collectSlugs(child));
-        });
+      
+      // 2. Only traverse UP (Parents) to find inheritance. 
+      if (cat.parent) {
+        arr.push(...collectSlugs(cat.parent));
       }
       return arr;
     };
@@ -54,55 +54,56 @@ export function getArticlesBySlugs(articles:Article[], slugs:string[]) {
   });
 }
 
-
-
 export default function Stores() {
   const router = useRouter();
   const [SearchData, setSearchData] = useState({ Search: "" });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  
+  const [isNavigating, setIsNavigating] = useState(false);
 
-  const handleSearchChange = (e: any) => {
-    setSearchData({ ...SearchData, [e.target.name]: e.target.value });
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (e.target instanceof HTMLInputElement) {
+      setSearchData({ ...SearchData, [e.target.name]: e.target.value });
+    }
   };
 
+  
   const handleSearchClick = () => {
+    setIsNavigating(true);
     router.push('/ai-assistant');
   };
 
-//===============================================================================================//
-  //fetching data from backend
-  const { articles,loading,error } = useArticleListActions();
-
-  const LatestNewsData = getArticlesBySlugs(articles, ["latest-news"])
-  const JudgementNewsData = getArticlesBySlugs(articles, ["judgments-content"])
-  const HindiNewsData=getArticlesBySlugs(articles,["hindi-news"])
-  const FinanceArticleData=getArticlesBySlugs(articles,["finance-articles"])
-  const LegalArticleData=getArticlesBySlugs(articles,["legal-articles"])
-
-  // console.log("Latestnews Data",LatestNewsData)
-  // console.log("Hindi News",HindiNewsData);
-
-  //sortByTime
-  // .sort(
-  //    (a: any, b: any) =>
-  //      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  //  );
+ 
+  const handleNavClick = () => {
+    setIsNavigating(true);
+  };
 
   
-// ==================================================================================
+  const { articles, loading, error } = useArticleListActions();
+
+  
+  const LatestNewsData = useMemo(() => getArticlesBySlugs(articles, ["latest-news"]), [articles]);
+  const JudgementNewsData = useMemo(() => getArticlesBySlugs(articles, ["judgments-content"]), [articles]);
+  const HindiNewsData = useMemo(() => getArticlesBySlugs(articles, ["hindi-news"]), [articles]);
+  const FinanceArticleData = useMemo(() => getArticlesBySlugs(articles, ["finance-articles"]), [articles]);
+  const LegalArticleData = useMemo(() => getArticlesBySlugs(articles, ["legal-articles"]), [articles]);
+
   // Typewriter Logic
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(100);
 
-  const newsHeadlines = articles.length > 0
-    ? articles.map((a: any) => a.title)
-    : [
-      "JP Morgan's Jamie Dimon said he was 'far more worried than others' about the potential for a stock market correction.",
-      "Breaking: AI Revolutionizing Legal Tech Industry in 2025",
-      "Supreme Court issues new guidelines for digital evidence submission"
-    ];
+  const newsHeadlines = useMemo(() => {
+    return articles.length > 0
+      ? articles.map((a: Article) => a.title)
+      : [
+          "JP Morgan's Jamie Dimon said he was 'far more worried than others' about the potential for a stock market correction.",
+          "Breaking: AI Revolutionizing Legal Tech Industry in 2025",
+          "Supreme Court issues new guidelines for digital evidence submission"
+        ];
+  }, [articles]);
 
   React.useEffect(() => {
     const handleType = () => {
@@ -115,14 +116,14 @@ export default function Stores() {
       );
 
       if (!isDeleting && currentText === fullText) {
-        setTypingSpeed(2000); // Pause at end
+        setTypingSpeed(2000); 
         setIsDeleting(true);
       } else if (isDeleting && currentText === "") {
         setIsDeleting(false);
         setLoopNum(loopNum + 1);
-        setTypingSpeed(500); // Pause before start
+        setTypingSpeed(500); 
       } else {
-        setTypingSpeed(isDeleting ? 30 : 50); // Typing speeds
+        setTypingSpeed(isDeleting ? 30 : 50); 
       }
     };
 
@@ -132,6 +133,9 @@ export default function Stores() {
 
   return (
     <div className="bg-[#f6f6f7]">
+      {/* ✅ NEW: Full Screen Loader when navigating */}
+      {isNavigating && <Loader fullScreen text="Loading..." />}
+
       <div className="w-full">
 
         {/* Live News Banner */}
@@ -159,8 +163,7 @@ export default function Stores() {
           </div>
         </div>
 
-
-        {/* Search Section with High Courts */}
+        {/* Search Section */}
         <div className="bg-white w-full flex justify-center mb-6 md:mb-10">
           <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 md:py-10">
 
@@ -172,14 +175,7 @@ export default function Stores() {
                   value={SearchData.Search}
                   onChange={handleSearchChange}
                   placeholder="Search any Legal question or track a case..."
-                  className="
-                    bg-[#f6f6f7] 
-                    w-full 
-                    pl-10 sm:pl-12 pr-12 sm:pr-14
-                    py-2 sm:py-3 
-                    text-sm sm:text-base md:text-lg
-                    rounded-xl
-                  "
+                  className="bg-[#f6f6f7] w-full pl-10 sm:pl-12 pr-12 sm:pr-14 py-2 sm:py-3 text-sm sm:text-base md:text-lg rounded-xl"
                 />
 
                 <button
@@ -204,7 +200,7 @@ export default function Stores() {
               </div>
             </div>
 
-            {/* High Courts Grid (No skeleton needed here as highCourts is static data) */}
+            {/* High Courts Grid */}
             <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-4 md:gap-6">
               {highCourts.slice(0, 8).map((court) => (
                 <StateJudgement key={court.id} img={court.image} state={court.name} />
@@ -224,15 +220,11 @@ export default function Stores() {
           </div>
         </div>
 
-        {/* High Courts Modal */}
         <HighCourtsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-
-        {/* Live Court & Top Advocate Section (Loading states can be added to LiveCourt/TopAdvocate components internally) */}
+        {/* Live Court & Top Advocate */}
         <div className="flex justify-center px-4 mb-6 md:mb-10">
           <div className="container flex flex-col lg:flex-row gap-4 md:gap-6">
-
-            {/* Live Court */}
             <div className="flex flex-col gap-3 md:gap-4 w-full lg:flex-1">
               <div className="flex justify-between items-center">
                 <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold font-merriweather">
@@ -242,37 +234,22 @@ export default function Stores() {
               <LiveCourt />
             </div>
 
-            {/* Top Advocate */}
             <div className="flex flex-col gap-3 md:gap-4 w-full lg:max-w-[600px]">
               <div>
                 <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold font-merriweather">
                   Top Advocate
                 </h1>
               </div>
-
               <div className="flex flex-col p-4 sm:p-5 bg-white justify-evenly transition-all duration-300 rounded-sm h-full gap-3">
-                <TopAdvocate
-                  img={icon1}
-                  title="Mr. Sunil Prajapati,"
-                  description="Senior Advocate "
-                />
-                <TopAdvocate
-                  img={icon1}
-                  title="Mr. Niranjan Roy,"
-                  description="Senior Advocate "
-                />
-                <TopAdvocate
-                  img={icon1}
-                  title="Mr. Nishant Singh,"
-                  description="Senior Advocate "
-                />
+                <TopAdvocate img={icon1} title="Mr. Sunil Prajapati," description="Senior Advocate " />
+                <TopAdvocate img={icon1} title="Mr. Niranjan Roy," description="Senior Advocate " />
+                <TopAdvocate img={icon1} title="Mr. Nishant Singh," description="Senior Advocate " />
               </div>
             </div>
-
           </div>
         </div>
 
-        {/* AI Powered Features (No skeleton needed here as content is static) */}
+        {/* AI Powered Features */}
         <div className="w-full">
           <div className="flex items-center justify-center my-6 md:my-10 px-4">
             <div className="flex-1 h-px bg-gray-400"></div>
@@ -305,10 +282,8 @@ export default function Stores() {
           <div className="flex justify-center">
             <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {loading ? (
-                // --- SKELETON LOADING FOR LATEST NEWS ---
                 <ArticleSkeleton count={3} />
               ) : (
-                // --- ACTUAL CONTENT FOR LATEST NEWS ---
                 LatestNewsData.slice(0, 3).map((data: any) => (
                   <LatestNews
                     key={data.id}
@@ -330,10 +305,8 @@ export default function Stores() {
         <div className="flex justify-center px-4 my-6 md:my-12">
           <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {loading ? (
-              // --- SKELETON LOADING FOR JUDGMENTS ---
               <ArticleSkeleton count={3} />
             ) : (
-              // --- ACTUAL CONTENT FOR JUDGMENTS ---
               JudgementNewsData.slice(0, 3).map((data: any) => (
                 <Judgement
                   key={data.id}
@@ -345,13 +318,16 @@ export default function Stores() {
                 />
               ))
             )}
-            
           </div>
         </div>
 
+        {/* ✅ UPDATED: View More for Judgments */}
         <div className="flex justify-center mb-6 md:mb-10">
-          <button className="bg-transparent border-1 hover:border-blue-300 transition-all duration-300 border-black rounded-md px-4 sm:px-6 py-1 sm:py-2 text-sm sm:text-base" >View More
-          </button>
+          <Link href="/category/judgments" onClick={handleNavClick}>
+            <button className="bg-transparent border-1 hover:border-blue-300 transition-all duration-300 border-black rounded-md px-4 sm:px-6 py-1 sm:py-2 text-sm sm:text-base">
+              View More
+            </button>
+          </Link>
         </div>
 
         {/* Hindi News */}
@@ -367,10 +343,8 @@ export default function Stores() {
           <div className="flex justify-center">
             <div className="container flex flex-col gap-4 sm:gap-6">
               {loading ? (
-                // --- SKELETON LOADING FOR HINDI NEWS (Using the default ArticleSkeleton as a placeholder) ---
                 <ArticleSkeleton count={3} /> 
               ) : (
-                // --- ACTUAL CONTENT FOR HINDI NEWS ---
                 HindiNewsData.slice(0, 3).map((data: any) => (
                   <HindiNews
                     key={data.id}
@@ -385,9 +359,10 @@ export default function Stores() {
           </div>
         </div>
 
+        {/* ✅ UPDATED: View More for Hindi News */}
         <div className="flex justify-center mb-6 md:mb-10">
-          <Link href={`/category/${"hindi-news"}`}>
-          <Button lable="View More" className="bg-transparent border-1 hover:border-blue-300 transition-all duration-300 border-black rounded-md px-4 sm:px-6 py-1 sm:py-2 text-sm sm:text-base mt-4 md:mt-5" />
+          <Link href={`/category/${"hindi-news"}`} onClick={handleNavClick}>
+            <Button lable="View More" className="bg-transparent border-1 hover:border-blue-300 transition-all duration-300 border-black rounded-md px-4 sm:px-6 py-1 sm:py-2 text-sm sm:text-base mt-4 md:mt-5" />
           </Link>
         </div>
 
@@ -402,6 +377,7 @@ export default function Stores() {
           </div>
 
           {/* Finance Articles ContentSlider */}
+          {/* Note: ContentSlider links need to handle navigation internally or accept an onClick prop if we want loader there too. For now, handled main page buttons. */}
           {loading ? (
             <div className="mb-8">
               <h3 className="text-lg font-semibold mb-3">Finance Articles</h3>
@@ -410,7 +386,7 @@ export default function Stores() {
           ) : (
             <ContentSlider name="Finance Articles" slug={"finance-articles"} FilteredData={FinanceArticleData.map((article) => ({
               ...article,
-              img: article.thumbnail || "", // Assuming `thumbnail` is the image source
+              img: article.thumbnail || "",
             }))} /> 
           )}
           
@@ -426,16 +402,11 @@ export default function Stores() {
               slug={"legal-articles"}
               FilteredData={LegalArticleData.map((article) => ({
                 ...article,
-                img: article.thumbnail || "", // Assuming `thumbnail` is the image source
+                img: article.thumbnail || "",
               }))}
             />
           )}
         </div>
-
-        {/* <div className="flex justify-center mb-10 md:mb-20">
-          <Button lable="View More" className="bg-transparent border-1 hover:border-blue-300 transition-all duration-300 border-black rounded-md px-4 sm:px-6 py-1 sm:py-2 text-sm sm:text-base mt-4 md:mt-5" />
-        </div> */}
-
       </div>
     </div>
   );

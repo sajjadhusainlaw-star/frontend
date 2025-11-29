@@ -3,12 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import img from "../../assets/img1.png"
+// import img from "../../assets/img1.png" // Unused import removed
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
 import { useProfileActions } from "@/data/features/profile/useProfileActions";
 
-import { rolesApi } from "@/data/services/roles-service/roles-service";
+// import { rolesApi } from "@/data/services/roles-service/roles-service"; // Unused import removed
 import { UserData } from "@/data/features/profile/profile.types";
 import { X, Upload, Camera } from "lucide-react";
 
@@ -20,13 +20,13 @@ type Prefs = {
 
 export default function ProfilePage() {
   // --- NEW PROFILE STATE MANAGEMENT ---
- const {
+  const {
     user: reduxProfileUser,
     loading: profileLoading,
     updateProfile: handleUpdateProfile,
   } = useProfileActions();
-const user: UserData = reduxProfileUser || ({} as UserData);
-const router = useRouter();
+  const user: UserData = reduxProfileUser || ({} as UserData);
+  const router = useRouter();
 
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -37,11 +37,9 @@ const router = useRouter();
 
   // --- LOCAL/UI STATE ---
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  
+
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
-  
-  
 
   const [prefs, setPrefs] = useState<Prefs>({
     language: "english-ind",
@@ -62,9 +60,7 @@ const router = useRouter();
     }
   }, []);
 
-  
 
-  
   const name = user?.name || "";
   const email = user?.email || "";
   const phone = user?.phone || "";
@@ -76,19 +72,19 @@ const router = useRouter();
   };
 
   useEffect(() => {
-     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token"); 
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
       if (!token) {
         router.replace("/auth/login");
         return;
       }
-      else if(!user){
+      else if (!user) {
         router.replace("/auth/login")
         return;
       }
-     
+
     }
-  }, [user,router]);
+  }, [user, router]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -105,7 +101,7 @@ const router = useRouter();
       console.error("Saving prefs failed", err);
     }
     setDirty(false);
-    
+
     setTimeout(() => setSaving(false), 600);
   };
 
@@ -114,7 +110,7 @@ const router = useRouter();
     if (raw) {
       try {
         setPrefs(JSON.parse(raw));
-      } catch {}
+      } catch { }
     } else {
       setPrefs({
         language: "english-ind",
@@ -124,7 +120,7 @@ const router = useRouter();
     }
     setDirty(false);
   };
-const triggerFileUpload = () => {
+  const triggerFileUpload = () => {
     fileInputRef.current?.click();
   };
 
@@ -161,7 +157,7 @@ const triggerFileUpload = () => {
     setIsEditModalOpen(false);
   };
   // --- LOADING RENDER ---
-  if (!user.email ) {
+  if (!user.email) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader text="Loading Profile..." size="lg" />
@@ -180,7 +176,7 @@ const triggerFileUpload = () => {
           accept="image/*"
           onChange={onFileSelect}
         />
-       
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Personal Details (left, spans 2 columns on lg) */}
           <div className="lg:col-span-2 bg-white rounded-lg p-6">
@@ -189,8 +185,9 @@ const triggerFileUpload = () => {
               Manage how your personal information appears on your profile.
             </p>
 
-            <div className="flex items-start gap-6">
-              <div className="w-28 h-28 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border-3 border-primary">
+            {/* Changed flex-row to flex-col on mobile for stacking */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              <div className="w-28 h-28 shrink-0 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border-3 border-primary">
                 {avatar ? (
                   <Image
                     src={avatar}
@@ -206,7 +203,7 @@ const triggerFileUpload = () => {
                 )}
               </div>
 
-              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <EditableField label="Full Name" value={name} readOnly={true} />
                 <EditableField label="Email" value={email} readOnly={true} />
                 <EditableField label="Phone Number" value={phone} readOnly={true} />
@@ -214,11 +211,20 @@ const triggerFileUpload = () => {
               </div>
             </div>
 
-            <div className="mt-6 flex gap-3">
-              <button className="px-4 py-2 rounded-md bg-[#C9A227] text-white text-sm mr-4"onClick={triggerFileUpload} >
-                Upload New
+            {/* Buttons responsive stacking */}
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <button 
+                className="px-4 py-2 rounded-md bg-[#C9A227] text-white text-sm w-full sm:w-auto" 
+                onClick={triggerFileUpload} 
+              >
+                Upload New Picture
               </button>
-              <button className="px-4 py-2 rounded-md border  text-sm border-primary" onClick={handleOpenEditProfile} >Edit</button>
+              <button 
+                className="px-4 py-2 rounded-md border text-sm border-primary w-full sm:w-auto" 
+                onClick={handleOpenEditProfile} 
+              >
+                Edit Info
+              </button>
             </div>
           </div>
 
@@ -309,7 +315,7 @@ const triggerFileUpload = () => {
 
             <div className="mt-6 mx-auto">
               <Link
-                className="px-4 py-2 rounded-md bg-[#C9A227] text-white text-sm inline-block"
+                className="px-4 py-2 rounded-md bg-[#C9A227] text-white text-sm inline-block w-full sm:w-auto text-center"
                 href="/subscription"
               >
                 Upgrade Plan
@@ -349,10 +355,12 @@ const triggerFileUpload = () => {
           </div>
 
         </div>
-        <div className="flex items-center justify-end gap-3 mt-4 ">
+        
+        {/* Save/Cancel Buttons responsive alignment */}
+        <div className="flex flex-col sm:flex-row items-center justify-end gap-3 mt-4">
           <button
             onClick={handleCancelPreferences}
-            className="px-4 py-2 rounded-md border text-sm bg-white hover:bg-gray-50"
+            className="px-4 py-2 rounded-md border text-sm bg-white hover:bg-gray-50 w-full sm:w-auto"
             disabled={!dirty}
           >
             Cancel
@@ -360,7 +368,7 @@ const triggerFileUpload = () => {
 
           <button
             onClick={handleSave}
-            className="px-4 py-2 rounded-md text-sm bg-[#C9A227] text-white disabled:opacity-60"
+            className="px-4 py-2 rounded-md text-sm bg-[#C9A227] text-white disabled:opacity-60 w-full sm:w-auto"
             disabled={!dirty || saving}
           >
             {saving ? "Saving..." : "Save Changes"}
@@ -387,19 +395,19 @@ const triggerFileUpload = () => {
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="p-6 flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-gray-100 shadow-inner mb-6 relative">
                 {previewUrl && (
-                  <Image 
-                    src={previewUrl} 
-                    alt="Preview" 
-                    fill 
-                    className="object-cover" 
+                  <Image
+                    src={previewUrl}
+                    alt="Preview"
+                    fill
+                    className="object-cover"
                   />
                 )}
               </div>
-              
+
               <div className="flex gap-3 w-full">
                 <button
                   onClick={triggerFileUpload}
@@ -589,7 +597,7 @@ function LogoutModal({
     <div className="fixed inset-0 z-[60] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
 
-      <div className="relative z-[61] w-full max-w-sm">
+      <div className="relative z-[61] w-full max-w-sm m-4"> {/* Added margin for mobile safety */}
         <div className="bg-white rounded-xl shadow-xl border p-6">
           <h3 className="text-base font-semibold">Log out?</h3>
           <p className="text-sm text-gray-600 mt-1">Are you sure you want to log out?</p>
