@@ -1,5 +1,6 @@
 export const API_BASE_URL =
-  "https://shellproof-ka-noncorrelative.ngrok-free.dev/";
+"http://13.60.201.69:8000/"
+  // "https://shellproof-ka-noncorrelative.ngrok-free.dev/";
 
 export const API_ENDPOINTS = {
   AUTH: {

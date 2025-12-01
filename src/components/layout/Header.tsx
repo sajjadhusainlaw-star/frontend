@@ -146,7 +146,7 @@ export default function Header() {
         <div className="hidden lg:flex items-center gap-4">
           {user ? (
             <Link href="/profile" className="flex items-center gap-2 group">
-              
+
               <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center 
                   text-sm font-semibold text-gray-700 overflow-hidden border-2 border-primary">
                 {avatar ? (
