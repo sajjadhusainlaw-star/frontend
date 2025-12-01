@@ -30,16 +30,17 @@ const TeamManagementPage: React.FC = () => {
       return;
     }
 
-    if (user?.roles?.length) {
-      const allowedRoles = ["admin", "super_admin"];
-      const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
-      if (!hasAccess) {
+    if (user) {
+    if (user.roles?.length) {
+        const allowedRoles = ["admin", "super_admin"];
+        const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
+        if (!hasAccess) router.replace("/auth/login");
+        else setIsAuthorized(true);
+    } else {
+        // User exists but has no roles -> Redirect or Deny
         router.replace("/auth/login");
-      }
-      else {
-        setIsAuthorized(true)
-      }
     }
+}
   }, [user, router]);
 
   if (!isAuthorized) {

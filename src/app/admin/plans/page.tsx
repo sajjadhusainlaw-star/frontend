@@ -27,16 +27,17 @@ export default function PlanTable() {
         }
 
         // 2. Role Check
-        if (user?.roles?.length) {
-            const allowedRoles = ["admin", "super_admin"];
-            const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
-            if (!hasAccess) {
-                router.replace("/auth/login");
-            }
-            else {
-                setIsAuthorized(true)
-            }
-        }
+       if (user) {
+    if (user.roles?.length) {
+        const allowedRoles = ["admin", "super_admin"];
+        const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
+        if (!hasAccess) router.replace("/auth/login");
+        else setIsAuthorized(true);
+    } else {
+        // User exists but has no roles -> Redirect or Deny
+        router.replace("/auth/login");
+    }
+}
     }, [user, router]);
 
 
