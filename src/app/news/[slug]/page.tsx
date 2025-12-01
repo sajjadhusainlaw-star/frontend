@@ -13,23 +13,23 @@ import Loader from "@/components/ui/Loader";
 
 // Helper function to get related articles
 export function getRelatedArticles(currentSlug: string, allArticles: Article[], limit: number = 20) {
-  const currentArticle = allArticles.find(a => a.slug === currentSlug);
-  if (!currentArticle || !currentArticle.category) {
-    return [];
-  }
+    const currentArticle = allArticles.find(a => a.slug === currentSlug);
+    if (!currentArticle || !currentArticle.category) {
+        return [];
+    }
 
-  const currentCategorySlug = currentArticle.category.slug;
+    const currentCategorySlug = currentArticle.category.slug;
 
-  const filteredArticles = allArticles.filter((article) => {
-    const isSameCategory = article.category?.slug === currentCategorySlug;
-    const isNotCurrentArticle = article.slug !== currentSlug;
+    const filteredArticles = allArticles.filter((article) => {
+        const isSameCategory = article.category?.slug === currentCategorySlug;
+        const isNotCurrentArticle = article.slug !== currentSlug;
 
-    return isSameCategory && isNotCurrentArticle;
-  });
+        return isSameCategory && isNotCurrentArticle;
+    });
 
-  const shuffled = [...filteredArticles].sort(() => 0.5 - Math.random());
+    const shuffled = [...filteredArticles].sort(() => 0.5 - Math.random());
 
-  return shuffled.slice(0, limit);
+    return shuffled.slice(0, limit);
 }
 
 export default function ArticleDetailPage() {
@@ -83,7 +83,7 @@ export default function ArticleDetailPage() {
 
     if (loading) {
         return <div className="flex justify-center items-center min-h-screen">
-          <Loader text="Loading Profile..." size="lg" />
+            <Loader text="Loading Profile..." size="lg" />
         </div>;
     }
 
@@ -106,14 +106,14 @@ export default function ArticleDetailPage() {
                         {/* Header */}
                         <div className="mb-6">
                             {/* Metadata */}
-                            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 mb-4">
-                                <span>{new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                                <span>•</span>
-                                <span className="flex items-center gap-1">
-                                    <Clock size={14} />
-                                    {readTime} min read
+                            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-4">
+                                <span>
+                                    {new Date(article.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                    {' '}
+                                    {new Date(article.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                                    {' '}
+                                    ({readTime} mins read)
                                 </span>
-                            
                             </div>
 
                             <h1 className="sm:text-4xl text-3xl font-bold text-gray-900 mb-6 leading-tight">
@@ -177,7 +177,7 @@ export default function ArticleDetailPage() {
                     <div className="lg:col-span-4">
                         <div className="sticky top-24">
                             <h3 className="text-lg font-bold text-gray-900 mb-4">Related Articles</h3>
-                            
+
                             {/* Sidebar Logic:
                                 - sticky top-24: Keeps sidebar visible below header.
                                 - max-h-[85vh]: Ensures sidebar doesn't overflow screen height.

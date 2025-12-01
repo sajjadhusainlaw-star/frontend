@@ -22,7 +22,6 @@ export default function Footer() {
     { icon: FaInstagram, href: "#", color: "hover:bg-pink-600", label: "Instagram" },
     { icon: FaWhatsapp, href: "#", color: "hover:bg-green-600", label: "WhatsApp" },
     { icon: FaTwitter, href: "#", color: "hover:bg-sky-500", label: "Twitter" },
-    { icon: FaTelegramPlane, href: "#", color: "hover:bg-blue-500", label: "Telegram" },
     { icon: FaLinkedinIn, href: "#", color: "hover:bg-blue-700", label: "LinkedIn" },
     { icon: FaYoutube, href: "#", color: "hover:bg-red-600", label: "YouTube" },
   ];
@@ -83,10 +82,20 @@ export default function Footer() {
 
             {/* App Download Buttons */}
             <div className="flex gap-3">
-              <a href="#" className="transform hover:scale-105 transition-all duration-300 hover:shadow-lg">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.sajjadhusainlawassociates.sajjadlaw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+              >
                 <Image src={google} alt="Get it on Google Play" className="h-12 w-auto" />
               </a>
-              <a href="#" className="transform hover:scale-105 transition-all duration-300 hover:shadow-lg">
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+              >
                 <Image src={apple} alt="Download on App Store" className="h-12 w-auto" />
               </a>
             </div>
