@@ -13,183 +13,209 @@ import {
   FaLinkedinIn,
   FaYoutube,
 } from "react-icons/fa";
+import { Mail, Phone, MapPin } from "lucide-react";
 import Image from "next/image";
 
 export default function Footer() {
-  return (
-    <footer className="bg-primary text-white py-8">
-      <div className="container mx-auto px-6 ">
+  const socialLinks = [
+    { icon: FaFacebookF, href: "#", color: "hover:bg-blue-600", label: "Facebook" },
+    { icon: FaInstagram, href: "#", color: "hover:bg-pink-600", label: "Instagram" },
+    { icon: FaWhatsapp, href: "#", color: "hover:bg-green-600", label: "WhatsApp" },
+    { icon: FaTwitter, href: "#", color: "hover:bg-sky-500", label: "Twitter" },
+    { icon: FaTelegramPlane, href: "#", color: "hover:bg-blue-500", label: "Telegram" },
+    { icon: FaLinkedinIn, href: "#", color: "hover:bg-blue-700", label: "LinkedIn" },
+    { icon: FaYoutube, href: "#", color: "hover:bg-red-600", label: "YouTube" },
+  ];
 
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-700 pb-10">
-          <div className="mb-8 flex justify-between flex-col md:mb-0 text-center md:text-left">
-            <div className="mb-8 md:mb-0 ">
+  const productLinks = [
+    { name: "Top Stories", href: "/top-stories" },
+    { name: "Supreme Court", href: "/supreme-court" },
+    { name: "High Court", href: "/high-court" },
+    { name: "Tax", href: "/tax" },
+    { name: "Know the Law", href: "/know-the-law" },
+    { name: "International", href: "/international" },
+    { name: "Environment", href: "/environment" },
+  ];
+
+  const serviceLinks = [
+    { name: "Law Schools Corner", href: "/law-schools" },
+    { name: "Call For Papers", href: "/call-for-papers" },
+    { name: "Competitions", href: "/competitions" },
+    { name: "Internships", href: "/internships" },
+    { name: "Law School Articles", href: "/articles" },
+    { name: "Scholarships", href: "/scholarships" },
+    { name: "School Admission", href: "/admissions" },
+  ];
+
+  const resourceLinks = [
+    { name: "About Us", href: "/about" },
+    { name: "Contact Us", href: "/contact" },
+    { name: "Advertise With Us", href: "/advertise" },
+    { name: "Careers", href: "/careers" },
+    { name: "Privacy Policy", href: "/privacy-policy" },
+    { name: "Terms & Conditions", href: "/terms" },
+  ];
+
+  return (
+    <footer className="relative bg-gradient-to-br from-[#0a1628] via-[#122340] to-[#1a2f4d] text-white overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto px-6 py-12 relative z-10">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-12 border-b border-white/10">
+          {/* Brand Section */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className="transform hover:scale-105 transition-transform duration-300">
               <Image
                 src={logo}
-                alt="MediaTech Logo"
-                className="h-12 w-auto mx-auto md:mx-0"
+                alt="Sajjad Husain Law Associates Logo"
+                className="h-14 w-auto"
               />
             </div>
-            <div className="flex justify-center md:justify-start gap-4">
-              <Image src={google} alt="Google Play" className="h-20 w-36" />
-              <Image src={apple} alt="App Store" className="h-20 w-36" />
+
+            <p className="text-blue-100 leading-relaxed text-sm">
+              Dedicated to providing exceptional legal services with integrity, expertise, and commitment to justice.
+            </p>
+
+            {/* App Download Buttons */}
+            <div className="flex gap-3">
+              <a href="#" className="transform hover:scale-105 transition-all duration-300 hover:shadow-lg">
+                <Image src={google} alt="Get it on Google Play" className="h-12 w-auto" />
+              </a>
+              <a href="#" className="transform hover:scale-105 transition-all duration-300 hover:shadow-lg">
+                <Image src={apple} alt="Download on App Store" className="h-12 w-auto" />
+              </a>
             </div>
 
-            <p className="text-sm leading-relaxed font-merriweather font-bold text-white mb-4">
-              Address: Block-C, High Court, Sajjad Husain, Advocates Chamber.515,<br/> Lucknow - Ayodhya Rd, Gomti Nagar, Lucknow, Faizabad, Uttar Pradesh 226010<br />
-              Phone: 070809 09786 <br />
-              Email: sajjadhusainlawassociates@gmail.com
-            </p>
-            
+            {/* Contact Info */}
+            <div className="space-y-3 text-sm">
+              <div className="flex items-start gap-3 group">
+                <MapPin className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5 group-hover:text-blue-300 transition-colors" />
+                <p className="text-blue-100 group-hover:text-white transition-colors">
+                  Block-C, High Court, Sajjad Husain, Advocates Chamber.515,<br />
+                  Lucknow - Ayodhya Rd, Gomti Nagar,<br />
+                  Lucknow, Faizabad, Uttar Pradesh 226010
+                </p>
+              </div>
 
+              <a href="tel:07080909786" className="flex items-center gap-3 group hover:translate-x-1 transition-transform">
+                <Phone className="w-5 h-5 text-blue-400 flex-shrink-0 group-hover:text-blue-300 transition-colors" />
+                <span className="text-blue-100 group-hover:text-white transition-colors">070809 09786</span>
+              </a>
 
+              <a href="mailto:sajjadhusainlawassociates@gmail.com" className="flex items-start gap-3 group hover:translate-x-1 transition-transform">
+                <Mail className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5 group-hover:text-blue-300 transition-colors" />
+                <span className="text-blue-100 group-hover:text-white transition-colors break-all">
+                  sajjadhusainlawassociates@gmail.com
+                </span>
+              </a>
+            </div>
 
-
-            <div className="flex justify-center items-center md:justify-start gap-4">
-              <h4 className="" >Folllow us.</h4>
-              <FaFacebookF className="h-5 w-5 hover:text-blue-500 cursor-pointer" />
-              <FaInstagram className="h-5 w-5 hover:text-pink-500 cursor-pointer" />
-              <FaWhatsapp className="h-5 w-5 hover:text-green-500 cursor-pointer" />
-              <FaTwitter className="h-5 w-5 hover:text-sky-500 cursor-pointer" />
-              <FaTelegramPlane className="h-5 w-5 hover:text-blue-400 cursor-pointer" />
-              <FaLinkedinIn className="h-5 w-5 hover:text-blue-600 cursor-pointer" />
-              <FaYoutube className="h-5 w-5 hover:text-red-600 cursor-pointer" />
+            {/* Social Media */}
+            <div>
+              <h4 className="font-semibold mb-4 text-lg">Follow Us</h4>
+              <div className="flex flex-wrap gap-3">
+                {socialLinks.map((social, index) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={index}
+                      href={social.href}
+                      aria-label={social.label}
+                      className={`bg-white/10 backdrop-blur-sm p-3 rounded-lg ${social.color} transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-white/20`}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-18 text-center md:text-left">
+
+          {/* Links Sections */}
+          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {/* Products */}
             <div>
-              <h3 className="font-semibold mb-3">Products</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link href="#">Top Stories</Link>
-                </li>
-                <li>
-                  <Link href="#">Supreme Court</Link>
-                </li>
-                <li>
-                  <Link href="#">High Court</Link>
-                </li>
-                <li>
-                  <Link href="#">Tax</Link>
-                </li>
-                <li>
-                  <Link href="#">Know the law</Link>
-                </li>
-                <li>
-                  <Link href="#">International</Link>
-                </li>
-                <li>
-                  <Link href="#">Environment</Link>
-                </li>
-                {/* <li>
-                  <Link href="#">Digests</Link>
-                </li>
-                <li>
-                  <Link href="#">Arbitration</Link>
-                </li>
-                <li>
-                  <Link href="#">Law Schools</Link>
-                </li>
-                <li>
-                  <Link href="#">Events Corner</Link>
-                </li>
-                <li>
-                  <Link href="#">Job Updates</Link>
-                </li>
-                <li>
-                  <Link href="#">Book Review</Link>
-                </li>
-                <li>
-                  <Link href="#">Podcasts</Link>
-                </li> */}
+              <h3 className="font-bold text-lg mb-4 text-white relative inline-block">
+                Products
+                <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-blue-400 to-transparent"></span>
+              </h3>
+              <ul className="space-y-2.5">
+                {productLinks.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link.href}
+                      className="text-blue-100 hover:text-white hover:translate-x-1 inline-block transition-all duration-300 text-sm group"
+                    >
+                      <span className="group-hover:underline underline-offset-4">{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
+            {/* Services */}
             <div>
-              <h3 className="font-semibold mb-3">Services</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link href="#">Law Schools Corner</Link>
-                </li>
-                <li>
-                  <Link href="#">Call For Papers</Link>
-                </li>
-                <li>
-                  <Link href="#">Competitions</Link>
-                </li>
-                <li>
-                  <Link href="#">Internships</Link>
-                </li>
-                <li>
-                  <Link href="#">Law School Articles</Link>
-                </li>
-                <li>
-                  <Link href="#">Scholarships</Link>
-                </li>
-                <li>
-                  <Link href="#">School Admission</Link>
-                </li>
-                {/* <li>
-                  <Link href="#">Events</Link>
-                </li>
-                <li>
-                  <Link href="#">Job Updates</Link>
-                </li>
-                <li>
-                  <Link href="#">Law Firm Articles</Link>
-                </li> */}
+              <h3 className="font-bold text-lg mb-4 text-white relative inline-block">
+                Services
+                <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-blue-400 to-transparent"></span>
+              </h3>
+              <ul className="space-y-2.5">
+                {serviceLinks.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link.href}
+                      className="text-blue-100 hover:text-white hover:translate-x-1 inline-block transition-all duration-300 text-sm group"
+                    >
+                      <span className="group-hover:underline underline-offset-4">{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
+            {/* Resources */}
             <div>
-              <h3 className="font-semibold mb-3">Resources</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link href="#">Who We Are</Link>
-                </li>
-                <li>
-                  <Link href="#">Contact Us</Link>
-                </li>
-                <li>
-                  <Link href="#">Advertise With Us</Link>
-                </li>
-                <li>
-                  <Link href="#">Careers</Link>
-                </li>
-                <li>
-                  <Link href="#">Privacy Policy</Link>
-                </li>
-                <li>
-                  <Link href="#">Terms & Conditions</Link>
-                </li>
+              <h3 className="font-bold text-lg mb-4 text-white relative inline-block">
+                Resources
+                <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-blue-400 to-transparent"></span>
+              </h3>
+              <ul className="space-y-2.5">
+                {resourceLinks.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link.href}
+                      className="text-blue-100 hover:text-white hover:translate-x-1 inline-block transition-all duration-300 text-sm group"
+                    >
+                      <span className="group-hover:underline underline-offset-4">{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
-            </div>
-            <div>
-              {/* <h3 className="font-semibold mb-3">Resources</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link href="#">Who We Are</Link>
-                </li>
-                <li>
-                  <Link href="#">Contact Us</Link>
-                </li>
-                <li>
-                  <Link href="#">Advertise With Us</Link>
-                </li>
-                <li>
-                  <Link href="#">Careers</Link>
-                </li>
-                <li>
-                  <Link href="#">Privacy Policy</Link>
-                </li>
-                <li>
-                  <Link href="#">Terms & Conditions</Link>
-                </li>
-              </ul> */}
             </div>
           </div>
         </div>
-        <div className="mt-6 text-center text-xs text-gray-400">
-         2025 © All Rights Reserved @SajjadLaw
+
+        {/* Bottom Bar */}
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-blue-200">
+            © {new Date().getFullYear()} Sajjad Husain Law Associates. All Rights Reserved.
+          </p>
+          <div className="flex gap-6 text-sm">
+            <Link href="/privacy-policy" className="text-blue-200 hover:text-white transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="text-blue-200 hover:text-white transition-colors">
+              Terms
+            </Link>
+            <Link href="/contact" className="text-blue-200 hover:text-white transition-colors">
+              Contact
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

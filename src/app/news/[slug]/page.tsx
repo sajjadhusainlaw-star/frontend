@@ -113,16 +113,7 @@ export default function ArticleDetailPage() {
                                     <Clock size={14} />
                                     {readTime} min read
                                 </span>
-                                <span>•</span>
-                                <span className="flex items-center gap-1">
-                                    <Eye size={14} />
-                                    {viewCount.toLocaleString()} views
-                                </span>
-                                <span>•</span>
-                                <span className="flex items-center gap-1">
-                                    <MessageCircle size={14} />
-                                    {commentCount} comments
-                                </span>
+                            
                             </div>
 
                             <h1 className="sm:text-4xl text-3xl font-bold text-gray-900 mb-6 leading-tight">
