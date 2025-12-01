@@ -39,22 +39,14 @@ export default function ArticleDetailPage() {
     const [article, setArticle] = useState<Article | null>(null);
     const [showAISummary, setShowAISummary] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
-// console.log(slug)
- const recommendedArticles = useMemo(() => {
-    return getRelatedArticles(slug, articles, 10);
-  }, [slug, articles]);
+
+    const recommendedArticles = useMemo(() => {
+        return getRelatedArticles(slug, articles, 10);
+    }, [slug, articles]);
+
     // Dummy data
     const viewCount = 1247;
     const commentCount = 23;
-
-    // Dummy recommended articles
-    // const recommendedArticles = [
-    //     { id: 1, title: "SC Refuses To Entertain PIL Against Appointment Of Special Prosecutors", slug: "sc-refuses-pil", thumbnail: logo },
-    //     { id: 2, title: "Understanding Property Laws in India", slug: "property-laws-india", thumbnail: logo },
-    //     { id: 3, title: "Consumer Rights: A Complete Guide", slug: "consumer-rights-guide", thumbnail: logo },
-    //     { id: 4, title: "How to File a Legal Complaint", slug: "file-legal-complaint", thumbnail: logo },
-    // ];
-
 
     useEffect(() => {
         if (articles.length > 0 && slug) {
@@ -121,19 +113,10 @@ export default function ArticleDetailPage() {
                                     <Clock size={14} />
                                     {readTime} min read
                                 </span>
-                                <span>•</span>
-                                <span className="flex items-center gap-1">
-                                    <Eye size={14} />
-                                    {viewCount.toLocaleString()} views
-                                </span>
-                                <span>•</span>
-                                <span className="flex items-center gap-1">
-                                    <MessageCircle size={14} />
-                                    {commentCount} comments
-                                </span>
+                            
                             </div>
 
-                            <h1 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                            <h1 className="sm:text-4xl text-3xl font-bold text-gray-900 mb-6 leading-tight">
                                 {article.title}
                             </h1>
                         </div>
@@ -192,9 +175,16 @@ export default function ArticleDetailPage() {
 
                     {/* Sidebar */}
                     <div className="lg:col-span-4">
-                        <div className="sticky top-4">
+                        <div className="sticky top-24">
                             <h3 className="text-lg font-bold text-gray-900 mb-4">Related Articles</h3>
-                            <div className="space-y-6">
+                            
+                            {/* Sidebar Logic:
+                                - sticky top-24: Keeps sidebar visible below header.
+                                - max-h-[85vh]: Ensures sidebar doesn't overflow screen height.
+                                - overflow-y-auto: Allows scrolling inside sidebar if content is long.
+                                - scrollbar-hide: Hides the scrollbar for a clean look.
+                            */}
+                            <div className="space-y-6 max-h-[85vh] overflow-y-auto scrollbar-hide pb-10">
                                 {recommendedArticles.map((rec) => (
                                     <Link
                                         key={rec.id}

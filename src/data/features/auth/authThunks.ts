@@ -18,9 +18,9 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginRequest>(
   "auth/loginUser",
   async (formData, thunkAPI) => {
     try {
-      console.log("login....")
+      // console.log("login....")
       const res = await authApi.login(formData);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     } catch (err: unknown) {
       // Error is already handled by centralized error handler

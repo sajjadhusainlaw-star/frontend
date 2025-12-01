@@ -15,7 +15,7 @@ interface JudgementProps {
 const Judgement: React.FC<JudgementProps> = ({ img, description, slug, author, date }) => {
   return (
     <div className="bg-white rounded-md shadow-lg overflow-hidden hover:border-blue-300 transition-all duration-300 flex flex-col sm:flex-row justify-between border border-gray-200 py-5 gap-5">
-      <Link href={`/news/${slug}`} className="flex flex-col sm:flex-row gap-5 w-full">
+      <Link href={`/news/${slug}`} className="flex flex-col sm:flex-row gap-5 w-full px-3  pr-4">
         <div className="relative w-full sm:w-[150px] h-[150px] flex-shrink-0 ml-2">
           <Image
             src={img}

@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
-import { fetchArticles } from "@/data/features/article/articleThunks";
-import { RootState } from "@/data/redux/store";
+import { useArticleListActions } from "@/data/features/article/useArticleActions"; // ✅ Use Shared Hook
 import Link from "next/link";
 import Loader from "../ui/Loader";
 import img1 from '../../assets/slider/image.svg';
@@ -13,44 +11,43 @@ import img2 from '../../assets/slider/mask.svg';
 import img3 from '../../assets/slider/maskgroup.svg';
 
 export default function NewsSlider() {
-  const dispatch = useAppDispatch();
-  const { articles, loading } = useAppSelector((state: RootState) => state.article);
+  // ✅ Use the hook. It won't re-fetch if data exists.
+  const { articles, loading } = useArticleListActions();
+  
   const [current, setCurrent] = useState(0);
   const [fade, setFade] = useState(true);
 
-  useEffect(() => {
-    dispatch(fetchArticles({ limit: 6 }));
-  }, [dispatch]);
-
-  // Prepare slides from articles or fallback
-  const latestArticles = articles.slice(0, 6);
-  const slides = latestArticles.length > 0
-    ? latestArticles.map((article) => ({
-      image: article.thumbnail || img1,
-      title: article.title,
-      description: article.content.replace(/<[^>]*>/g, '').substring(0, 150) + "...",
-      link: `/news/${article.slug}`,
-    }))
-    : [
-      {
-        image: img1,
-        title: "Breaking News: AI Revolutionizing Industries",
-        description: "Artificial Intelligence is transforming how businesses operate across healthcare, finance, and education.",
-        link: "#",
-      },
-      {
-        image: img2,
-        title: "Tech Giants Invest in Clean Energy",
-        description: "Major technology companies are committing billions toward sustainable energy solutions.",
-        link: "#",
-      },
-      {
-        image: img3,
-        title: "Startups Driving Innovation in 2025",
-        description: "New startups are redefining traditional industries with cutting-edge solutions and AI-powered tools.",
-        link: "#",
-      },
-    ];
+  // ✅ Memoize slides to prevent re-calculation re-renders
+  const slides = useMemo(() => {
+    const latestArticles = articles.slice(0, 6);
+    return latestArticles.length > 0
+      ? latestArticles.map((article: any) => ({
+          image: article.thumbnail || img1,
+          title: article.title,
+          description: article.content.replace(/<[^>]*>/g, '').substring(0, 150) + "...",
+          link: `/news/${article.slug}`,
+        }))
+      : [
+          {
+            image: img1,
+            title: "Breaking News: AI Revolutionizing Industries",
+            description: "Artificial Intelligence is transforming how businesses operate across healthcare, finance, and education.",
+            link: "#",
+          },
+          {
+            image: img2,
+            title: "Tech Giants Invest in Clean Energy",
+            description: "Major technology companies are committing billions toward sustainable energy solutions.",
+            link: "#",
+          },
+          {
+            image: img3,
+            title: "Startups Driving Innovation in 2025",
+            description: "New startups are redefining traditional industries with cutting-edge solutions and AI-powered tools.",
+            link: "#",
+          },
+        ];
+  }, [articles]);
 
   const changeSlide = (newIndex: number) => {
     setFade(false);
@@ -68,7 +65,8 @@ export default function NewsSlider() {
     return () => clearInterval(timer);
   }, [current, slides.length]);
 
-  if (loading && slides.length === 0) {
+  // Only show loader if we have NO data and are actually loading
+  if (loading && articles.length === 0) {
     return (
       <div className="w-full h-[500px] bg-[#0A2342] flex items-center justify-center">
         <Loader size="lg" text="Loading Latest News..." />
@@ -84,14 +82,14 @@ export default function NewsSlider() {
 
             {/* Image Section */}
             <div className="relative order-2 md:order-1">
-              <div className="relative h-[350px] md:h-[450px]  overflow-hidden shadow-2xl group">
+              <div className="relative h-[350px] md:h-[450px] overflow-hidden shadow-2xl group">
                 <Image
                   src={slides[current].image}
                   alt={slides[current].title}
                   fill
                   className={`object-cover transition-opacity duration-500 ${fade ? "opacity-100" : "opacity-0"
                     } group-hover:scale-105`}
-                  priority
+                  priority // Keeps priority for LCP
                 />
               </div>
             </div>
@@ -162,7 +160,7 @@ export default function NewsSlider() {
 
                 {/* Indicators */}
                 <div className="flex gap-2">
-                  {slides.map((_, index) => (
+                  {slides.map((_:any, index:any) => (
                     <button
                       key={index}
                       onClick={() => changeSlide(index)}
