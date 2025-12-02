@@ -41,7 +41,7 @@ export default function RolesPermissionsPage() {
         // 2. Role Check
         if (user?.roles && user.roles.length > 0) {
             const userRoles = user.roles.map((r) => r.name);
-            const allowedRoles = ["admin", "super_admin"];
+            const allowedRoles = ["admin", "superadmin"];
             const hasAccess = userRoles.some((role) => allowedRoles.includes(role));
 
             if (!hasAccess) {
@@ -217,56 +217,82 @@ export default function RolesPermissionsPage() {
                     )}
                     {rolesError && <p className="text-red-500">{rolesError}</p>}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {roles.map((role) => (
-                            <div
-                                key={role._id}
-                                className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition"
-                            >
-                                <div className="flex justify-between items-start mb-3">
-                                    <h3 className="text-lg font-bold text-gray-800">{role.name}</h3>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => handleOpenRoleModal(role)}
-                                            className="text-gray-400 hover:text-blue-600 transition"
-                                        >
-                                            <Edit size={16} />
-                                        </button>
-                                        <button
-                                            onClick={() => handleRoleDelete(role._id)}
-                                            className="text-gray-400 hover:text-red-600 transition"
-                                        >
-                                            <Trash2 size={16} />
+                   <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
+  <table className="w-full text-left">
+    <thead className="bg-gray-100 border-b">
+      <tr>
+        <th className="px-4 py-3 font-semibold text-gray-700">Role</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Description</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Created By</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Created At</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Actions</th>
+      </tr>
+    </thead>
 
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    {role.description && (
-                                        <p className="text-sm text-gray-600 line-clamp-2">{role.description}</p>
-                                    )}
-                                    <div className="pt-3 mt-3 border-t border-gray-100 flex flex-col gap-1 text-xs text-gray-500">
-                                        <div className="flex justify-between">
-                                            <span>Created by:</span>
-                                            <span className="font-medium text-gray-700">
-                                                {role.createdBy?.name || role.createdBy?.email || "System"}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>Created at:</span>
-                                            <span className="font-medium text-gray-700">
-                                                {role.createdAt
-                                                    ? new Date(role.createdAt).toLocaleDateString()
-                                                    : role._id
-                                                        ? new Date(parseInt(role._id.substring(0, 8), 16) * 1000).toLocaleDateString()
-                                                        : "N/A"}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+    <tbody>
+      {roles.map((role) => (
+        <tr
+          key={role._id}
+          className="border-b hover:bg-gray-50 transition"
+        >
+          {/* Role Name */}
+          <td className="px-4 py-4 font-bold text-gray-800">
+            {role.name}
+          </td>
+
+          {/* Description */}
+          <td className="px-4 py-4">
+            <p className="text-sm text-gray-600 line-clamp-2">
+              {role.description || "--"}
+            </p>
+          </td>
+
+          {/* Created By */}
+          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+            {role.createdBy?.name ||
+              role.createdBy?.email ||
+              "System"}
+          </td>
+
+          {/* Created At */}
+          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+           {role.createdAt
+  ? new Date(role.createdAt).toLocaleString("en-IN")
+  : role._id
+  ? new Date(
+      parseInt(role._id.substring(0, 8), 16) * 1000
+    ).toLocaleString("en-IN")
+  : "N/A"}
+
+               {/* {role.createdAt
+              ? new Date(role.createdAt).toLocaleDateString()
+              : "N/A"} */}
+          </td>
+
+          {/* Actions */}
+          <td className="px-4 py-4">
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleOpenRoleModal(role)}
+                className="text-gray-400 hover:text-blue-600 transition"
+              >
+                <Edit size={18} />
+              </button>
+
+              <button
+                onClick={() => handleRoleDelete(role._id)}
+                className="text-gray-400 hover:text-red-600 transition"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
                 </div>
             )}
 
@@ -288,53 +314,74 @@ export default function RolesPermissionsPage() {
                     )}
                     {permsError && <p className="text-red-500">{permsError}</p>}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {permissions.map((perm) => (
-                            <div
-                                key={perm._id}
-                                className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition"
-                            >
-                                <div className="flex justify-between items-start mb-3">
-                                    <h3 className="text-lg font-bold text-gray-800">{perm.name}</h3>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => handleOpenPermModal(perm)}
-                                            className="text-gray-400 hover:text-blue-600 transition"
-                                        >
-                                            <Edit size={16} />
-                                        </button>
-                                        <button
-                                            onClick={() => handlePermDelete(perm._id)}
-                                            className="text-gray-400 hover:text-red-600 transition"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    {perm.description && (
-                                        <p className="text-sm text-gray-600 line-clamp-2">{perm.description}</p>
-                                    )}
-                                    <div className="pt-3 mt-3 border-t border-gray-100 flex flex-col gap-1 text-xs text-gray-500">
-                                        <div className="flex justify-between">
-                                            <span>Created by:</span>
-                                            <span className="font-medium text-gray-700">
-                                                {perm.createdBy?.name || perm.createdBy?.email || "System"}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>Created at:</span>
-                                            <span className="font-medium text-gray-700">
-                                                {perm.createdAt
-                                                    ? new Date(perm.createdAt).toLocaleDateString()
-                                                    : "N/A"}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
+  <table className="w-full text-left">
+    <thead className="bg-gray-100 border-b">
+      <tr>
+        <th className="px-4 py-3 font-semibold text-gray-700">Permission</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Description</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Created By</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Created At</th>
+        <th className="px-4 py-3 font-semibold text-gray-700">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {permissions.map((perm) => (
+        <tr
+          key={perm._id}
+          className="border-b hover:bg-gray-50 transition"
+        >
+          {/* Permission Name */}
+          <td className="px-4 py-4 font-bold text-gray-800">
+            {perm.name}
+          </td>
+
+          {/* Description */}
+          <td className="px-4 py-4">
+            <p className="text-sm text-gray-600 line-clamp-2">
+              {perm.description || "--"}
+            </p>
+          </td>
+
+          {/* Created By */}
+          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+            {perm.createdBy?.name ||
+              perm.createdBy?.email ||
+              "System"}
+          </td>
+
+          {/* Created At */}
+          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+            {perm.createdAt
+              ? new Date(perm.createdAt).toLocaleDateString()
+              : "N/A"}
+          </td>
+
+          {/* Actions */}
+          <td className="px-4 py-4">
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleOpenPermModal(perm)}
+                className="text-gray-400 hover:text-blue-600 transition"
+              >
+                <Edit size={18} />
+              </button>
+
+              <button
+                onClick={() => handlePermDelete(perm._id)}
+                className="text-gray-400 hover:text-red-600 transition"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
                 </div>
             )}
 

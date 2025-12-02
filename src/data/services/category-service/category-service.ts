@@ -6,7 +6,7 @@ export const categoryApi = {
     fetchCategories: async () => {
         return await apiClient.get(API_ENDPOINTS.CATEGORIE.FETCH_ALL_CATEGORY, {
             headers: {
-                "ngrok-skip-browser-warning": "true",
+                // "ngrok-skip-browser-warning": "true",
             },
         });
     },

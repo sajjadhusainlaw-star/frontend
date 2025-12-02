@@ -138,10 +138,14 @@ export const useLoginActions = () => {
 
   useEffect(() => {
     // Check if we have a token and user in the state (successful login)
-    if (token && user) {
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") && user) {
+      // console.log("user details",user);
+      // console.log("udersrolw",user?.roles[0].name)
       const roles = user.roles?.map((r) => r.name) || [];
-
+      // console.log("wertyuijh",roles)
       if (roles.includes("admin") || roles.includes("superadmin")) {
+      // if(true){
         router.push("/admin");
       } else {
         router.push("/");
@@ -150,6 +154,7 @@ export const useLoginActions = () => {
       localStorage.setItem("email", formData.email);
       dispatch(resetAuthState());
     }
+    
   }, [token, user]);
 
   return {

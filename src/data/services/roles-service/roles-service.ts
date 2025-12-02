@@ -6,7 +6,7 @@ export const rolesApi = {
     fetchRoles: async () => {
         return await apiClient.get(API_ENDPOINTS.ROLES.BASE, {
             headers: {
-                "ngrok-skip-browser-warning": "true",
+                // "ngrok-skip-browser-warning": "true",
             },
         });
     },

@@ -32,10 +32,10 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
   const user = reduxProfileUser as UserData;
 
   const userRoles = user?.roles?.map((r) => r.name) || [];
-  // const hasAdminPrivileges = userRoles.includes("admin") || userRoles.includes("super_admin");
-  const hasAdminPrivileges = true;
-  // const hasDashboardAccess = userRoles.some((role) => role !== "user");
-  const hasDashboardAccess = true;
+  const hasAdminPrivileges = userRoles.includes("admin") || userRoles.includes("superadmin");
+  // const hasAdminPrivileges = true;
+  const hasDashboardAccess = userRoles.some((role) => role !== "user");
+  // const hasDashboardAccess = true;
 
   const handleLogout = () => {
     dispatch(logoutUser());

@@ -34,7 +34,7 @@ export default function AddNewPlan() {
         }
 
         if (user?.roles?.length) {
-            const allowedRoles = ["admin", "super_admin"];
+            const allowedRoles = ["admin", "superadmin"];
             const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
             if (!hasAccess) {
                 router.replace("/auth/login");

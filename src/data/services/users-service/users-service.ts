@@ -3,7 +3,7 @@ import { UserFilter, UserResponse } from "../../features/users/users.types";
 
 export const usersApi = {
     fetchUsers: async (filters?: UserFilter) => {
-        console.log("usersApi fetchUsers", filters);
+        // console.log("usersApi fetchUsers", filters);
 
         const params = new URLSearchParams();
         if (filters) {
@@ -22,9 +22,10 @@ export const usersApi = {
                 `/users?${params.toString()}`,
                 {
                     headers: {
-                        "ngrok-skip-browser-warning": "true",
+                        // "ngrok-skip-browser-warning": "true",
                     },
                 }
+               
             );
 
             console.log("usersApi fetchUsers responsdfdsfse:", response);

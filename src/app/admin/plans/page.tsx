@@ -29,7 +29,7 @@ export default function PlanTable() {
         // 2. Role Check
        if (user) {
     if (user.roles?.length) {
-        const allowedRoles = ["admin", "super_admin"];
+        const allowedRoles = ["admin", "superadmin"];
         const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
         if (!hasAccess) router.replace("/auth/login");
         else setIsAuthorized(true);
@@ -51,7 +51,7 @@ export default function PlanTable() {
         router.push("/admin/plans/add-new-plan");
     };
     const { plans, loading, error, } = useSubscriptionListActions();
-    console.log("hii", plans)
+    // console.log("hii", plans)
     const [AllPlan, setAllPlans] = useState<Plans[]>([]);
 
 

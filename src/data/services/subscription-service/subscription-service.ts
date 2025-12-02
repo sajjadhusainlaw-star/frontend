@@ -17,7 +17,7 @@ export const subscriptionApi = {
       API_ENDPOINTS.SUBSCRIPTION.GET_ALL_PLAN,
       {
         headers: {
-          "ngrok-skip-browser-warning": "true",
+          // "ngrok-skip-browser-warning": "true",
         },
       }
 

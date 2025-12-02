@@ -25,7 +25,7 @@ export default function UserManagementPage() {
 
     // --- Redux Data ---
     const { users, loading, error } = useAppSelector((state) => state.users);
-
+  
     // --- Local State for Filters ---
     const [filters, setFilters] = useState<UserFilter>({
         name: "",
@@ -43,16 +43,16 @@ export default function UserManagementPage() {
         }
 
         if (user) {
-    if (user.roles?.length) {
-        const allowedRoles = ["admin", "super_admin"];
-        const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
-        if (!hasAccess) router.replace("/auth/login");
-        else setIsAuthorized(true);
-    } else {
-        // User exists but has no roles -> Redirect or Deny
-        router.replace("/auth/login");
-    }
-}
+            if (user.roles?.length) {
+                const allowedRoles = ["admin", "superadmin"];
+                const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
+                if (!hasAccess) router.replace("/auth/login");
+                else setIsAuthorized(true);
+            } else {
+                // User exists but has no roles -> Redirect or Deny
+                router.replace("/auth/login");
+            }
+        }
     }, [user, router]);
 
     // --- Fetch Users ---
@@ -253,6 +253,7 @@ export default function UserManagementPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
+                                    
                                     {users.map((user: User) => (
                                         <tr key={user._id} className="hover:bg-gray-50/50 transition-colors">
                                             <td className="py-4 px-6">

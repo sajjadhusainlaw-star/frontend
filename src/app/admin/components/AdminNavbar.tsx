@@ -83,9 +83,9 @@ const AdminNavbar = ({ onToggleSidebar }: NavbarProps) => {
             <p className="text-sm font-medium text-gray-900 dark:text-white leading-none">
               {user?.name || "Profile"}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {user?.role?.name || "User"}
-            </p>
+            {/* <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {user?.roles[0].name|| "User"}
+            </p> */}
           </div>
         </Link>
       </div>

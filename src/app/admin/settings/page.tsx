@@ -32,9 +32,9 @@ export default function Settings() {
         // 2. Role Check
         if (user?.roles?.length) {
             const allowedRoles = ["admin", "superadmin"];
-            console.log("user111", user);
+            // console.log("user111", user);
             const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
-            console.log("hasAccess", hasAccess);
+            // console.log("hasAccess", hasAccess);
             if (!hasAccess) {
                 router.replace("/auth/login");
             }

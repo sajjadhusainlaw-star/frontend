@@ -10,7 +10,7 @@ export const profileApi = {
       API_ENDPOINTS.PROFILE.FETCH,
       {
         headers: {
-          "ngrok-skip-browser-warning": "true",
+          // "ngrok-skip-browser-warning": "true",
         },
       }
     );

@@ -6,7 +6,7 @@ export const permissionsApi = {
     fetchPermissions: async () => {
         return await apiClient.get(API_ENDPOINTS.PERMISSIONS.BASE, {
             headers: {
-                "ngrok-skip-browser-warning": "true",
+                // "ngrok-skip-browser-warning": "true",
             },
         });
     },
