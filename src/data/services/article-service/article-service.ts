@@ -1,13 +1,13 @@
-import apiClient from "../config/apiClient";
-import { API_ENDPOINTS } from "../config/apiContants";
+import apiClient from "../apiConfig/apiClient";
+import { API_ENDPOINTS } from "../apiConfig/apiContants";
 import { CreateArticleRequest, CreateArticleResponse, ArticleListResponse } from "@/data/features/article/article.types";
 
 export const articleApi = {
   createArticle: async (data: CreateArticleRequest) => {
 
 
-    console.log("Create Article Request URLgjgfghfhgghf:", `${API_ENDPOINTS.ARTICLE.CREATE}`);
-    console.log("During sending to endpoijnt", data);
+    // console.log("Create Article Request URLgjgfghfhgghf:", `${API_ENDPOINTS.ARTICLE.CREATE}`);
+    // console.log("During sending to endpoijnt", data);
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("slug", data.slug);
@@ -43,7 +43,7 @@ export const articleApi = {
       {
         params,
         headers: {
-          "ngrok-skip-browser-warning": "true",
+          // "ngrok-skip-browser-warning": "true",
         },
       }
 

@@ -83,7 +83,7 @@ export default function ArticleDetailPage() {
 
     if (loading) {
         return <div className="flex justify-center items-center min-h-screen">
-            <Loader text="Loading Profile..." size="lg" />
+            <Loader text="Loading News..." size="lg" />
         </div>;
     }
 

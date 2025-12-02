@@ -58,7 +58,7 @@ export default function CategoryPage() {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen text-lg font-medium text-gray-600">
-                <Loader text="Loading Profile..." size="lg" />
+                <Loader text="Loading Content..." size="lg" />
             </div>
         );
     }

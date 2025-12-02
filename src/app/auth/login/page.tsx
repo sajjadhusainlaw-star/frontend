@@ -18,6 +18,7 @@ export default function LoginPage() {
     formData,
     handleChange,
     handleLogin,
+    handleGoogleLogin,
     loading,
     error,
     message,
@@ -138,6 +139,7 @@ export default function LoginPage() {
             </div>
 
             <button
+            onClick={handleGoogleLogin}
               type="button"
               className="w-full border border-gray-300 rounded-md py-3 flex items-center justify-center space-x-3 hover:bg-gray-50 transition"
             >

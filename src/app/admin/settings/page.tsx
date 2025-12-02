@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import AddCategory from "./add-category";
-import { TeamAndAccessControl } from "./team-and-accessControl";
+
 import { toast } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@/data/redux/hooks";
 import { fetchCategories, deleteCategory } from "@/data/features/category/categoryThunks";
@@ -14,38 +14,39 @@ import Loader from "@/components/ui/Loader";
 
 export default function Settings() {
 
-const router = useRouter();
-const { user: reduxUser} = useProfileActions();
-  const user = reduxUser as UserData;
-   const [isAuthorized, setIsAuthorized] = useState(false);
-  useEffect(() => {
-    // if (loading) return;
+    const router = useRouter();
+    const { user: reduxUser } = useProfileActions();
+    const user = reduxUser as UserData;
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    useEffect(() => {
+        // if (loading) return;
 
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-    // 1. No Token? -> Go to Login
-    if (!token) {
-      router.replace("/auth/login");
-      return;
-    }
+        // 1. No Token? -> Go to Login
+        if (!token) {
+            router.replace("/auth/login");
+            return;
+        }
 
-    // 2. Role Check
-    if (user?.role) {
-      const currentRole = user.role.name;
-      const allowedRoles = ["admin", "super_admin"];
-      if (!allowedRoles.includes(currentRole)) {
-        router.replace("/auth/login"); 
-      }
-      else{
-         setIsAuthorized(true)
-      }
-    }
-  }, [user, router]);
-  
+        // 2. Role Check
+        if (user?.roles?.length) {
+            const allowedRoles = ["admin", "superadmin"];
+            // console.log("user111", user);
+            const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
+            // console.log("hasAccess", hasAccess);
+            if (!hasAccess) {
+                router.replace("/auth/login");
+            }
+            else {
+                setIsAuthorized(true)
+            }
+        }
+    }, [user, router]);
+
 
 
     const [openCategoryPopup, setOpenCategoryPopup] = useState(false);
-    const [openTeamPopup, setOpenTeamPopup] = useState(false);
     const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
 
     const dispatch = useAppDispatch();
@@ -76,13 +77,13 @@ const { user: reduxUser} = useProfileActions();
             }
         }
     };
- if (!isAuthorized) {
-       return (
-         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-50">
-           <Loader size="lg" text="Checking Permissions..." />
-         </div>
-       );
-     }
+    if (!isAuthorized) {
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-50">
+                <Loader size="lg" text="Checking Permissions..." />
+            </div>
+        );
+    }
     // Recursive function to render categories
     const renderCategoryRow = (category: Category, level: number = 0) => {
         return (
@@ -151,60 +152,7 @@ const { user: reduxUser} = useProfileActions();
                 </div>
             </section>
 
-            {/* Team & Access Control */}
-            <section className="space-y-4">
-                <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-semibold">Team & Access Control</h3>
-                    <button
-                        className="px-8 py-2 bg-yellow-400 text-black rounded-3xl"
-                        onClick={() => setOpenTeamPopup(true)}
-                    >
-                        Add New
-                    </button>
-                </div>
-                <div className="border border-[#1A73E8] rounded-2xl overflow-hidden mt-5">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="bg-gray-100">
-                                <th className="p-3 text-left">#</th>
-                                <th className="p-3 text-left">Role</th>
-                                <th className="p-3 text-left">Name</th>
-                                <th className="p-3 text-left">Permissions</th>
-                                <th className="p-3 text-left">Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr className="border-t">
-                                <td className="p-3">1</td>
-                                <td className="p-3">Super Admin</td>
-                                <td className="p-3">Sajjad Husain</td>
-                                <td className="p-3 truncate">Settings, Billing, Approvals</td>
-                                <td className="p-3">
-                                    <button className="px-3 py-1 bg-yellow-500 rounded">
-                                        Edit
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr className="border-t">
-                                <td className="p-3">2</td>
-                                <td className="p-3">Admin</td>
-                                <td className="p-3">Rajat</td>
-                                <td className="p-3 truncate">Content & Team Mgmt </td>
-                                <td className="p-3">
-                                    <button className="px-3 py-1 bg-yellow-400 rounded mr-3">
-                                        Edit
-                                    </button>
-                                    <button className="px-3 py-1 bg-red-500 text-white rounded">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            
 
             {/* Category Management */}
             <section className="space-y-4">
@@ -214,7 +162,7 @@ const { user: reduxUser} = useProfileActions();
                         className="px-8 py-2 bg-yellow-500 text-black rounded-3xl"
                         onClick={() => handleAddCategory(null)}
                     >
-                        Add New
+                        Add New Category
                     </button>
                 </div>
                 <div className="border border-[#1A73E8] rounded-2xl overflow-hidden mt-5">
@@ -255,12 +203,6 @@ const { user: reduxUser} = useProfileActions();
                         onSave={handleCategorySaved}
                         parentId={selectedParentId}
                     />
-                </div>
-            )}
-
-            {openTeamPopup && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <TeamAndAccessControl onClose={() => setOpenTeamPopup(false)} />
                 </div>
             )}
         </div>

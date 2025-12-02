@@ -12,7 +12,7 @@ export const API_ENDPOINTS = {
     LOGIN: "/auth/login",
     RESEND_OTP: "/auth/forgot-password"
   },
-  PROFILE: { 
+  PROFILE: {
     FETCH: "/profile",
     UPDATE: "/profile",
   },
@@ -21,19 +21,16 @@ export const API_ENDPOINTS = {
     CREATE: "/articles",
     FETCH_ALL: "/articles",
   },
-  CATEGORIE:{
-    CREATE:"/categories",
-    FETCH_ALL_CATEGORY:"/categories",
-  },
-  
-  SUBSCRIPTION:{
-    CREATE:"/plans",
-    GET_ALL_PLAN:"/plans",
-    
-
+  CATEGORIE: {
+    CREATE: "/categories",
+    FETCH_ALL_CATEGORY: "/categories",
   },
 
- 
+  SUBSCRIPTION: {
+    CREATE: "/plans",
+    GET_ALL_PLAN: "/plans",
+  },
+
   ROLES: {
     BASE: "/roles",
   },

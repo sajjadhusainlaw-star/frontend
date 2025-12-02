@@ -91,8 +91,8 @@ export default function Page() {
 
 
       <div className="mt-8 space-y-6">
-        <ContentTable />
-        <ContentApprovalPanel />
+        {/* <ContentTable />
+        <ContentApprovalPanel /> */}
       </div>
     </>
   );

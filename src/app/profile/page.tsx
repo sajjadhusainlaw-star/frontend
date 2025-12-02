@@ -325,7 +325,7 @@ export default function ProfilePage() {
 
           <div className="bg-white rounded-lg p-6">
             <h3 className="text-lg font-semibold mb-4">Quick Action</h3>
-            {user.role?.name !== "user" && (
+            {user.roles?.some((role) => role.name !== "user") && (
               <Link
                 href="/admin"
                 className="block w-full text-center border rounded-md py-2 mb-3 hover:bg-[#dfb83a]/90 text-sm bg-[#dfb83a] text-white"
