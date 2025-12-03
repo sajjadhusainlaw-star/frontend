@@ -1,191 +1,191 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSubscriptionListActions } from "@/data/features/subscription/useSubscriptionActions";
-import { Plans } from "@/data/features/subscription/subscription.types";
-import apiClient from "@/data/services/apiConfig/apiClient";
-import toast from "react-hot-toast";
-import { UserData } from "@/data/features/profile/profile.types";
-import { useProfileActions } from "@/data/features/profile/useProfileActions";
+import { usePlanActions } from "@/data/features/plan/usePlanActions";
+import { Plan } from "@/data/features/plan/plan.types";
+import { Trash2, Edit, Plus, Search } from "lucide-react";
 import Loader from "@/components/ui/Loader";
+import AddEditPlanModal from "./PlanModal";
 
-export default function PlanTable() {
+export default function PlansManagement() {
     const router = useRouter();
-    const { user: reduxUser } = useProfileActions();
-    const user = reduxUser as UserData;
-    const [isAuthorized, setIsAuthorized] = useState(false);
-    useEffect(() => {
-        // if (loading) return;
+    const { plans, loading, deletePlan } = usePlanActions();
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+    const [showPlanModal, setShowPlanModal] = useState(false);
+    const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
 
-        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const filteredPlans = plans.filter((plan: Plan) =>
+        plan.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-        // 1. No Token? -> Go to Login
-        if (!token) {
-            router.replace("/auth/login");
-            return;
-        }
-
-        // 2. Role Check
-       if (user) {
-    if (user.roles?.length) {
-        const allowedRoles = ["admin", "superadmin"];
-        const hasAccess = user.roles.some((r) => allowedRoles.includes(r.name));
-        if (!hasAccess) router.replace("/auth/login");
-        else setIsAuthorized(true);
-    } else {
-        // User exists but has no roles -> Redirect or Deny
-        router.replace("/auth/login");
-    }
-}
-    }, [user, router]);
-
-
-    const [showPopup, setShowPopup] = useState(false);
-
-    const handleActionClick = () => {
-        setShowPopup(true);
-    };
-
-    const handleAddNewPlan = () => {
-        router.push("/admin/plans/add-new-plan");
-    };
-    const { plans, loading, error, } = useSubscriptionListActions();
-    // console.log("hii", plans)
-    const [AllPlan, setAllPlans] = useState<Plans[]>([]);
-
-
-    useEffect(() => {
-        setAllPlans(plans);
-        // console.log("object");
-
-    }, [])
-
-    const toggleStatus = async (id: string, currentStatus: any) => {
-        const newStatus = currentStatus === "active" ? "inactive" : "active";
-        setShowPopup(false)
-
-
-        try {
-            await apiClient.post("/subscription/update-status", {
-                id: id,
-                status: newStatus,
-            });
-
-
-            setAllPlans((prev) =>
-                prev.map((p) => (p.id === id ? { ...p, status: newStatus } : p))
-            );
-        } catch (err) {
-            console.error("Failed to update status", err);
-            toast.error("Status update failed");
+    const handleDelete = async () => {
+        if (selectedPlan) {
+            await deletePlan(selectedPlan.id);
+            setShowDeleteModal(false);
+            setSelectedPlan(null);
         }
     };
-    if (!isAuthorized) {
+
+    const handleEdit = (plan: Plan) => {
+        setEditingPlan(plan);
+        setShowPlanModal(true);
+    };
+
+    const handleAddNew = () => {
+        setEditingPlan(null);
+        setShowPlanModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowPlanModal(false);
+        setEditingPlan(null);
+    };
+
+    if (loading && plans.length === 0) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-50">
-                <Loader size="lg" text="Checking Permissions..." />
+            <div className="flex justify-center items-center min-h-screen">
+                <Loader text="Loading Plans..." size="lg" />
             </div>
         );
     }
+
     return (
-        <div>
+        <div className="p-6">
+            <h1 className="text-2xl font-bold mb-6 text-[#0A2342]">Premium Plans Management</h1>
 
-            <h1 className="text-xl  font-poppins mb-6 text-black font-medium"> Premium Plans Management</h1>
+            <div className="bg-white p-6 rounded-xl border border-gray-200">
+                {/* Header Section */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <span className="font-semibold text-[#0A2342]">Total Plans:</span>
+                        <span className="bg-[#0A2342] text-white px-3 py-1 rounded-full text-xs font-bold">
+                            {plans.length}
+                        </span>
+                    </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow-sm mt-6">
-                <div className="flex bg-gray rounded-xl px-6 py-3  justify-between items-center mb-4">
-                    <p className="text-sm font-medium">
-                        Total Active Plans: {AllPlan.filter((p) => p.status === "active").length}
-                    </p>
-                    <input
-                        type="text"
-                        placeholder="Search Plan"
-                        className="px-4 py-2 rounded-md border bg-white border-gray-300 text-sm"
-                    />
+                    <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                        <div className="relative flex-1 sm:flex-initial">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search plans..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#C9A227] focus:border-transparent outline-none"
+                            />
+                        </div>
+                        <button
+                            onClick={handleAddNew}
+                            className="flex items-center justify-center gap-2 bg-[#C9A227] hover:bg-[#b8921f] text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Add New Plan
+                        </button>
+                    </div>
                 </div>
-                <div className="flex">
-                    <button className="bg-yellow-500 p-2 px-6 rounded-xl ml-auto mr-10" onClick={handleAddNewPlan}>
-                        Add New Plan
-                    </button>
-                </div>
-                <div className="bg-lightgray p-4 rounded-2xl">
-                    <table className="w-full  text-sm text-left  overflow-hidden">
-                        <thead className="">
-                            <tr>
-                                <th className="p-3 ">#</th>
-                                <th className="p-3 ">Plan Name</th>
-                                <th className="p-3 ">Discounts</th>
-                                <th className="p-3 ">Price</th>
-                                <th className="p-3 ">Status</th>
-                                <th className="p-3 ">Action</th>
+
+                {/* Table */}
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                        <thead>
+                            <tr className="border-b border-gray-200">
+                                <th className="text-left p-4 font-semibold text-[#0A2342]">#</th>
+                                <th className="text-left p-4 font-semibold text-[#0A2342]">Plan Name</th>
+                                <th className="text-left p-4 font-semibold text-[#0A2342]">Description</th>
+                                <th className="text-left p-4 font-semibold text-[#0A2342]">Price</th>
+                                <th className="text-left p-4 font-semibold text-[#0A2342]">Features</th>
+                                <th className="text-center p-4 font-semibold text-[#0A2342]">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {plans.map((plan: Plans, index: number) => (
-                                <tr key={plan.id} className="border-t-[1.5px] border-gray-400 hover:bg-gray-50">
-
-                                    <td className="p-3 ">{index + 1}</td>
-                                    <td className="p-3  font-semibold">{plan.name}</td>
-                                    <td className="p-3 ">{plan.discount}</td>
-                                    <td className="p-3 ">{plan.price}</td>
-                                    <td className="p-3 ">{plan.status}</td>
-                                    <td className="p-3  flex gap-2">
-                                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm">
-                                            Edit
-                                        </button>
-                                        <button
-                                            // onClick={() => toggleStatus(plan._id, plan.status)}
-                                            onClick={handleActionClick}
-                                            className={`${plan.status === "active"
-                                                ? "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                                                : "bg-green-500 text-white hover:bg-green-600"
-                                                } px-3 py-1 rounded-md text-sm`}
-                                        >
-                                            {plan.status === "active" ? "Pause" : "Activate"}
-                                        </button>
-
-                                        {showPopup && (
-                                            <div className="fixed inset-0 bg-black/10 bg-opacity-40 flex items-center justify-center z-50">
-                                                <div className="bg-white rounded-xl shadow-lg p-6 w-80">
-                                                    <h2 className="text-xl font-semibold mb-3">
-                                                        {plan.status === "active" ? "Pause this plan?" : "Activate this plan?"}
-                                                    </h2>
-
-                                                    <p className="text-gray-600 mb-6">
-                                                        Are you sure you want to continue?
-                                                    </p>
-
-                                                    <div className="flex justify-end gap-3">
-                                                        {/* Cancel */}
-                                                        <button
-                                                            onClick={() => setShowPopup(false)}
-                                                            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
-                                                        >
-                                                            Cancel
-                                                        </button>
-
-                                                        {/* Confirm */}
-                                                        <button
-                                                            onClick={() => toggleStatus(plan.id, plan.status)}
-                                                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                                                        >
-                                                            Confirm
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
+                            {filteredPlans.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="text-center p-8 text-gray-500">
+                                        No plans found
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                filteredPlans.map((plan: Plan, index: number) => (
+                                    <tr key={plan.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td className="p-4 text-gray-600">{index + 1}</td>
+                                        <td className="p-4 font-semibold text-[#0A2342]">{plan.name}</td>
+                                        <td className="p-4 text-gray-600 max-w-xs truncate">{plan.description}</td>
+                                        <td className="p-4 font-semibold text-[#0A2342]">
+                                            {plan.currency} {plan.price.toLocaleString()}
+                                        </td>
+                                        <td className="p-4">
+                                            <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                                                {plan.features.length} features
+                                            </span>
+                                        </td>
+                                        <td className="p-4">
+                                            <div className="flex items-center justify-center gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(plan)}
+                                                    className="p-2 text-[#0A2342] hover:bg-[#0A2342] hover:text-white rounded-lg transition-all"
+                                                    title="Edit Plan"
+                                                >
+                                                    <Edit className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedPlan(plan);
+                                                        setShowDeleteModal(true);
+                                                    }}
+                                                    className="p-2 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all"
+                                                    title="Delete Plan"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
-        </div>
 
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+                        <h2 className="text-xl font-bold text-[#0A2342] mb-3">Delete Plan</h2>
+                        <p className="text-gray-600 mb-6">
+                            Are you sure you want to delete <span className="font-semibold">{selectedPlan?.name}</span>? This action cannot be undone.
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setSelectedPlan(null);
+                                }}
+                                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add/Edit Plan Modal */}
+            {showPlanModal && (
+                <AddEditPlanModal
+                    plan={editingPlan}
+                    onClose={handleCloseModal}
+                />
+            )}
+        </div>
     );
 }
