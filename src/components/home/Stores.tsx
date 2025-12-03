@@ -124,7 +124,7 @@ export default function Stores() {
     const texts: string[] = [];
 
     // 1. Headlines
-    newsHeadlines.forEach(h => texts.push(h));
+    newsHeadlines.forEach((h: string) => texts.push(h));
 
     // 2. Latest News (Title) - Slice 4
     const latest = LatestNewsData.slice(0, 4);
