@@ -9,6 +9,7 @@ interface NewsCardProps {
   time?: string;
   views?: string;
   likes?: string;
+  content?: string;
 }
 
 export default function NewsCard({
@@ -18,6 +19,7 @@ export default function NewsCard({
   time,
   views,
   likes,
+  content,
 }: NewsCardProps) {
   const validSrc =
     typeof src === "string" &&
@@ -68,7 +70,10 @@ export default function NewsCard({
         <p className="text-sm font-semibold text-gray-900 leading-snug truncate">
           {title}
         </p>
-      
+
+  
+
+
 
         {/* Views + Likes */}
         {/* <div className="flex items-center gap-6 text-xs text-gray-700"> */}

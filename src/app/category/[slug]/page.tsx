@@ -27,6 +27,14 @@ export default function CategoryPage() {
     //     }
     // }, [articles, slug]);
     // sdfg
+    // Helper function to clean category names (remove trailing numbers and extra whitespace)
+    const cleanCategoryName = (name: string): string => {
+        return name
+            .replace(/\s*\d+\s*$/g, '') // Remove trailing numbers
+            .replace(/\s+/g, ' ')        // Replace multiple spaces with single space
+            .trim();                      // Remove leading/trailing whitespace
+    };
+
     useEffect(() => {
         if (articles.length > 0 && slug) {
             const filtered = articles.filter((article: Article) => {
@@ -56,17 +64,41 @@ export default function CategoryPage() {
             // Set the category name from the first matching article
             if (filtered.length > 0 && filtered[0].category) {
                 const firstArticleCategory = filtered[0].category;
-                // Check if the slug matches the category or its parent
-                if (firstArticleCategory.slug?.toLowerCase() === slug.toLowerCase()) {
-                    setCategoryName(firstArticleCategory.name);
-                } else if (firstArticleCategory.parent?.slug?.toLowerCase() === slug.toLowerCase()) {
-                    setCategoryName(firstArticleCategory.parent.name);
-                } else {
-                    setCategoryName(firstArticleCategory.name);
+                const currentSlug = slug.toLowerCase();
+
+                let displayName = '';
+
+                // Check if the slug matches the category slug
+                if (firstArticleCategory.slug?.toLowerCase() === currentSlug) {
+                    displayName = cleanCategoryName(firstArticleCategory.name);
                 }
+                // Check if the slug matches the category name (formatted)
+                else if (firstArticleCategory.name?.toLowerCase() === currentSlug) {
+                    displayName = cleanCategoryName(firstArticleCategory.name);
+                }
+                // Check if the slug matches the parent category slug
+                else if (firstArticleCategory.parent?.slug?.toLowerCase() === currentSlug) {
+                    displayName = cleanCategoryName(firstArticleCategory.parent.name);
+                }
+                // Check if the slug matches the parent category name (formatted)
+                else if (firstArticleCategory.parent?.name?.toLowerCase() === currentSlug) {
+                    displayName = cleanCategoryName(firstArticleCategory.parent.name);
+                }
+                // Default fallback to the article's category name
+                else {
+                    displayName = cleanCategoryName(firstArticleCategory.name);
+                }
+
+                setCategoryName(displayName);
             } else {
                 // Fallback to formatted slug if no articles found
-                setCategoryName(slug.replace(/-/g, " "));
+                // Convert slug to title case (e.g., "supreme-court" -> "Supreme Court")
+                const formattedSlug = slug
+                    .split('-')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+
+                setCategoryName(cleanCategoryName(formattedSlug));
             }
         }
     }, [articles, slug]);
@@ -107,6 +139,7 @@ export default function CategoryPage() {
                         <Link href={`/news/${article.slug}`} key={article.id}>
                             <NewsCard
                                 title={article.title}
+                                content={article.content}
                                 src={article.thumbnail || undefined}
                                 court={article.location || undefined}
                                 time={new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}

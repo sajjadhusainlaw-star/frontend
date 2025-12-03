@@ -48,6 +48,7 @@ export default function Settings() {
 
     const [openCategoryPopup, setOpenCategoryPopup] = useState(false);
     const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
     const dispatch = useAppDispatch();
     const { categories, loading } = useAppSelector((state) => state.category);
@@ -58,12 +59,20 @@ export default function Settings() {
 
     const handleAddCategory = (parentId: string | null = null) => {
         setSelectedParentId(parentId);
+        setSelectedCategory(null);
+        setOpenCategoryPopup(true);
+    };
+
+    const handleEditCategory = (category: Category) => {
+        setSelectedCategory(category);
+        setSelectedParentId(null);
         setOpenCategoryPopup(true);
     };
 
     const handleCategorySaved = () => {
         dispatch(fetchCategories());
         setOpenCategoryPopup(false);
+        setSelectedCategory(null);
     };
 
     const handleDeleteCategory = async (id: string) => {
@@ -105,7 +114,10 @@ export default function Settings() {
                             >
                                 + Sub
                             </button>
-                            <button className="px-2 py-1 bg-yellow-100 text-yellow-600 rounded text-sm hover:bg-yellow-200">
+                            <button
+                                className="px-2 py-1 bg-yellow-100 text-yellow-600 rounded text-sm hover:bg-yellow-200"
+                                onClick={() => handleEditCategory(category)}
+                            >
                                 Edit
                             </button>
                             <button
@@ -129,7 +141,7 @@ export default function Settings() {
             <h2 className="text-2xl font-semibold">Settings</h2>
 
             {/* Organization & Branding */}
-            <section className="space-y-4">
+            {/* <section className="space-y-4">
                 <h3 className="text-xl font-semibold">Organization & Branding</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="border p-4 rounded-xl space-y-4">
@@ -150,7 +162,7 @@ export default function Settings() {
                         />
                     </div>
                 </div>
-            </section>
+            </section> */}
 
 
 
@@ -202,6 +214,7 @@ export default function Settings() {
                         onClose={() => setOpenCategoryPopup(false)}
                         onSave={handleCategorySaved}
                         parentId={selectedParentId}
+                        categoryToEdit={selectedCategory}
                     />
                 </div>
             )}
