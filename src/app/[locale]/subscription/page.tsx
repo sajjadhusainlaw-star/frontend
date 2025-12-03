@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import logo from "../../assets/logo.png";
+import logo from "../../../assets/logo.png";
 import Script from "next/script";
 
 declare global {
@@ -27,7 +27,6 @@ declare global {
   }
 }
 
-import Footer from "../../components/layout/Footer";
 
 export default function SubscriptionPage() {
   const [showGiftBanner, setShowGiftBanner] = useState(true);
@@ -154,16 +153,7 @@ export default function SubscriptionPage() {
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
 
-      {/* Logo */}
-      <div className="absolute top-4 left-4 md:top-8 md:left-8 z-50">
-        <Link href="/">
-          <Image
-            src={logo}
-            alt="Sajjad Husain Law Associates Logo"
-            className="h-12 w-auto md:h-16"
-          />
-        </Link>
-      </div>
+
 
       {/* Gift Banner */}
       {/* {showGiftBanner && (
@@ -363,7 +353,6 @@ export default function SubscriptionPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
