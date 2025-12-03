@@ -22,7 +22,7 @@ import { Category } from "@/data/features/category/category.types";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false); 
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [mobileExpanded, setMobileExpanded] = useState<Record<string, boolean>>({});
   const pathname = usePathname();
@@ -45,7 +45,7 @@ export default function Header() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
- 
+
   const confirmLogout = () => {
     localStorage.clear();
     dispatch(logoutUser());
@@ -186,7 +186,7 @@ export default function Header() {
 
           <div className="hidden lg:flex items-center gap-4">
             {user ? (
-              <div 
+              <div
                 className="relative"
                 onMouseEnter={() => setIsProfileOpen(true)}
                 onMouseLeave={() => setIsProfileOpen(false)}
@@ -201,13 +201,13 @@ export default function Header() {
                   <ChevronDown size={14} className="text-gray-500" />
                 </button>
 
-                
-                <div 
+
+                <div
                   className={`absolute right-0 top-full w-48 bg-white border border-gray-200 rounded-xl shadow-lg transition-all duration-200 transform origin-top-right z-50 ${isProfileOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}
                 >
                   <div className="py-2">
-                    <Link 
-                      href="/profile" 
+                    <Link
+                      href="/profile"
                       onClick={() => setIsProfileOpen(false)}
                       className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A227]"
                     >
@@ -215,8 +215,8 @@ export default function Header() {
                     </Link>
 
                     {hasDashboardAccess && (
-                      <Link 
-                        href="/admin" 
+                      <Link
+                        href="/admin"
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A227]"
                       >
@@ -226,11 +226,11 @@ export default function Header() {
 
                     <div className="h-px bg-gray-100 my-1 mx-2" />
 
-                    <button 
+                    <button
                       onClick={() => {
                         setIsProfileOpen(false);
-                        setShowLogoutConfirm(true); 
-                      }} 
+                        setShowLogoutConfirm(true);
+                      }}
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                     >
                       <LogOut size={16} /> Logout
@@ -265,12 +265,12 @@ export default function Header() {
                     </div>
                     <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"><UserIcon size={16} /> Profile</Link>
                     {hasDashboardAccess && <Link href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"><LayoutDashboard size={16} /> Dashboard</Link>}
-                    
-                    <button 
+
+                    <button
                       onClick={() => {
                         setMenuOpen(false);
-                        setShowLogoutConfirm(true); 
-                      }} 
+                        setShowLogoutConfirm(true);
+                      }}
                       className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg text-left"
                     >
                       <LogOut size={16} /> Logout
@@ -289,7 +289,7 @@ export default function Header() {
         )}
       </header>
 
-     
+
       {showLogoutConfirm && (
         <LogoutModal onCancel={() => setShowLogoutConfirm(false)} onConfirm={confirmLogout} />
       )}
@@ -302,7 +302,7 @@ function LogoutModal({ onCancel, onConfirm }: { onCancel: () => void; onConfirm:
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fadeIn">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onCancel} />
-      
+
       {/* Modal Content */}
       <div className="relative z-10 w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 border border-gray-100 transform transition-all scale-100">
         <div className="flex flex-col items-center text-center">
@@ -313,16 +313,16 @@ function LogoutModal({ onCancel, onConfirm }: { onCancel: () => void; onConfirm:
           <p className="text-sm text-gray-500 mt-2 mb-6">
             Are you sure you want to Logout of your account? You will need to login again to access your profile.
           </p>
-          
+
           <div className="flex gap-3 w-full">
-            <button 
-              onClick={onCancel} 
+            <button
+              onClick={onCancel}
               className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
               Cancel
             </button>
-            <button 
-              onClick={onConfirm} 
+            <button
+              onClick={onConfirm}
               className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 shadow-md shadow-red-600/20 transition-colors"
             >
               Logout

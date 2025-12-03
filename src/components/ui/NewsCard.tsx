@@ -30,7 +30,7 @@ export default function NewsCard({
         : logo;
 
   return (
-    <div className="w-full max-w-[600px] rounded-xl shadow-md bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition">
+    <div className="w-full max-w-[600px] rounded-[4px] bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition">
       {/* Image */}
       <div className="relative h-[200px] w-full">
         <Image

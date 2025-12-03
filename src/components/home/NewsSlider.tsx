@@ -9,11 +9,12 @@ import Loader from "../ui/Loader";
 import img1 from '../../assets/slider/image.svg';
 import img2 from '../../assets/slider/mask.svg';
 import img3 from '../../assets/slider/maskgroup.svg';
+import headerBg from '../../assets/svgimage/header.png';
 
 export default function NewsSlider() {
   // ✅ Use the hook. It won't re-fetch if data exists.
   const { articles, loading } = useArticleListActions();
-  
+
   const [current, setCurrent] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -22,31 +23,31 @@ export default function NewsSlider() {
     const latestArticles = articles.slice(0, 6);
     return latestArticles.length > 0
       ? latestArticles.map((article: any) => ({
-          image: article.thumbnail || img1,
-          title: article.title,
-          description: article.content.replace(/<[^>]*>/g, '').substring(0, 150) + "...",
-          link: `/news/${article.slug}`,
-        }))
+        image: article.thumbnail || img1,
+        title: article.title,
+        description: article.content.replace(/<[^>]*>/g, '').substring(0, 150) + "...",
+        link: `/news/${article.slug}`,
+      }))
       : [
-          {
-            image: img1,
-            title: "Breaking News: AI Revolutionizing Industries",
-            description: "Artificial Intelligence is transforming how businesses operate across healthcare, finance, and education.",
-            link: "#",
-          },
-          {
-            image: img2,
-            title: "Tech Giants Invest in Clean Energy",
-            description: "Major technology companies are committing billions toward sustainable energy solutions.",
-            link: "#",
-          },
-          {
-            image: img3,
-            title: "Startups Driving Innovation in 2025",
-            description: "New startups are redefining traditional industries with cutting-edge solutions and AI-powered tools.",
-            link: "#",
-          },
-        ];
+        {
+          image: img1,
+          title: "Breaking News: AI Revolutionizing Industries",
+          description: "Artificial Intelligence is transforming how businesses operate across healthcare, finance, and education.",
+          link: "#",
+        },
+        {
+          image: img2,
+          title: "Tech Giants Invest in Clean Energy",
+          description: "Major technology companies are committing billions toward sustainable energy solutions.",
+          link: "#",
+        },
+        {
+          image: img3,
+          title: "Startups Driving Innovation in 2025",
+          description: "New startups are redefining traditional industries with cutting-edge solutions and AI-powered tools.",
+          link: "#",
+        },
+      ];
   }, [articles]);
 
   const changeSlide = (newIndex: number) => {
@@ -75,8 +76,19 @@ export default function NewsSlider() {
   }
 
   return (
-    <div className="relative w-full bg-[#0A2342] sm:mt-20 border-y border-gray-700">
-      <div className="container mx-auto px-4 py-16 md:py-20">
+    <div className="relative w-full bg-[#0A2342] sm:mt-20 border-y border-gray-700 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute bottom-0 right-0  z-0">
+        <Image
+          src={headerBg}
+          alt="Background"
+
+          className=" opacity-40" // Adjust opacity as needed for readability
+          priority
+        />
+      </div>
+
+      <div className="container relative z-10 mx-auto px-4 py-16 md:py-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
 
@@ -160,7 +172,7 @@ export default function NewsSlider() {
 
                 {/* Indicators */}
                 <div className="flex gap-2">
-                  {slides.map((_:any, index:any) => (
+                  {slides.map((_: any, index: any) => (
                     <button
                       key={index}
                       onClick={() => changeSlide(index)}

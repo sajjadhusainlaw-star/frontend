@@ -29,7 +29,11 @@ export default function LiveCourt() {
   if (liveCourtData.length === 0) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-[28px] bg-white rounded-md">
-        <CaseCard
+
+        <h1>
+          There are no live court cases available at the moment. So, we will get back to you as soon as possible.
+        </h1>
+        {/* <CaseCard
           title="DINESH KUMARI vs. M/S SUNCITY HI-TECH INFRASTRUCTURE PVT. LTD. C.A. No. 13005/2025"
           court="Supreme Court of India"
           advocate="Advocate:- Ms. Aishwarya Bhati (ASG)"
@@ -51,7 +55,7 @@ export default function LiveCourt() {
           title="HALDIA DOCK COMPLEX CONTRACTORS WORKERS UNION vs. UNION OF INDIA W.P.(C) No. 506/2024"
           court="Supreme Court of India"
           advocate="Advocate:- Ms. Aishwarya Bhati (ASG)"
-        />
+        /> */}
       </div>
     );
   }
