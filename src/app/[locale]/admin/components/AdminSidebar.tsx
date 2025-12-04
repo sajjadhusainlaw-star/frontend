@@ -49,12 +49,7 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
       href: "/admin",
       show: hasDashboardAccess
     },
-    {
-      name: "Create New Article",
-      icon: <PenBox size={18} />,
-      href: "/admin/create-content",
-      show: hasDashboardAccess
-    },
+
     {
       name: "Content Management",
       icon: <FolderOpen size={18} />,

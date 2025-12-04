@@ -37,7 +37,8 @@ export function getRelatedArticles(currentSlug: string, allArticles: Article[], 
 export default function ArticleDetailPage() {
     const params = useParams();
     const slug = params.slug as string;
-    const { articles, loading } = useArticleListActions();
+    const { articles: allArticles, loading } = useArticleListActions();
+    const articles = useMemo(() => allArticles.filter((a: { status: string; }) => a.status === 'published'), [allArticles]);
     const [article, setArticle] = useState<Article | null>(null);
     const [copied, setCopied] = useState(false);
     const t = useTranslations('ArticleDetail');

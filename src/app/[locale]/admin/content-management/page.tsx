@@ -4,7 +4,7 @@ import { useArticleListActions } from "@/data/features/article/useArticleActions
 import toast from "react-hot-toast";
 import { Article } from "@/data/features/article/article.types";
 import Image from "next/image";
-import logo from "../../../../public/logo.png";
+import logo from "../../../../../public/logo.png";
 import imgs from "../../../assets/img1.png"
 import { useRouter } from "next/navigation";
 import { useProfileActions } from "@/data/features/profile/useProfileActions";
@@ -161,9 +161,12 @@ const contentManagementPage: React.FC = () => {
                 </span>
               </div>
 
-              {/* <button className="bg-yellow-400 text-white px-5 py-2 rounded-md font-medium hover:bg-yellow-500">
-                ⬇ Export CSV
-              </button> */}
+              <button
+                onClick={() => router.push('/admin/create-content')}
+                className="bg-[#0B2149] text-white px-5 py-2 rounded-md font-medium hover:bg-[#1a3a75] transition-colors flex items-center gap-2"
+              >
+                <span>+</span> Create New Article
+              </button>
             </div>
 
             {/* Table */}
