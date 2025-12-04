@@ -1,7 +1,7 @@
 import apiClient from "../apiConfig/apiClient";
 import { API_ENDPOINTS } from "../apiConfig/apiContants";
 import { CreateArticleRequest, CreateArticleResponse, ArticleListResponse } from "@/data/features/article/article.types";
-
+// test   
 export const articleApi = {
 
   createArticle: async (data: CreateArticleRequest) => {
