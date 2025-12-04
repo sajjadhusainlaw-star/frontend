@@ -24,7 +24,8 @@ interface Slide {
 
 export default function NewsSlider() {
   // ✅ Use the hook. It won't re-fetch if data exists.
-  const { articles, loading } = useArticleListActions();
+  const { articles: allArticles, loading } = useArticleListActions();
+  const articles = useMemo(() => allArticles.filter((a: { status: string; }) => a.status === 'published'), [allArticles]);
   const locale = useLocale();
 
   const [current, setCurrent] = useState(0);

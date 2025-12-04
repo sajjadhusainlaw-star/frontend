@@ -18,7 +18,8 @@ import { useLocale } from "next-intl";
 import { useState, useEffect } from "react";
 
 export default function CategorySection({ title, slug, layout, limit = 6 }: CategorySectionProps) {
-  const { articles, loading } = useCategoryArticles(slug, limit);
+  const { articles: allArticles, loading } = useCategoryArticles(slug, limit);
+  const articles = allArticles?.filter(a => a.status === 'published') || [];
   const locale = useLocale();
 
   // Prepare text for translation: flatten titles and descriptions

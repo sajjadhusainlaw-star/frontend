@@ -63,7 +63,7 @@ const CreateUpdatePage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleCreateArticle("publish");
+    handleCreateArticle("pending");
   };
 
   const previewUrl = useMemo(() => {

@@ -27,6 +27,7 @@ declare global {
   }
 }
 
+import Footer from "../../../components/layout/Footer";
 
 export default function SubscriptionPage() {
   const [showGiftBanner, setShowGiftBanner] = useState(true);

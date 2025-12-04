@@ -6,7 +6,7 @@ export const articleApi = {
 
   createArticle: async (data: CreateArticleRequest) => {
     // console.log("Create Article Request URLgjgfghfhgghf:", `${API_ENDPOINTS.ARTICLE.CREATE}`);
-    // console.log("During sending to endpoijnt", data);
+    console.log("During sending to endpoijnt", data);
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("slug", data.slug);
@@ -23,6 +23,8 @@ export const articleApi = {
     // formData.append("tags", data.tags.join(","));
     const response = await apiClient.post<CreateArticleResponse>(
       API_ENDPOINTS.ARTICLE.CREATE,
+
+
       formData,
       {
         headers: {

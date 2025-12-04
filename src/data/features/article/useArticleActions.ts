@@ -75,7 +75,7 @@ export const useCreateArticleActions = () => {
     }));
   };
 
-  const handleCreateArticle = (status: "draft" | "publish") => {
+  const handleCreateArticle = (status: "draft" | "pending") => {
     if (!formData.title || !formData.content) {
       toast.error("Please fill in the Title and Main Content.");
       return;
@@ -99,19 +99,19 @@ export const useCreateArticleActions = () => {
 
   useEffect(() => {
     if (!!message) {
-      setFormData({
-        title: "",
-        category: "",
-        location: "",
-        slug: "",
-        subHeadline: "",
-        advocateName: "",
-        language: "English/हिन्दी",
-        author: "",
-        content: "",
-        tags: [],
-        thumbnail: null,
-      });
+      // setFormData({
+      //   title: "",
+      //   category: "",
+      //   location: "",
+      //   slug: "",
+      //   subHeadline: "",
+      //   advocateName: "",
+      //   language: "English/हिन्दी",
+      //   author: "",
+      //   content: "",
+      //   tags: [],
+      //   thumbnail: null,
+      // });
 
       toast.success(message);
       dispatch(resetArticleState());

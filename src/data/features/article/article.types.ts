@@ -98,7 +98,7 @@ export interface CreateArticleRequest {
   content: string;
   advocateName: string;
   thumbnail: File | null;
-  status?: "draft" | "publish";
+  status?: "draft" | "pending";
 }
 
 export interface ArticleState {

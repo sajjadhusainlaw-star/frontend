@@ -116,6 +116,8 @@ export default function RolesPermissionsPage() {
         }
     };
 
+    // console.log("testing")
+
     // --- Permission Handlers ---
     const handleOpenPermModal = (perm?: any) => {
         if (perm) {
@@ -217,81 +219,81 @@ export default function RolesPermissionsPage() {
                     )}
                     {rolesError && <p className="text-red-500">{rolesError}</p>}
 
-                   <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
-  <table className="w-full text-left">
-    <thead className="bg-gray-100 border-b">
-      <tr>
-        <th className="px-4 py-3 font-semibold text-gray-700">Role</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Description</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Created By</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Created At</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Actions</th>
-      </tr>
-    </thead>
+                    <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
+                        <table className="w-full text-left">
+                            <thead className="bg-gray-100 border-b">
+                                <tr>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Role</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Description</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Created By</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Created At</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
 
-    <tbody>
-      {roles.map((role) => (
-        <tr
-          key={role._id}
-          className="border-b hover:bg-gray-50 transition"
-        >
-          {/* Role Name */}
-          <td className="px-4 py-4 font-bold text-gray-800">
-            {role.name}
-          </td>
+                            <tbody>
+                                {roles.map((role) => (
+                                    <tr
+                                        key={role.id}
+                                        className="border-b hover:bg-gray-50 transition"
+                                    >
+                                        {/* Role Name */}
+                                        <td className="px-4 py-4 font-bold text-gray-800">
+                                            {role.name}
+                                        </td>
 
-          {/* Description */}
-          <td className="px-4 py-4">
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {role.description || "--"}
-            </p>
-          </td>
+                                        {/* Description */}
+                                        <td className="px-4 py-4">
+                                            <p className="text-sm text-gray-600 line-clamp-2">
+                                                {role.description || "--"}
+                                            </p>
+                                        </td>
 
-          {/* Created By */}
-          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
-            {role.createdBy?.name ||
-              role.createdBy?.email ||
-              "System"}
-          </td>
+                                        {/* Created By */}
+                                        <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+                                            {role.createdBy?.name ||
+                                                role.createdBy?.email ||
+                                                "System"}
+                                        </td>
 
-          {/* Created At */}
-          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
-           {role.createdAt
-  ? new Date(role.createdAt).toLocaleString("en-IN")
-  : role._id
-  ? new Date(
-      parseInt(role._id.substring(0, 8), 16) * 1000
-    ).toLocaleString("en-IN")
-  : "N/A"}
+                                        {/* Created At */}
+                                        <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+                                            {role.createdAt
+                                                ? new Date(role.createdAt).toLocaleString("en-IN")
+                                                : role.id
+                                                    ? new Date(
+                                                        parseInt(role.id.substring(0, 8), 16) * 1000
+                                                    ).toLocaleString("en-IN")
+                                                    : "N/A"}
 
-               {/* {role.createdAt
+                                            {/* {role.createdAt
               ? new Date(role.createdAt).toLocaleDateString()
               : "N/A"} */}
-          </td>
+                                        </td>
 
-          {/* Actions */}
-          <td className="px-4 py-4">
-            <div className="flex gap-3">
-              <button
-                onClick={() => handleOpenRoleModal(role)}
-                className="text-gray-400 hover:text-blue-600 transition"
-              >
-                <Edit size={18} />
-              </button>
+                                        {/* Actions */}
+                                        <td className="px-4 py-4">
+                                            <div className="flex gap-3">
+                                                <button
+                                                    onClick={() => handleOpenRoleModal(role)}
+                                                    className="text-gray-400 hover:text-blue-600 transition"
+                                                >
+                                                    <Edit size={18} />
+                                                </button>
 
-              <button
-                onClick={() => handleRoleDelete(role._id)}
-                className="text-gray-400 hover:text-red-600 transition"
-              >
-                <Trash2 size={18} />
-              </button>
-            </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+                                                <button
+                                                    onClick={() => handleRoleDelete(role.id)}
+                                                    className="text-gray-400 hover:text-red-600 transition"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
             )}
@@ -315,72 +317,72 @@ export default function RolesPermissionsPage() {
                     {permsError && <p className="text-red-500">{permsError}</p>}
 
                     <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
-  <table className="w-full text-left">
-    <thead className="bg-gray-100 border-b">
-      <tr>
-        <th className="px-4 py-3 font-semibold text-gray-700">Permission</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Description</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Created By</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Created At</th>
-        <th className="px-4 py-3 font-semibold text-gray-700">Actions</th>
-      </tr>
-    </thead>
+                        <table className="w-full text-left">
+                            <thead className="bg-gray-100 border-b">
+                                <tr>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Permission</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Description</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Created By</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Created At</th>
+                                    <th className="px-4 py-3 font-semibold text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
 
-    <tbody>
-      {permissions.map((perm) => (
-        <tr
-          key={perm._id}
-          className="border-b hover:bg-gray-50 transition"
-        >
-          {/* Permission Name */}
-          <td className="px-4 py-4 font-bold text-gray-800">
-            {perm.name}
-          </td>
+                            <tbody>
+                                {permissions.map((perm) => (
+                                    <tr
+                                        key={perm._id}
+                                        className="border-b hover:bg-gray-50 transition"
+                                    >
+                                        {/* Permission Name */}
+                                        <td className="px-4 py-4 font-bold text-gray-800">
+                                            {perm.name}
+                                        </td>
 
-          {/* Description */}
-          <td className="px-4 py-4">
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {perm.description || "--"}
-            </p>
-          </td>
+                                        {/* Description */}
+                                        <td className="px-4 py-4">
+                                            <p className="text-sm text-gray-600 line-clamp-2">
+                                                {perm.description || "--"}
+                                            </p>
+                                        </td>
 
-          {/* Created By */}
-          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
-            {perm.createdBy?.name ||
-              perm.createdBy?.email ||
-              "System"}
-          </td>
+                                        {/* Created By */}
+                                        <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+                                            {perm.createdBy?.name ||
+                                                perm.createdBy?.email ||
+                                                "System"}
+                                        </td>
 
-          {/* Created At */}
-          <td className="px-4 py-4 text-sm text-gray-700 font-medium">
-            {perm.createdAt
-              ? new Date(perm.createdAt).toLocaleDateString()
-              : "N/A"}
-          </td>
+                                        {/* Created At */}
+                                        <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+                                            {perm.createdAt
+                                                ? new Date(perm.createdAt).toLocaleDateString()
+                                                : "N/A"}
+                                        </td>
 
-          {/* Actions */}
-          <td className="px-4 py-4">
-            <div className="flex gap-3">
-              <button
-                onClick={() => handleOpenPermModal(perm)}
-                className="text-gray-400 hover:text-blue-600 transition"
-              >
-                <Edit size={18} />
-              </button>
+                                        {/* Actions */}
+                                        <td className="px-4 py-4">
+                                            <div className="flex gap-3">
+                                                <button
+                                                    onClick={() => handleOpenPermModal(perm)}
+                                                    className="text-gray-400 hover:text-blue-600 transition"
+                                                >
+                                                    <Edit size={18} />
+                                                </button>
 
-              <button
-                onClick={() => handlePermDelete(perm._id)}
-                className="text-gray-400 hover:text-red-600 transition"
-              >
-                <Trash2 size={18} />
-              </button>
-            </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+                                                <button
+                                                    onClick={() => handlePermDelete(perm._id)}
+                                                    className="text-gray-400 hover:text-red-600 transition"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
             )}

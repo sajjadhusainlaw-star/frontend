@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 // import img from "../../assets/img1.png" // Unused import removed
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/routing"; // Use i18n router
+import { useLocale } from "next-intl";
 import Loader from "@/components/ui/Loader";
 import { useProfileActions } from "@/data/features/profile/useProfileActions";
 
@@ -27,6 +28,8 @@ export default function ProfilePage() {
   } = useProfileActions();
   const user: UserData = reduxProfileUser || ({} as UserData);
   const router = useRouter();
+  const pathname = usePathname();
+  const currentLocale = useLocale();
 
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -42,7 +45,7 @@ export default function ProfilePage() {
   const [dirty, setDirty] = useState(false);
 
   const [prefs, setPrefs] = useState<Prefs>({
-    language: "english-ind",
+    language: currentLocale,
     doNotDisturb: false,
     caseStatusAlerts: true,
   });
@@ -97,6 +100,11 @@ export default function ProfilePage() {
     // 1. Persist local preferences (language, toggles) to localStorage
     try {
       localStorage.setItem("profile_prefs", JSON.stringify(prefs));
+
+      // Switch locale if changed
+      if (prefs.language !== currentLocale) {
+        router.replace(pathname, { locale: prefs.language });
+      }
     } catch (err) {
       console.error("Saving prefs failed", err);
     }
@@ -307,10 +315,10 @@ export default function ProfilePage() {
                     setDirty(true);
                   }}
                   options={[
-                    { value: "english-ind", label: "English (IND)" },
-                    { value: "hindi-in", label: "हिन्दी (IN)" },
-                    { value: "english-us", label: "English (US)" },
-                    { value: "marathi-in", label: "मराठी (IN)" },
+                    { value: "en", label: "English" },
+                    { value: "hi", label: "हिन्दी (Hindi)" },
+                    { value: "zh", label: "中文 (Chinese)" },
+                    { value: "mr", label: "मराठी (Marathi)" },
                   ]}
                 />
               </div>

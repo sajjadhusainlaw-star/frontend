@@ -32,11 +32,10 @@ const TeamManagementPage: React.FC = () => {
       const hasAccess = user.roles?.some((r) => allowedRoles.includes(r.name));
 
       if (!hasAccess) router.replace("/auth/login");
-      else setIsAuthorized(true); 
+      else setIsAuthorized(true);
     }
   }, [user, router]);
 
-  // 2) Fetch users only when authorized
   useEffect(() => {
     if (isAuthorized) dispatch(fetchUsers());
   }, [isAuthorized, dispatch]);
@@ -113,12 +112,12 @@ const TeamManagementPage: React.FC = () => {
                       </td>
                     </tr>
                   ) : (
-                    filteredUsers.map((member,index) => (
+                    filteredUsers.map((member, index) => (
                       <tr
                         key={member._id}
                         className="border-b border-bordercolor hover:bg-gray-50 transition-colors"
                       >
-                        <td className="py-3 px-4 text-sm">{index+1}</td>
+                        <td className="py-3 px-4 text-sm">{index + 1}</td>
                         <td className="py-3 px-4 text-sm">{member.name}</td>
                         <td className="py-3 px-4 text-sm">{member.email}</td>
                         <td className="py-3 px-4 text-sm">
