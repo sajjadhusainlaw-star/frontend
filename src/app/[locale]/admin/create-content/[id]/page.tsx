@@ -89,7 +89,7 @@ const EditArticlePage: React.FC = () => {
                         content: article.content,
                         tags: Array.isArray(article.tags) ? article.tags : (typeof article.tags === 'string' ? (article.tags as string).split(',') : []),
                         thumbnail: null, // We can't set file object from URL easily, handled separately or just show preview
-                        status: article.status === 'published' ? 'publish' : 'draft'
+                        status: article.status === 'published' ? 'pending' : 'draft'
                     });
                     // If we want to show the existing thumbnail, we might need a separate state for preview URL
                     // The existing code uses useMemo on formData.thumbnail. 
@@ -114,10 +114,10 @@ const EditArticlePage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await handleUpdate("publish");
+        await handleUpdate("pending");
     };
 
-    const handleUpdate = async (status: "draft" | "publish") => {
+    const handleUpdate = async (status: "draft" | "pending") => {
         if (!formData.title || !formData.content) {
             toast.error("Please fill in the Title and Main Content.");
             return;
