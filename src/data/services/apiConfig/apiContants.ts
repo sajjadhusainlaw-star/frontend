@@ -31,6 +31,8 @@ export const API_ENDPOINTS = {
   SUBSCRIPTION: {
     CREATE: "/plans",
     GET_ALL_PLAN: "/plans",
+    CREATE_ORDER: "/subscriptions/orders/create",
+    GET_MY_SUBSCRIPTION: "/subscriptions/me",
   },
 
   ROLES: {
