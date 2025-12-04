@@ -4,7 +4,14 @@ import Link from "next/link";
 import { Menu, X, ChevronDown, ChevronRight, LogOut, LayoutDashboard, User as UserIcon } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
+<<<<<<< HEAD
 import { usePathname, useRouter } from "next/navigation";
+=======
+import { usePathname, useRouter } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
+import { Globe } from "lucide-react";
+import { useGoogleTranslate } from "@/hooks/useGoogleTranslate";
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
 
 // Types
 import { NavItem } from "@/data/navigation";
@@ -22,12 +29,25 @@ import { Category } from "@/data/features/category/category.types";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+<<<<<<< HEAD
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false); 
+=======
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
   const [user, setUser] = useState<any>(null);
   const [mobileExpanded, setMobileExpanded] = useState<Record<string, boolean>>({});
   const pathname = usePathname();
   const router = useRouter();
+<<<<<<< HEAD
 
+=======
+  const locale = useLocale();
+
+  const switchLocale = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
+  };
+
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
   const { user: reduxProfileUser } = useProfileActions();
   const checkuser = reduxProfileUser as UserData;
   const avatar = checkuser?.profilePicture || null;
@@ -45,7 +65,11 @@ export default function Header() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
   const confirmLogout = () => {
     localStorage.clear();
     dispatch(logoutUser());
@@ -60,6 +84,7 @@ export default function Header() {
     return user.roles.some((r: any) => ["admin", "superadmin"].includes(r.name));
   }, [user]);
 
+<<<<<<< HEAD
   // --- Dynamic Nav Logic ---
   const navItems = useMemo(() => {
     const mapToNavItem = (cat: Category): NavItem => ({
@@ -67,14 +92,69 @@ export default function Header() {
       href: `/category/${cat.slug}`,
       children: cat.children?.length ? cat.children.map(mapToNavItem) : undefined,
     });
+=======
+  const t = useTranslations('Navigation');
+  const tCommon = useTranslations('Common');
+
+  // --- Dynamic Nav Logic ---
+  // 1. Prepare category names for translation (Recursive)
+  const [catNamesToTranslate, setCatNamesToTranslate] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (categories.length > 0 && locale !== 'en') {
+      const collectNames = (cats: Category[]): string[] => {
+        let names: string[] = [];
+        cats.forEach(cat => {
+          names.push(cat.name);
+          if (cat.children && cat.children.length > 0) {
+            names = names.concat(collectNames(cat.children));
+          }
+        });
+        return names;
+      };
+      setCatNamesToTranslate(collectNames(categories));
+    }
+  }, [categories, locale]);
+
+  // 2. Fetch translations
+  const { translatedText: translatedCatNames } = useGoogleTranslate(
+    locale !== 'en' && catNamesToTranslate.length > 0 ? catNamesToTranslate : null
+  );
+
+  const navItems = useMemo(() => {
+    let nameIndex = 0;
+
+    const mapToNavItem = (cat: Category): NavItem => {
+      // If we have translations, use them. 
+      let label = cat.name;
+      if (locale !== 'en' && Array.isArray(translatedCatNames) && translatedCatNames[nameIndex]) {
+        label = translatedCatNames[nameIndex];
+      }
+      nameIndex++;
+
+      return {
+        label: label,
+        href: `/category/${cat.slug}`,
+        children: cat.children?.length ? cat.children.map(mapToNavItem) : undefined,
+      };
+    };
+
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
     const dynamicCats = categories.map(mapToNavItem);
     const LIMIT = 6;
     const visible = dynamicCats.slice(0, LIMIT);
     const hidden = dynamicCats.slice(LIMIT);
+<<<<<<< HEAD
     const final: NavItem[] = [{ label: "Home", href: "/" }, ...visible];
     if (hidden.length > 0) final.push({ label: "More", children: hidden });
     return final;
   }, [categories]);
+=======
+    const final: NavItem[] = [{ label: t('home'), href: "/" }, ...visible];
+    if (hidden.length > 0) final.push({ label: t('more'), children: hidden });
+    return final;
+  }, [categories, t, translatedCatNames, locale]);
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
 
   // --- Helper Functions ---
   const isLinkActive = (href?: string) => {
@@ -185,6 +265,7 @@ export default function Header() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
+<<<<<<< HEAD
             {user ? (
               <div 
                 className="relative"
@@ -221,11 +302,68 @@ export default function Header() {
                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A227]"
                       >
                         <LayoutDashboard size={16} /> Dashboard
+=======
+            {/* Language Switcher */}
+            <div className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-1.5 border border-gray-200">
+              <Globe size={14} className="text-gray-500" />
+              <button
+                onClick={() => switchLocale("en")}
+                className={`text-xs font-medium transition-colors ${locale === "en" ? "text-[#C9A227] font-bold" : "text-gray-500 hover:text-gray-700"}`}
+              >
+                EN
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                onClick={() => switchLocale("hi")}
+                className={`text-xs font-medium transition-colors ${locale === "hi" ? "text-[#C9A227] font-bold" : "text-gray-500 hover:text-gray-700"}`}
+              >
+                HI
+              </button>
+            </div>
+
+            {user ? (
+              <div
+                className="relative"
+                onMouseEnter={() => setIsProfileOpen(true)}
+                onMouseLeave={() => setIsProfileOpen(false)}
+              >
+                <button className="flex items-center gap-2 focus:outline-none py-2">
+                  <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700 overflow-hidden border-2 border-[#C9A227]">
+                    {avatar ? <Image src={avatar} alt="Avatar" width={40} height={40} className="object-cover w-full h-full" /> : (user?.name?.[0] || "U").toUpperCase()}
+                  </div>
+                  <span className="text-sm font-medium text-gray-800 hover:text-[#C9A227] transition-colors">
+                    {user?.name}
+                  </span>
+                  <ChevronDown size={14} className="text-gray-500" />
+                </button>
+
+
+                <div
+                  className={`absolute right-0 top-full w-48 bg-white border border-gray-200 rounded-xl shadow-lg transition-all duration-200 transform origin-top-right z-50 ${isProfileOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}
+                >
+                  <div className="py-2">
+                    <Link
+                      href="/profile"
+                      onClick={() => setIsProfileOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A227]"
+                    >
+                      <UserIcon size={16} /> {t('profile')}
+                    </Link>
+
+                    {hasDashboardAccess && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A227]"
+                      >
+                        <LayoutDashboard size={16} /> {t('dashboard')}
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
                       </Link>
                     )}
 
                     <div className="h-px bg-gray-100 my-1 mx-2" />
 
+<<<<<<< HEAD
                     <button 
                       onClick={() => {
                         setIsProfileOpen(false);
@@ -234,14 +372,29 @@ export default function Header() {
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                     >
                       <LogOut size={16} /> Logout
+=======
+                    <button
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                        setShowLogoutConfirm(true);
+                      }}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut size={16} /> {t('logout')}
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
                     </button>
                   </div>
                 </div>
               </div>
             ) : (
               <>
+<<<<<<< HEAD
                 <Link href="/auth/login"><button className="rounded-full bg-[#C9A227] text-white px-5 py-2 hover:bg-[#b39022] text-sm font-medium transition-colors">SIGN IN</button></Link>
                 <Link href="/subscription"><button className="rounded-full border border-[#C9A227] text-[#C9A227] px-5 py-2 hover:bg-[#C9A227] hover:text-white text-sm font-medium transition-colors">GET SUBSCRIPTION</button></Link>
+=======
+                <Link href="/auth/login"><button className="rounded-full bg-[#C9A227] text-white px-5 py-2 hover:bg-[#b39022] text-sm font-medium transition-colors">{t('login').toUpperCase()}</button></Link>
+                <Link href="/subscription"><button className="rounded-full border border-[#C9A227] text-[#C9A227] px-5 py-2 hover:bg-[#C9A227] hover:text-white text-sm font-medium transition-colors">{t('subscription').toUpperCase()}</button></Link>
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
               </>
             )}
           </div>
@@ -265,12 +418,21 @@ export default function Header() {
                     </div>
                     <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"><UserIcon size={16} /> Profile</Link>
                     {hasDashboardAccess && <Link href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"><LayoutDashboard size={16} /> Dashboard</Link>}
+<<<<<<< HEAD
                     
                     <button 
                       onClick={() => {
                         setMenuOpen(false);
                         setShowLogoutConfirm(true); 
                       }} 
+=======
+
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        setShowLogoutConfirm(true);
+                      }}
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
                       className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg text-left"
                     >
                       <LogOut size={16} /> Logout
@@ -289,7 +451,37 @@ export default function Header() {
         )}
       </header>
 
+<<<<<<< HEAD
      
+=======
+              {/* Mobile Language Switcher */}
+              <div className="flex items-center gap-3 mb-4 px-2">
+                <span className="text-sm font-medium text-gray-600">Language:</span>
+                <div className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-1.5 border border-gray-200">
+                  <button
+                    onClick={() => { switchLocale("en"); setMenuOpen(false); }}
+                    className={`text-xs font-medium transition-colors ${locale === "en" ? "text-[#C9A227] font-bold" : "text-gray-500"}`}
+                  >
+                    English
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    onClick={() => { switchLocale("hi"); setMenuOpen(false); }}
+                    className={`text-xs font-medium transition-colors ${locale === "hi" ? "text-[#C9A227] font-bold" : "text-gray-500"}`}
+                  >
+                    हिंदी
+                  </button>
+                </div>
+              </div>
+
+              {navItems.map((item, i) => <MobileMenuItem key={i} item={item} />)}
+            </nav>
+          </div>
+        )}
+      </header>
+
+
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
       {showLogoutConfirm && (
         <LogoutModal onCancel={() => setShowLogoutConfirm(false)} onConfirm={confirmLogout} />
       )}
@@ -302,7 +494,11 @@ function LogoutModal({ onCancel, onConfirm }: { onCancel: () => void; onConfirm:
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fadeIn">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onCancel} />
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
       {/* Modal Content */}
       <div className="relative z-10 w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 border border-gray-100 transform transition-all scale-100">
         <div className="flex flex-col items-center text-center">
@@ -313,16 +509,28 @@ function LogoutModal({ onCancel, onConfirm }: { onCancel: () => void; onConfirm:
           <p className="text-sm text-gray-500 mt-2 mb-6">
             Are you sure you want to Logout of your account? You will need to login again to access your profile.
           </p>
+<<<<<<< HEAD
           
           <div className="flex gap-3 w-full">
             <button 
               onClick={onCancel} 
+=======
+
+          <div className="flex gap-3 w-full">
+            <button
+              onClick={onCancel}
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
               className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
               Cancel
             </button>
+<<<<<<< HEAD
             <button 
               onClick={onConfirm} 
+=======
+            <button
+              onClick={onConfirm}
+>>>>>>> 2569970413525ce9b0d8a0acbf1b6c4c8edcbcd9
               className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 shadow-md shadow-red-600/20 transition-colors"
             >
               Logout
