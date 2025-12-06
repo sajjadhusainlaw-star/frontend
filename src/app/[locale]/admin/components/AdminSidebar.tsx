@@ -18,6 +18,7 @@ import { useAppDispatch } from "@/data/redux/hooks";
 import { logoutUser } from "@/data/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { PERMISSIONS, ROLES } from "@/config/permissions";
 
 const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
   const dispatch = useAppDispatch();
@@ -27,9 +28,12 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
 
   const user = reduxProfileUser as UserData;
 
-  const userRoles = user?.roles?.map((r) => r.name) || [];
-  const hasAdminPrivileges = userRoles.includes("admin") || userRoles.includes("superadmin");
-  const hasDashboardAccess = userRoles.some((role) => role !== "user");
+  const roles = user?.roles?.map((r) => r.name) || [];
+  const permission = user?.permissions?.map((r) => r.name) || [];
+  const hasAdminPrivileges = roles.includes(ROLES.ADMIN) || roles.includes(ROLES.SUPERADMIN);
+  const isEditor =  roles.includes(ROLES.EDITOR);
+  const hasPermissionsForContenEdit = permission.includes(PERMISSIONS.ARTICLE.EDIT);
+  const hasDashboardAccess = roles.some((role) => role !== "user");
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -47,19 +51,19 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
       name: "Content Management",
       icon: <FolderOpen size={18} />,
       href: "/admin/content-management",
-      show: hasDashboardAccess
+      show: hasDashboardAccess && !isEditor
     },
     {
       name: "Create Roles & Permissions",
       icon: <UserCog size={18} />,
       href: "/admin/roles-permissions",
-      show: hasAdminPrivileges
+      show: hasAdminPrivileges 
     },
     {
       name: "Content Approval",
       icon: <GitPullRequestArrow size={18} />,
       href: "/admin/content-approval",
-      show: hasAdminPrivileges
+      show: hasAdminPrivileges  || ( isEditor  && hasPermissionsForContenEdit)
     },
     {
       name: "Team Management",

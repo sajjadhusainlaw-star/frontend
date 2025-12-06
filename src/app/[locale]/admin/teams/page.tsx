@@ -74,7 +74,7 @@ const TeamManagementPage: React.FC = () => {
                 <strong>Total Team:</strong> {filteredUsers?.length || 0}
               </div>
                <button
-                onClick={() => router.push('/admin/create-content')}
+                onClick={() => router.push('/admin/teams/add-new-member')}
                 className="bg-[#0B2149] text-white px-5 py-2 rounded-md font-medium hover:bg-[#1a3a75] transition-colors flex items-center gap-2"
               >
                 <span>+</span> Invite New Member
