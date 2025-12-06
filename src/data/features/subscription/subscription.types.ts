@@ -1,12 +1,22 @@
+export interface PlanFeature {
+  id: string;
+  name: string;
+  description: string | null;
+  createdAt: string;
+}
+
 export interface Plans {
   id: string;
   name: string;
-  description?: string;
-  features: string[];
-  price: number;
+  description?: string | null;
+  features: PlanFeature[];
+  price: string;
   currency?: string;
-  discount?: number;
-  status?: "active" | "inactive";
+  discount?: string;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string | null;
 }
 export interface AddPlanRequest {
   name: string;
@@ -38,6 +48,18 @@ export interface CreateOrderResponse {
     amount: number;
     currency: string;
   };
+}
+
+export interface VerifyPaymentRequest {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+export interface VerifyPaymentResponse {
+  success: boolean;
+  message: string;
+  data?: any;
 }
 
 // User Subscription Types

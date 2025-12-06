@@ -147,12 +147,29 @@ export default function SubscriptionPage() {
         description: `Subscription: ${plan.name}`,
         order_id: razorpayOrderId,
         handler: async function (response: any) {
-          toast.success(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
-          setProcessingPlanId(null);
-          // Webhook will handle subscription activation
-          setTimeout(() => {
-            router.push("/profile");
-          }, 2000);
+          try {
+            console.log("Payment successful, verifying...", response);
+            const verifyData = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            };
+
+            const verifyResponse = await subscriptionApi.verifyPayment(verifyData);
+            console.log("Verify response:", verifyResponse);
+
+            if (verifyResponse.data?.success) {
+              toast.success("Payment verified and subscription activated!");
+              router.push("/profile");
+            } else {
+              throw new Error(verifyResponse.data?.message || "Payment verification failed");
+            }
+          } catch (error) {
+            console.error("Payment verification error:", error);
+            toast.error("Payment verification failed. Please contact support.");
+          } finally {
+            setProcessingPlanId(null);
+          }
         },
         prefill: {
           name: "",
@@ -191,12 +208,13 @@ export default function SubscriptionPage() {
     }
   };
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: string | number) => {
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0
-    }).format(price);
+    }).format(numPrice);
   };
 
   if (loading) {
@@ -227,14 +245,14 @@ export default function SubscriptionPage() {
             </div>
           </div>
         ) : userSubscription && userSubscription.status === "active" ? (
-          <div className="mb-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl p-8 text-white shadow-2xl">
+          <div className="mb-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl p-8 text-white shadow-2xl mx-24">
             <div className="flex items-start justify-between flex-wrap gap-4">
               <div className="flex items-start gap-4">
                 <div className="bg-white/20 p-3 rounded-full">
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-2 mx">
                     <h2 className="text-2xl font-bold">You're a Premium Member!</h2>
                     <span className="bg-white/30 px-3 py-1 rounded-full text-sm font-semibold">
                       {userSubscription.status.toUpperCase()}
@@ -318,7 +336,7 @@ export default function SubscriptionPage() {
                       }`}
                     style={{ transformOrigin: 'center' }}
                   >
-                    {plan.discount && plan.discount > 0 && (
+                    {plan.discount && parseFloat(plan.discount) > 0 && (
                       <div className={`absolute -top-3 px-3 py-1 rounded-full text-xs font-bold ${isSelected ? "bg-white text-[#0A2342]" : "bg-[#C9A227] text-white"
                         }`}>
                         Save {plan.discount}%
@@ -342,16 +360,18 @@ export default function SubscriptionPage() {
                     </p>
 
                     {/* Features List */}
-                    <div className="w-full space-y-2 mb-6 flex-grow">
-                      {plan.features.map((feature, fIdx) => (
-                        <div key={fIdx} className="flex items-start gap-2 text-left">
-                          <Check className={`flex-shrink-0 mt-0.5 ${isSelected ? "text-[#C9A227]" : "text-green-600"}`} size={16} />
-                          <span className={`text-sm ${isSelected ? "text-gray-200" : "text-gray-700"}`}>
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    {plan.features && plan.features.length > 0 && (
+                      <div className="w-full space-y-2 mb-6 flex-grow">
+                        {plan.features.map((feature, fIdx) => (
+                          <div key={fIdx} className="flex items-start gap-2 text-left">
+                            <Check className={`flex-shrink-0 mt-0.5 ${isSelected ? "text-[#C9A227]" : "text-green-600"}`} size={16} />
+                            <span className={`text-sm ${isSelected ? "text-gray-200" : "text-gray-700"}`}>
+                              {feature.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
 
                     <button
