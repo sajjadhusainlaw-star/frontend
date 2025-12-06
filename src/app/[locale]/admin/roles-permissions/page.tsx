@@ -390,9 +390,13 @@ export default function RolesPermissionsPage() {
 
                                         {/* Created At */}
                                         <td className="px-4 py-4 text-sm text-gray-700 font-medium">
-                                            {perm.createdAt
-                                                ? new Date(perm.createdAt).toLocaleDateString()
-                                                : "N/A"}
+                                           {perm.createdAt
+                                                ? new Date(perm.createdAt).toLocaleString("en-IN")
+                                                : perm._id
+                                                    ? new Date(
+                                                        parseInt(perm._id.substring(0, 8), 16) * 1000
+                                                    ).toLocaleString("en-IN")
+                                                    : "N/A"}
                                         </td>
 
                                         {/* Actions */}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_KEY = 'AIzaSyD_xyUrPxriF365f1KCMnpgpbfMtJmi1AI';
+// const API_KEY = 'AIzaSyD_xyUrPxriF365f1KCMnpgpbfMtJmi1AI';
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
         // Google Translate API expects 'q' to be an array for multiple strings or a single string
         // We will ensure we send it as is, but the response handling depends on it.
 
-        const url = `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`;
+        const url = `https://translation.googleapis.com/language/translate/v2?key=${""}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -42,3 +42,4 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
+
